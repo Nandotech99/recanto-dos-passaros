@@ -51,30 +51,10 @@
 
         <!-- Barra Superior (Topbar) -->
         <header class="topbar">
-            <div class="topbar-left">
+            <div class="topbar-all">
                 <button class="menu-toggle-btn" aria-label="Alternar Menu">
                     <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 12h18M3 6h18M3 18h18"/></svg>
                 </button>
-                <div class="status-badge">
-                    <span class="status-dot"></span>
-                    <span>Operacional</span>
-                </div>
-            </div>
-
-            <div class="topbar-right">
-                <button class="icon-btn" aria-label="Modo Noturno">
-                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
-                </button>
-                <button class="icon-btn" aria-label="Ajuda">
-                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
-                </button>
-                <div class="profile-completion">
-                    <span>Complete seu perfil: 0%</span>
-                </div>
-                <div class="user-profile">
-                    <span class="user-name">Fernando Pereira</span>
-                    <span class="user-role">Proprietário</span>
-                </div>
             </div>
         </header>
 
@@ -85,17 +65,9 @@
             <div class="section-header-bar">
                 <div class="title-with-help">
                     <h1>Produtos/Serviços</h1>
-                    <button class="help-btn">
-                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
-                        Ajuda
-                    </button>
+
                 </div>
                 <div class="action-buttons">
-                    <button class="btn-secondary-action">
-                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
-                        Exportar
-                    </button>
-                    <span class="pro-badge">PRO</span>
                     <button class="btn-primary-action" id="openModalBtn">
                         + Novo item
                     </button>
@@ -154,10 +126,7 @@
                 <div class="toggle-wrapper">
                     <label class="switch">
                         <input type="checkbox" id="includeHiddenToggle">
-                        <span class="slider round"></span>
                     </label>
-                    <span class="toggle-label">Incluir ocultas</span>
-                </div>
             </div>
 
             <!-- Sub-filtros (Ativos / Inativos) -->
@@ -201,6 +170,7 @@
                 </table>
             </div>
 
+        </div>
         </div>
     </main>
 </div>

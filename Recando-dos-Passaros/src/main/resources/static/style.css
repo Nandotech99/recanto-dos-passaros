@@ -170,7 +170,7 @@ body {
 }
 .brand-logo-img {
     max-width: 200px;
-    height: 500;
+    height: 500px;
 
     margin: 0 auto 1.5rem auto;
 }
@@ -1076,4 +1076,45 @@ input:checked + .slider:before { transform: translateX(16px); }
 
 .btn-save:hover {
     background-color: var(--accent-hover);
+}
+
+/* Esconde o checkbox de controle */
+.menu-toggle-checkbox {
+    display: none;
+}
+
+/* Garante cursor de clique no botão do menu */
+.menu-toggle-btn {
+    cursor: pointer;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+}
+
+/* Adiciona animação suave na abertura e fechamento da Sidebar */
+.sidebar {
+    transition: margin-left 0.3s ease, transform 0.3s ease;
+}
+
+/* =======================================================
+   LÓGICA CSS: QUANDO O CHECKBOX ESTIVER MARCADO, RECOLHE A SIDEBAR
+   ======================================================= */
+.menu-toggle-checkbox:checked ~ .app-layout .sidebar {
+    margin-left: -260px; /* Altere este valor para a largura exata da sua sidebar */
+}
+
+/* Suporte para dispositivos móveis (inicia fechado e abre ao clicar) */
+@media (max-width: 768px) {
+    .sidebar {
+        position: fixed;
+        top: 0;
+        left: 0;
+        height: 100vh;
+        z-index: 1000;
+        margin-left: -260px;
+    }
+
+    .menu-toggle-checkbox:checked ~ .app-layout .sidebar {
+        margin-left: 0;
+    }
 }
