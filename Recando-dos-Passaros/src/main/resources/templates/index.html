@@ -1,187 +1,181 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Recanto dos Pássaros - Produtos e Serviços</title>
-    <!-- Vinculação da folha de estilos externa -->
-    <link rel="stylesheet" href="../static/style.css">
+   <meta charset="UTF-8">
+   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+   <title>Recanto dos Pássaros - Empório e Gestão</title>
+   <!-- Vinculação da folha de estilos externa -->
+   <link rel="stylesheet" href="../static/style.css">
 </head>
-<body class="app-body">
+<body>
 
-<!-- Checkbox invisível que controla o estado do menu -->
-<input type="checkbox" id="menu-toggle" class="menu-toggle-checkbox">
 
-<!-- Container Principal do Painel -->
-<div class="app-layout">
+<!-- Ícones SVG reutilizáveis para os demais recursos (ocultos visualmente) -->
+<svg style="display: none;" xmlns="http://www.w3.org/2000/svg">
+   <symbol id="icon-pdv" viewBox="0 0 24 24">
+       <path fill="currentColor" d="M20 4H4c-1.11 0-1.99.89-1.99 2L2 18c0 1.11.89 2 2 2h16c1.11 0 2-.89 2-2V6c0-1.11-.89-2-2-2zm0 14H4V8h16v10zm-2-8h-2v2h2v-2zm-4 0h-2v2h2v-2z"/>
+   </symbol>
+   <symbol id="icon-stock" viewBox="0 0 24 24">
+       <path fill="currentColor" d="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm-2 10h-4v4h-2v-4H7v-2h4V7h2v4h4v2z"/>
+   </symbol>
+   <symbol id="icon-cash" viewBox="0 0 24 24">
+       <path fill="currentColor" d="M21 18v1c0 1.1-.9 2-2 2H5c-1.11 0-2-.9-2-2V5c0-1.1.89-2 2-2h14c1.1 0 2 .9 2 2v1h-9c-1.11 0-2 .9-2 2v8c0 1.1.89 2 2 2h9zm-9-2h10V8H12v8zm4-2.5c-.83 0-1.5-.67-1.5-1.5s.67-1.5 1.5-1.5 1.5.67 1.5 1.5-.67 1.5-1.5 1.5z"/>
+   </symbol>
+   <!-- Ícone de etiqueta atualizado para Produtos e serviços -->
+   <symbol id="icon-products" viewBox="0 0 24 24">
+       <path fill="currentColor" d="M21.41 11.58l-9-9C12.05 2.22 11.55 2 11 2H4c-1.1 0-2 .9-2 2v7c0 .55.22 1.05.59 1.42l9 9c.36.36.86.58 1.41.58.55 0 1.05-.22 1.41-.59l7-7c.37-.36.59-.86.59-1.41 0-.55-.23-1.06-.59-1.42zM5.5 7C4.67 7 4 6.33 4 5.5S4.67 4 5.5 4 7 4.67 7 5.5 6.33 7 5.5 7z"/>
+   </symbol>
+</svg>
 
-    <!-- Sidebar (Menu Lateral) -->
-    <aside class="sidebar">
-        <div class="sidebar-brand">
-            <img src="../Pck_img/Recanto-logo.jpg" alt="Logo Recanto dos Pássaros" class="sidebar-logo">
-            <span class="sidebar-brand-name">Recanto dos Pássaros</span>
-        </div>
 
-        <nav class="sidebar-nav">
-            <div class="nav-section">
-                <span class="nav-section-title">Cadastro</span>
-                <ul class="nav-list">
-                    <li><a href="#" class="nav-item active">Produtos</a></li>
-                    <li><a href="#" class="nav-item">Estoque</a></li>
-                    <li><a href="#" class="nav-item">Fornecedor</a></li>
-                </ul>
-            </div>
+<!-- Link de Pular para o Conteúdo (Acessibilidade) -->
+<a href="#main-content" class="skip-link">Pular para o conteúdo principal</a>
 
-            <div class="nav-section">
-                <span class="nav-section-title">Venda</span>
-                <ul class="nav-list">
-                    <li><a href="#" class="nav-item">Ponto de Venda</a></li>
-                    <li><a href="#" class="nav-item">Fechamento de Caixa</a></li>
-                </ul>
-            </div>
 
-            <div class="nav-section">
-                <span class="nav-section-title">Dashboard</span>
-                <ul class="nav-list">
-                    <li><a href="#" class="nav-item">Início</a></li>
-                </ul>
-            </div>
-        </nav>
-    </aside>
+<!-- Cabeçalho Principal -->
+<header class="site-header" role="banner">
+   <div class="header-container">
+       <div class="brand-title">Recanto dos Pássaros</div>
+       <nav role="navigation" aria-label="Menu Principal">
+           <ul class="nav-menu">
+               <li><a href="#login" class="nav-link">Login</a></li>
+               <li><a href="#recursos" class="nav-link">Recursos</a></li>
+               <li><a href="#sobre" class="nav-link">Sobre nós</a></li>
+           </ul>
+       </nav>
+   </div>
+</header>
 
-    <!-- Área de Conteúdo Principal -->
-    <main class="main-content">
 
-        <!-- Barra Superior (Topbar) -->
-        <header class="topbar">
-            <div class="topbar-all">
-                <!-- Label vinculada ao checkbox do menu (funciona como o botão) -->
-                <label for="menu-toggle" class="menu-toggle-btn" aria-label="Alternar Menu">
-                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                        <path d="M3 12h18M3 6h18M3 18h18"/>
-                    </svg>
-                </label>
-            </div>
-        </header>
+<!-- Conteúdo Principal -->
+<main id="main-content" tabindex="-1">
 
-        <!-- Conteúdo da Página -->
-        <div class="content-body">
 
-            <!-- Cabeçalho da Seção -->
-            <div class="section-header-bar">
-                <div class="title-with-help">
-                    <h1>Produtos/Serviços</h1>
-                </div>
-                <div class="action-buttons">
-                    <button class="btn-primary-action" id="openModalBtn">
-                        + Novo item
-                    </button>
-                </div>
-            </div>
+   <!-- Seção de Apresentação e Login -->
+   <section class="hero-section">
+       <div class="hero-grid">
 
-            <p class="section-description">Gerencie seu catálogo de produtos e serviços para facilitar os lançamentos</p>
 
-            <!-- Cards de Indicadores (KPIs) -->
-            <div class="kpi-cards-grid">
-                <div class="kpi-card">
-                    <span class="kpi-icon">📦</span>
-                    <span class="kpi-label">Total:</span>
-                    <span class="kpi-value" id="kpiTotal">0</span>
-                </div>
-                <div class="kpi-card">
-                    <span class="kpi-icon">💲</span>
-                    <span class="kpi-label">Valor em estoque:</span>
-                    <span class="kpi-value" id="kpiValorEstoque">R$ 0,00</span>
-                </div>
-                <div class="kpi-card">
-                    <span class="kpi-icon">🛍️</span>
-                    <span class="kpi-label">Produtos:</span>
-                    <span class="kpi-value" id="kpiProdutos">0</span>
-                </div>
-                <div class="kpi-card">
-                    <span class="kpi-icon">🛠️</span>
-                    <span class="kpi-label">Serviços:</span>
-                    <span class="kpi-value" id="kpiServicos">0</span>
-                </div>
-            </div>
+           <!-- Coluna de Imagem Ilustrativa -->
+           <div class="hero-image-wrapper">
+               <img src="../Pck_img/login-img.jpg"
+                    alt="Xícara de café fumegante e doces em uma mesa aconchegante de cafeteria rústica"
+                    class="hero-img">
+           </div>
 
-            <!-- Barra de Filtros e Pesquisa -->
-            <div class="filter-toolbar">
-                <div class="search-box">
-                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                        <circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/>
-                    </svg>
-                    <input type="text" id="searchInput" placeholder="Buscar por nome ou descrição...">
-                </div>
 
-                <div class="filter-pills">
-                    <button class="pill active" data-filter="all">Todos</button>
-                    <button class="pill" data-filter="Produto">Produtos</button>
-                    <button class="pill" data-filter="Serviço">Serviços</button>
-                </div>
+           <!-- Coluna do Formulário de Acesso -->
+           <div class="hero-form-wrapper" id="login">
+               <div class="logo-box">
+                   <!-- Logotipo substituído pela imagem oficial -->
+                   <img src="../Pck_img/Recanto-logo.jpg" alt="Logotipo Recanto dos Pássaros Empório" class="brand-logo-img">
+               </div>
 
-                <div class="category-select-wrapper">
-                    <select id="categoryFilter" class="category-select">
-                        <option value="">Todas as categorias</option>
-                        <option value="Bebidas">Bebidas</option>
-                        <option value="Doces">Doces</option>
-                        <option value="Artesanato">Artesanato</option>
-                        <option value="Outros">Outros</option>
-                    </select>
-                </div>
 
-                <div class="toggle-wrapper">
-                    <label class="switch">
-                        <input type="checkbox" id="includeHiddenToggle">
-                    </label>
-                </div>
-            </div>
+               <h2>Bem-vindo ao seu recanto!</h2>
+               <p class="form-instruction">Faça o seu login para acessar o sistema</p>
 
-            <!-- Sub-filtros (Ativos / Inativos) -->
-            <div class="sub-filter-row">
-                <div class="filter-pills-secondary">
-                    <button class="pill-sm active" data-status="all">Todos</button>
-                    <button class="pill-sm" data-status="Ativo">Ativos</button>
-                    <button class="pill-sm" data-status="Inativo">Inativos</button>
-                </div>
-            </div>
 
-            <!-- Tabela de Produtos/Serviços -->
-            <div class="table-container">
-                <table class="data-table">
-                    <thead>
-                    <tr>
-                        <th>NOME</th>
-                        <th>TIPO</th>
-                        <th>PREÇO</th>
-                        <th>MARGEM</th>
-                        <th>VALOR EM ESTOQUE</th>
-                        <th>CATEGORIA</th>
-                        <th>VALIDADE</th>
-                        <th>ESTOQUE</th>
-                        <th>STATUS</th>
-                        <th>AÇÕES</th>
-                    </tr>
-                    </thead>
-                    <tbody id="productTableBody">
-                    <tr id="emptyStateRow">
-                        <td colspan="10" class="empty-state-cell">
-                            <div class="empty-state-content">
-                                <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
-                                    <path d="M21 16.5c0 .38-.21.71-.53.88l-7.9 4.44c-.16.09-.34.14-.57.14s-.41-.05-.57-.14l-7.9-4.44A1.002 1.002 0 0 1 3 16.5v-9c0-.38.21-.71.53-.88l7.9-4.44c.16-.09.34-.14.57-.14l7.9 4.44c.32.17.53.5.53.88v9zM12 4.15L6.04 7.5 12 10.85l5.96-3.35L12 4.15z"/>
-                                </svg>
-                                <p class="empty-title">Nenhum produto/serviço cadastrado</p>
-                                <p class="empty-subtitle">Comece criando seu primeiro produto ou serviço para facilitar os lançamentos.</p>
-                            </div>
-                        </td>
-                    </tr>
-                    </tbody>
-                </table>
-            </div>
+               <!-- Formulário com rótulos explícitos e atributos de acessibilidade -->
+               <form action="#" method="POST" class="login-form">
+                   <div class="input-group">
+                       <label for="email">E-mail <span class="required" aria-hidden="true">*</span><span class="sr-only">(obrigatório)</span></label>
+                       <input type="email" id="email" name="email" required autocomplete="email" aria-required="true" placeholder="seuemail@exemplo.com">
+                   </div>
 
-        </div>
-    </main>
-</div>
+
+                   <div class="input-group">
+                       <label for="senha">Senha <span class="required" aria-hidden="true">*</span><span class="sr-only">(obrigatório)</span></label>
+                       <input type="password" id="senha" name="senha" required autocomplete="current-password" aria-required="true" placeholder="••••••••">
+                   </div>
+
+
+                   <div class="form-actions">
+                       <button type="submit" class="btn btn-primary">Login</button>
+                       <a href="#cadastro" class="btn btn-secondary" role="button">Cadastre-se</a>
+                   </div>
+               </form>
+           </div>
+
+
+       </div>
+   </section>
+
+
+   <!-- Seção de Recursos de Gestão -->
+   <section class="resources-section" id="recursos" aria-labelledby="resources-heading">
+       <div class="container">
+           <h2 id="resources-heading" class="section-title">Os recursos necessários para a gestão de sua empresa!</h2>
+
+
+           <div class="resources-grid">
+
+
+               <!-- Card 1 -->
+               <article class="resource-card">
+                   <div class="card-icon-wrapper" aria-hidden="true">
+                       <svg class="card-svg"><use href="#icon-pdv"></use></svg>
+                   </div>
+                   <div class="card-content">
+                       <h3>PDV (ponto de venda)</h3>
+                       <p>Venda no balcão com baixa automática de estoque e comprovante integrado.</p>
+                   </div>
+               </article>
+
+
+               <!-- Card 2 -->
+               <article class="resource-card">
+                   <div class="card-icon-wrapper" aria-hidden="true">
+                       <svg class="card-svg"><use href="#icon-stock"></use></svg>
+                   </div>
+                   <div class="card-content">
+                       <h3>Controle de estoque</h3>
+                       <p>Entradas, saídas e rastreabilidade detalhada das movimentações diárias.</p>
+                   </div>
+               </article>
+
+
+               <!-- Card 3 -->
+               <article class="resource-card">
+                   <div class="card-icon-wrapper" aria-hidden="true">
+                       <svg class="card-svg"><use href="#icon-cash"></use></svg>
+                   </div>
+                   <div class="card-content">
+                       <h3>Fechamento de caixa</h3>
+                       <p>Consolidação automática e segura de todas as movimentações do dia.</p>
+                   </div>
+               </article>
+
+
+               <!-- Card 4 -->
+               <article class="resource-card">
+                   <div class="card-icon-wrapper" aria-hidden="true">
+                       <svg class="card-svg"><use href="#icon-products"></use></svg>
+                   </div>
+                   <div class="card-content">
+                       <h3>Produtos e serviços</h3>
+                       <p>Cadastro ágil com preços, categorias e controle de estoque integrado.</p>
+                   </div>
+               </article>
+
+
+           </div>
+       </div>
+   </section>
+
+
+</main>
+
+
+<!-- Rodapé Acessível -->
+<footer class="site-footer" id="sobre" role="contentinfo">
+   <div class="container footer-content">
+       <h2>Sobre nós</h2>
+       <p>Descrever sobre nós os estudantes — Desenvolvido com carinho, acessibilidade e dedicação para proporcionar a melhor experiência de gestão e aconchego.</p>
+   </div>
+</footer>
+
 
 </body>
 </html>
+
