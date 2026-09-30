@@ -2,7 +2,7 @@ package com.example.Recando_dos_Passaros.Pck_Procedure;
 import java.sql.*;
 import java.util.ArrayList;
 
-import com.example.Recando_dos_Passaros.Pck_Model.Model;
+import com.example.Recando_dos_Passaros.Pck_Model.Produto;
 import com.example.Recando_dos_Passaros.Pck_DAO.DAO;
 
 public class Procedure {
@@ -18,7 +18,7 @@ public class Procedure {
     private static final String login ="root";
     private static final String senha ="01";
 
-    public void Inserir(Model model){
+    public void Inserir(Produto model){
         try {
             try {
                 oCall=oConectar.getConexao(login,senha).prepareCall("CAll ins_produto(?,?,?,?,?,?,?)");
@@ -39,15 +39,15 @@ public class Procedure {
         }
     }
 
-    public ArrayList<Model> Venda(){
-        ArrayList<Model> lista = new ArrayList<>();
+    public ArrayList<Produto> Venda(){
+        ArrayList<Produto> lista = new ArrayList<>();
         try {
             try {
                 oCall=oConectar.getConexao(login,senha).prepareCall("CALL exibir_venda(?)");
                 oCall.setNull(1, Types.INTEGER);
                 ResultSet rs= oCall.executeQuery();
                 while (rs.next()){
-                    Model model = new Model();
+                    Produto model = new Produto();
                     model.setCod_venda(rs.getInt("CODIGO"));
                     model.setValor_total(rs.getDouble("VALOR_TOTAL"));
                     lista.add(model);
@@ -62,8 +62,8 @@ public class Procedure {
         return lista;
     }
 
-    public ArrayList<Model> Item(int codVenda){
-        ArrayList<Model> lista = new ArrayList<>();
+    public ArrayList<Produto> Item(int codVenda){
+        ArrayList<Produto> lista = new ArrayList<>();
         try {
             try {
                 oCall = oConectar.getConexao(login,senha).prepareCall("CALL exibir_item(?)");
@@ -71,7 +71,7 @@ public class Procedure {
 
                 ResultSet rs=oCall.executeQuery();
                 while (rs.next()){
-                    Model model= new Model();
+                    Produto model= new Produto();
 
                     model.setCod_item(rs.getInt("ITEM"));
                     model.setCod_produtoFK(rs.getInt("COD_PROD"));
@@ -89,14 +89,14 @@ public class Procedure {
         return lista;
     }
 
-    public ArrayList<Model> Consulta() {
-        ArrayList<Model> lista = new ArrayList<>(); // Lista para guardar os produtos encontrados
+    public ArrayList<Produto> Consulta() {
+        ArrayList<Produto> lista = new ArrayList<>(); // Lista para guardar os produtos encontrados
         try {
             try {
                 oCall = oConectar.getConexao(login, senha).prepareCall("CALL exibir_produto()");
                 ResultSet rs = oCall.executeQuery();
                 while (rs.next()) {
-                    Model model = new Model();
+                    Produto model = new Produto();
                     // Pega os dados das colunas do banco e coloca no objeto Model
                     model.setCodigo(rs.getInt("CODIGO"));
                     model.setNome(rs.getString("PRODUTO"));
@@ -117,7 +117,7 @@ public class Procedure {
         return lista;
     }
 
-    public void Uptade(Model model) {
+    public void Uptade(Produto model) {
         try {
             try {
                 oCall = oConectar.getConexao(login, senha).prepareCall("CALL upt_quantidade(?,?,?,?)");
@@ -137,7 +137,7 @@ public class Procedure {
         }
     }
 
-    public void AtualizarPreco(Model model) {
+    public void AtualizarPreco(Produto model) {
         try {
             try {
                 oCall = oConectar.getConexao(login, senha).prepareCall("CALL upt_preco(?,?,?,?)");
@@ -157,7 +157,7 @@ public class Procedure {
         }
     }
 
-    public void Delete(Model model) {
+    public void Delete(Produto model) {
         try {
             try {
                 oCall = oConectar.getConexao(login, senha).prepareCall("CALL del_produto(?)");
@@ -171,7 +171,7 @@ public class Procedure {
         }
     }
 
-    public void RegistrarVenda(Model model){
+    public void RegistrarVenda(Produto model){
         try {
             try {
                 oCall = oConectar.getConexao(login, senha).prepareCall("CALL ins_venda(?,?)");
