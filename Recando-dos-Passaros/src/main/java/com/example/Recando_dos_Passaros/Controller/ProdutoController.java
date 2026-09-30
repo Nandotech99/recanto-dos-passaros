@@ -14,7 +14,7 @@ public class ProdutoController {
     private ProdutoService produtoService;
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    public Produto saveProd(@RequestBody ProdutoDto produtoDto){
+    public void saveProd(@RequestBody ProdutoDto produtoDto){
         return produtoService.saveProd(produtoDto);
     }
 }
