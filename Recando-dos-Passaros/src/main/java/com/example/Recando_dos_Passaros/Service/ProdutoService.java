@@ -23,12 +23,12 @@ private ProdutoProcedure produtoProcedure;
         return produtoProcedure.consulta();
     }
 
-    public void deleteProd( Produto produto){
-        produtoProcedure.delete(produto);
+    public void deleteProd( int id){
+        produtoProcedure.delete(id);
     }
 
-    public void putProd(Produto produto){
-         produtoProcedure.Uptade(produto);
+    public void putProd(int id){
+         produtoProcedure.Uptade(id);
     }
 
 }

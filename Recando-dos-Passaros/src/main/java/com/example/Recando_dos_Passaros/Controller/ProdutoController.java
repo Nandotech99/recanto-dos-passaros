@@ -40,12 +40,10 @@ public class ProdutoController {
 
     @DeleteMapping("/{id}")
     @ResponseStatus(HttpStatus.OK)
-    public void deleteProd(@PathVariable int id,ProdutoDto produtoDto){
-
+    public void deleteProd(@PathVariable int id){
         Produto produto=new Produto();
-        produto.setCodigo(produtoDto.id());
-
-        produtoService.deleteProd(produto);
+        produto.setCodigo(id);
+        produtoService.deleteProd(id);
     }
 
     @PutMapping("/{id}")
@@ -58,7 +56,7 @@ public class ProdutoController {
         produto.setData(produtoDto.data());
         produto.setRegistro(produtoDto.registro());
 
-        produtoService.putProd(produto);
+        produtoService.putProd(id);
 
     }
 }

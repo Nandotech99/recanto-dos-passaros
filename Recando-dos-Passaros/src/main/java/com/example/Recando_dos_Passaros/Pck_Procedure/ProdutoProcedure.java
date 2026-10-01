@@ -67,18 +67,20 @@ public class ProdutoProcedure {
         return lista;
     }
 
-    public void Uptade(Produto produto) {
+    public void Uptade(int id) {
         try {
             try {
-                oCall = oConectar.getConexao(login, senha).prepareCall("CALL upt_quantidade(?,?,?,?)");
-                oCall.setInt(1, produto.getCodigo());
-                oCall.setInt(2, produto.getQuantidade());
-                oCall.setString(3, produto.getData());
-                oCall.setString(4, produto.getRegistro());
+                Produto produto=new Produto();
+                if (id== produto.getCodigo()) {
+                    oCall = oConectar.getConexao(login, senha).prepareCall("CALL upt_quantidade(?,?,?,?)");
+                    oCall.setInt(1, produto.getCodigo());
+                    oCall.setInt(2, produto.getQuantidade());
+                    oCall.setString(3, produto.getData());
+                    oCall.setString(4, produto.getRegistro());
 
-                oCall.execute();
-                System.out.println("Estoque do codigo:" + produto.getCodigo() + " atualizado com sucesso!");
-
+                    oCall.execute();
+                    System.out.println("Estoque do codigo:" + produto.getCodigo() + " atualizado com sucesso!");
+                }
             } catch (SQLException e) {
                 e.printStackTrace();
             }
@@ -87,12 +89,15 @@ public class ProdutoProcedure {
         }
     }
 
-    public void delete(Produto produto) {
+    public void delete(int id) {
         try {
             try {
-                oCall = oConectar.getConexao(login, senha).prepareCall("CALL del_produto(?)");
-                oCall.setInt(1,produto.getCodigo());
-                oCall.execute();
+                Produto produto=new Produto();
+                if(produto.getCodigo()==id) {
+                    oCall = oConectar.getConexao(login, senha).prepareCall("CALL del_produto(?)");
+                    oCall.setInt(1, produto.getCodigo());
+                    oCall.execute();
+                }
             } catch (SQLException e) {
                 e.printStackTrace();
             }
