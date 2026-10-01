@@ -7,6 +7,8 @@ import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @AllArgsConstructor
 @RestController
 @RequestMapping("/recanto/produtos")
@@ -15,15 +17,48 @@ public class ProdutoController {
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    public void cadastrar(ProdutoDto produtoDto) {
-Produto produto=new Produto();
+    public void postProd(ProdutoDto produtoDto) {
 
-produto.setNome(produtoDto.nome());
-produto.setPreco(produtoDto.preco());
-produto.setQuantidade(produtoDto.quantidade());
-produto.setQuantidade_min(produtoDto.quantidadeMinima());
-produto.setRegistro(produtoDto.registro());
+        Produto produto=new Produto();
 
-        produtoService.produtoSave();
+        produto.setCodigo(produtoDto.id());
+        produto.setNome(produtoDto.nome());
+        produto.setPreco(produtoDto.preco());
+        produto.setQuantidade(produtoDto.quantidade());
+        produto.setQuantidade_min(produtoDto.quantidadeMinima());
+        produto.setData(produtoDto.data());
+        produto.setRegistro(produtoDto.registro());
+
+        produtoService.produtoSave(produto);
+    }
+
+    @GetMapping
+    @ResponseStatus(HttpStatus.OK)
+    public List<Produto> getProds(){
+        return produtoService.getProdList();
+    }
+
+    @DeleteMapping("/{id}")
+    @ResponseStatus(HttpStatus.OK)
+    public void deleteProd(@PathVariable int id,ProdutoDto produtoDto){
+
+        Produto produto=new Produto();
+        produto.setCodigo(produtoDto.id());
+
+        produtoService.deleteProd(produto);
+    }
+
+    @PutMapping("/{id}")
+    @ResponseStatus(HttpStatus.OK)
+    public void putProdEstoque(@PathVariable int id, ProdutoDto produtoDto){
+        Produto produto=new Produto();
+
+        produto.setCodigo(produtoDto.id());
+        produto.setQuantidade(produtoDto.quantidade());
+        produto.setData(produtoDto.data());
+        produto.setRegistro(produtoDto.registro());
+
+        produtoService.putProd(produto);
+
     }
 }

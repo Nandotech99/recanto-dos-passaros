@@ -6,7 +6,6 @@ import com.example.Recando_dos_Passaros.Pck_Model.Produto;
 import java.sql.CallableStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.sql.Types;
 import java.util.ArrayList;
 
 public class ProdutoProcedure {
@@ -16,7 +15,7 @@ public class ProdutoProcedure {
     private static final String login ="root";
     private static final String senha ="01";
 
-    public void Inserir(Produto model){
+    public void inserir(Produto model){
         try {
             try {
                 oCall=oConectar.getConexao(login,senha).prepareCall("CAll ins_produto(?,?,?,?,?,?,?)");
@@ -40,24 +39,24 @@ public class ProdutoProcedure {
 
 
 
-    public ArrayList<Produto> Consulta() {
+    public ArrayList<Produto> consulta() {
         ArrayList<Produto> lista = new ArrayList<>(); // Lista para guardar os produtos encontrados
         try {
             try {
                 oCall = oConectar.getConexao(login, senha).prepareCall("CALL exibir_produto()");
                 ResultSet rs = oCall.executeQuery();
                 while (rs.next()) {
-                    Produto model = new Produto();
+                    Produto produto = new Produto();
                     // Pega os dados das colunas do banco e coloca no objeto Model
-                    model.setCodigo(rs.getInt("CODIGO"));
-                    model.setNome(rs.getString("PRODUTO"));
-                    model.setQuantidade(rs.getInt("QUANTIDADE"));
-                    model.setQuantidade_min(rs.getInt("QTD_MINIMA"));
-                    model.setPreco((rs.getDouble("PRECO")));
-                    model.setData(rs.getString("DATA"));
-                    model.setRegistro(rs.getString("DESCRICAO"));
+                    produto.setCodigo(rs.getInt("CODIGO"));
+                    produto.setNome(rs.getString("PRODUTO"));
+                    produto.setQuantidade(rs.getInt("QUANTIDADE"));
+                    produto.setQuantidade_min(rs.getInt("QTD_MINIMA"));
+                    produto.setPreco((rs.getDouble("PRECO")));
+                    produto.setData(rs.getString("DATA"));
+                    produto.setRegistro(rs.getString("DESCRICAO"));
 
-                    lista.add(model); // Adiciona o produto na lista
+                    lista.add(produto); // Adiciona o produto na lista
                 }
             } catch (SQLException e) {
                 e.printStackTrace();
@@ -68,17 +67,17 @@ public class ProdutoProcedure {
         return lista;
     }
 
-    public void Uptade(Produto model) {
+    public void Uptade(Produto produto) {
         try {
             try {
                 oCall = oConectar.getConexao(login, senha).prepareCall("CALL upt_quantidade(?,?,?,?)");
-                oCall.setInt(1, model.getCodigo());
-                oCall.setInt(2, model.getQuantidade());
-                oCall.setString(3, model.getData());
-                oCall.setString(4, model.getRegistro());
+                oCall.setInt(1, produto.getCodigo());
+                oCall.setInt(2, produto.getQuantidade());
+                oCall.setString(3, produto.getData());
+                oCall.setString(4, produto.getRegistro());
 
                 oCall.execute();
-                System.out.println("Estoque do codigo:" + model.getCodigo() + " atualizado com sucesso!");
+                System.out.println("Estoque do codigo:" + produto.getCodigo() + " atualizado com sucesso!");
 
             } catch (SQLException e) {
                 e.printStackTrace();
@@ -88,17 +87,30 @@ public class ProdutoProcedure {
         }
     }
 
-    public void AtualizarPreco(Produto model) {
+    public void delete(Produto produto) {
+        try {
+            try {
+                oCall = oConectar.getConexao(login, senha).prepareCall("CALL del_produto(?)");
+                oCall.setInt(1,produto.getCodigo());
+                oCall.execute();
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        } finally {
+            oConectar.desconectar();
+        }
+    }
+    public void AtualizarPreco(Produto produto) {
         try {
             try {
                 oCall = oConectar.getConexao(login, senha).prepareCall("CALL upt_preco(?,?,?,?)");
-                oCall.setInt(1, model.getCodigo());
-                oCall.setDouble(2, model.getPreco());
-                oCall.setString(3, model.getData());
-                oCall.setString(4, model.getRegistro());
+                oCall.setInt(1, produto.getCodigo());
+                oCall.setDouble(2, produto.getPreco());
+                oCall.setString(3, produto.getData());
+                oCall.setString(4, produto.getRegistro());
 
                 oCall.execute();
-                System.out.println("Preço do codigo:" + model.getCodigo() + " atualizado com sucesso!");
+                System.out.println("Preço do codigo:" + produto.getCodigo() + " atualizado com sucesso!");
 
             } catch (SQLException e) {
                 e.printStackTrace();
