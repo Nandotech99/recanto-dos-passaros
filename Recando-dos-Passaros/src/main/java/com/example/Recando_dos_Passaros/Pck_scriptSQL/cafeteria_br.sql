@@ -8,7 +8,7 @@ CREATE TABLE venda (
 );
 
 CREATE TABLE produto (
-                         cod             INT PRIMARY KEY,
+                         id             INT PRIMARY KEY,
                          nome            VARCHAR(50) NOT NULL,
                          quantidade      INT NOT NULL,
                          quantidade_min  INT NOT NULL,
@@ -51,8 +51,8 @@ END //
 
 DELIMITER //
 CREATE PROCEDURE add_item_venda(
-    IN p_cod_venda 		INT,
-    IN p_cod_produto 	INT,
+    IN p_id_venda 		INT,
+    IN p_id_produto 	INT,
     IN p_quantidade 	INT
 )
 BEGIN
