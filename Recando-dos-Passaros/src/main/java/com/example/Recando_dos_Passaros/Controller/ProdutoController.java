@@ -17,7 +17,7 @@ public class ProdutoController {
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    public void postProd(ProdutoDto produtoDto) {
+    public void postProd(@RequestBody ProdutoDto produtoDto) {
 
         Produto produto=new Produto();
 

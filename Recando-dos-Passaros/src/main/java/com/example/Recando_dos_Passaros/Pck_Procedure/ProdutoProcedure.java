@@ -2,30 +2,31 @@ package com.example.Recando_dos_Passaros.Pck_Procedure;
 
 import com.example.Recando_dos_Passaros.Pck_DAO.DAO;
 import com.example.Recando_dos_Passaros.Pck_Model.Produto;
+import org.springframework.stereotype.Repository;
 
 import java.sql.CallableStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
-
+@Repository
 public class ProdutoProcedure {
 
     CallableStatement oCall;
     DAO oConectar = new DAO();
-    private static final String login ="root";
-    private static final String senha ="01";
+    private static final String login ="nando";
+    private static final String senha ="12";
 
-    public void inserir(Produto model){
+    public void inserir(Produto produto){
         try {
             try {
                 oCall=oConectar.getConexao(login,senha).prepareCall("CAll ins_produto(?,?,?,?,?,?,?)");
-                oCall.setInt(1,model.getCodigo());
-                oCall.setString(2,model.getNome());
-                oCall.setInt(3,model.getQuantidade());
-                oCall.setInt(4,model.getQuantidade_min());
-                oCall.setDouble(5,model.getPreco());
-                oCall.setString(6,model.getData());
-                oCall.setString(7, model.getRegistro());
+                oCall.setInt(1,produto.getCodigo());
+                oCall.setString(2,produto.getNome());
+                oCall.setInt(3,produto.getQuantidade());
+                oCall.setInt(4,produto.getQuantidade_min());
+                oCall.setDouble(5,produto.getPreco());
+                oCall.setString(6,produto.getData());
+                oCall.setString(7, produto.getRegistro());
 
                 oCall.execute();
             } catch (SQLException e){
