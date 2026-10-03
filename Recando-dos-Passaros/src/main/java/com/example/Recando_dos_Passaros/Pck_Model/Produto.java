@@ -10,16 +10,6 @@ import lombok.Setter;
 @AllArgsConstructor
 @NoArgsConstructor
 public class Produto {
-
-    // TABELA - PRODUTO
-    private int codigo;
-    private String nome;
-    private int quantidade;
-    private int quantidade_min;
-    private double preco;
-    private String data;
-    private String registro;
-
         /*
         A MODEL CRIA OS SET'S E GET'S PARA MANIPULAR OS DADOS
         SE QUISERMOS DEFINI-LOS(SET) OU PEGA-LAS E USA-LOS(GET)
@@ -32,4 +22,12 @@ public class Produto {
                 retornam o valor, ou seja, eles devolvem
                 o valor do set
          */
+        // TABELA - PRODUTO
+        private int codigo;
+    private String nome;
+    private int quantidade;
+    private int quantidade_min;
+    private double preco;
+    private String data;
+    private String registro;
 }
