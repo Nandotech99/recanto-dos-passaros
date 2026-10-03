@@ -1,6 +1,5 @@
 package com.example.Recando_dos_Passaros.Dto;
 
-import java.time.LocalDate;
 
 public record ProdutoDto(int id,
                          String nome,

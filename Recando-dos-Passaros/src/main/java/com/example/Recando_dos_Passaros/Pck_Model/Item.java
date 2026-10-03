@@ -11,11 +11,11 @@ import lombok.Setter;
 @Getter
 public class Item {
     //TABELA - ITEM
-    private int cod_item;
-    private int cod_vendaFK;
-    private int cod_produtoFK;
+    private Integer cod_item;
+    private Integer cod_vendaFK;
+    private Integer cod_produtoFK;
     private String produtoFK;
     private double precoFK;
-    private int quantidadeFK;
+    private Integer quantidadeFK;
 
 }

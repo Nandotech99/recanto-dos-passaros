@@ -4,6 +4,7 @@ import com.example.Recando_dos_Passaros.Pck_DAO.DAO;
 import com.example.Recando_dos_Passaros.Pck_Model.Item;
 import com.example.Recando_dos_Passaros.Pck_Model.Produto;
 import com.example.Recando_dos_Passaros.Pck_Model.Venda;
+import org.springframework.stereotype.Repository;
 
 
 import java.sql.CallableStatement;
@@ -11,14 +12,14 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Types;
 import java.util.ArrayList;
-
+@Repository
 public class VendaProcedure {
     CallableStatement oCall;
     DAO oConectar = new DAO();
-    private static final String login ="root";
-    private static final String senha ="01";
+    private static final String login ="nando";
+    private static final String senha ="12";
 
-    public ArrayList<Venda> Venda(){
+    public ArrayList<Venda> get(){
         ArrayList<Venda> lista = new ArrayList<>();
         try {
             try {
@@ -40,12 +41,13 @@ public class VendaProcedure {
         }
         return lista;
     }
-    public void RegistrarVenda(Item item){
+    public void postItem(Item item){
         try {
             try {
-                oCall = oConectar.getConexao(login, senha).prepareCall("CALL ins_venda(?,?)");
-                oCall.setInt(1, item.getCod_item());
-                oCall.setInt(2, item.getQuantidadeFK());
+                oCall = oConectar.getConexao(login, senha).prepareCall("CALL add_item_venda(?,?,?)");
+                oCall.setInt(1,item.getCod_vendaFK());
+                oCall.setInt(2, item.getCod_produtoFK());
+                oCall.setInt(3, item.getQuantidadeFK());
 
                 oCall.execute();
             } catch (SQLException e) {
@@ -56,7 +58,7 @@ public class VendaProcedure {
         }
     }
 
-    public int iniciarVenda() {
+    public int post() {
         int idGerado = -1;
         try {
             oCall = oConectar.getConexao(login, senha).prepareCall("{CALL abrir_venda(?)}");

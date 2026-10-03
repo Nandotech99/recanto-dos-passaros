@@ -41,14 +41,12 @@ public class ProdutoController {
     @DeleteMapping("/{id}")
     @ResponseStatus(HttpStatus.OK)
     public void deleteProd(@PathVariable int id){
-        Produto produto=new Produto();
-        produto.setCodigo(id);
         produtoService.deleteProd(id);
     }
 
     @PutMapping("/{id}")
     @ResponseStatus(HttpStatus.OK)
-    public void putProdEstoque(@PathVariable int id, ProdutoDto produtoDto){
+    public void putProdEstoque(@PathVariable int id, @RequestBody ProdutoDto produtoDto){
         Produto produto=new Produto();
 
         produto.setCodigo(produtoDto.id());
@@ -56,7 +54,20 @@ public class ProdutoController {
         produto.setData(produtoDto.data());
         produto.setRegistro(produtoDto.registro());
 
-        produtoService.putProd(id);
-
+        produtoService.putProd(id,produto);
     }
+    @PatchMapping ("/{id}")
+    @ResponseStatus(HttpStatus.OK)
+    public  void putPreco (@PathVariable int id, @RequestBody ProdutoDto produtoDtoUptdPreco){
+    Produto produto =new Produto();
+
+    produto.setPreco(produtoDtoUptdPreco.preco());
+    produto.setCodigo(produtoDtoUptdPreco.id());
+    produto.setData(produtoDtoUptdPreco.data());
+    produto.setRegistro(produtoDtoUptdPreco.registro());
+
+    produtoService.putProdPreco(id,produto);
+    }
+
+
 }

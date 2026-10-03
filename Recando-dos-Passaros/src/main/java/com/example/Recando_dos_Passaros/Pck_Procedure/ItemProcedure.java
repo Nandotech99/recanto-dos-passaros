@@ -4,19 +4,20 @@ import com.example.Recando_dos_Passaros.Pck_DAO.DAO;
 import com.example.Recando_dos_Passaros.Pck_Model.Item;
 import com.example.Recando_dos_Passaros.Pck_Model.Produto;
 import com.example.Recando_dos_Passaros.Service.ItemService;
+import org.springframework.stereotype.Repository;
 
 import java.sql.CallableStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
-
+@Repository
 public class ItemProcedure {
     CallableStatement oCall;
     DAO oConectar = new DAO();
-    private static final String login ="root";
-    private static final String senha ="01";
+    private static final String login ="nando";
+    private static final String senha ="12";
 
-    public ArrayList<Item> Item(int codVenda){
+    public ArrayList<Item> get(int codVenda){
         ArrayList<Item> lista = new ArrayList<>();
         try {
             try {
@@ -42,7 +43,7 @@ public class ItemProcedure {
         }
         return lista;
     }
-    public void adicionarItem(int codVenda, int codProd, int qtd) {
+    public void post(int codVenda, int codProd, int qtd) {
         try {
             oCall = oConectar.getConexao(login, senha).prepareCall("CALL add_item_venda(?,?,?)");
             oCall.setInt(1, codVenda);

@@ -52,8 +52,8 @@ public class ProdutoProcedure {
                     produto.setCodigo(rs.getInt("CODIGO"));
                     produto.setNome(rs.getString("PRODUTO"));
                     produto.setQuantidade(rs.getInt("QUANTIDADE"));
-                    produto.setQuantidade_min(rs.getInt("QTD_MINIMA"));
-                    produto.setPreco((rs.getDouble("PRECO")));
+                    produto.setQuantidade_min(rs.getInt("QUANTIDADE MINIMA"));
+                    produto.setPreco((rs.getDouble("PREÇO")));
                     produto.setData(rs.getString("DATA"));
                     produto.setRegistro(rs.getString("DESCRICAO"));
 
@@ -68,35 +68,37 @@ public class ProdutoProcedure {
         return lista;
     }
 
-    public void Uptade(int id) {
+    public void Uptade(int id,Produto produto) {
         try {
-            try {
-                Produto produto=new Produto();
-                if (id== produto.getCodigo()) {
-                    oCall = oConectar.getConexao(login, senha).prepareCall("CALL upt_quantidade(?,?,?,?)");
-                    oCall.setInt(1, produto.getCodigo());
-                    oCall.setInt(2, produto.getQuantidade());
-                    oCall.setString(3, produto.getData());
-                    oCall.setString(4, produto.getRegistro());
+                try {
+                    if(produto.getCodigo()==id) {
+                        oCall = oConectar.getConexao(login, senha).prepareCall("CALL upt_quantidade(?,?,?,?)");
+                        oCall.setInt(1, produto.getCodigo());
+                        oCall.setInt(2, produto.getQuantidade());
+                        oCall.setString(3, produto.getData());
+                        oCall.setString(4, produto.getRegistro());
 
-                    oCall.execute();
-                    System.out.println("Estoque do codigo:" + produto.getCodigo() + " atualizado com sucesso!");
+                        oCall.execute();
+                        System.out.println("Estoque do codigo:" + produto.getCodigo() + " atualizado com sucesso!");
+                    }
+                } catch (SQLException e) {
+                    e.printStackTrace();
                 }
-            } catch (SQLException e) {
-                e.printStackTrace();
+            } finally {
+                oConectar.desconectar();
             }
-        } finally {
-            oConectar.desconectar();
-        }
     }
 
     public void delete(int id) {
         try {
             try {
                 Produto produto=new Produto();
+
                 if(produto.getCodigo()==id) {
+                    oCall = oConectar.getConexao(login, senha).prepareCall("CALL upt_preco(?,?,?,?)");
+
                     oCall = oConectar.getConexao(login, senha).prepareCall("CALL del_produto(?)");
-                    oCall.setInt(1, produto.getCodigo());
+                    oCall.setInt(1, id);
                     oCall.execute();
                 }
             } catch (SQLException e) {
@@ -105,18 +107,19 @@ public class ProdutoProcedure {
         } finally {
             oConectar.desconectar();
         }
-    }
-    public void AtualizarPreco(Produto produto) {
+
+        }
+    public void AtualizarPreco(int id,Produto produto) {
         try {
             try {
-                oCall = oConectar.getConexao(login, senha).prepareCall("CALL upt_preco(?,?,?,?)");
-                oCall.setInt(1, produto.getCodigo());
-                oCall.setDouble(2, produto.getPreco());
-                oCall.setString(3, produto.getData());
-                oCall.setString(4, produto.getRegistro());
+                    oCall = oConectar.getConexao(login, senha).prepareCall("CALL upt_preco(?,?,?,?)");
+                    oCall.setInt(1, id);
+                    oCall.setDouble(2, produto.getPreco());
+                    oCall.setString(3, produto.getData());
+                    oCall.setString(4, produto.getRegistro());
 
-                oCall.execute();
-                System.out.println("Preço do codigo:" + produto.getCodigo() + " atualizado com sucesso!");
+                    oCall.execute();
+                    System.out.println("Preço do codigo:" + produto.getCodigo() + " atualizado com sucesso!");
 
             } catch (SQLException e) {
                 e.printStackTrace();
