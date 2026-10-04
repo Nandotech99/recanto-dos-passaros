@@ -1,8 +1,8 @@
-package com.example.Recando_dos_Passaros.Service;
+package com.example.Recando_dos_Passaros.Pck_Main.Service;
 
-import com.example.Recando_dos_Passaros.Pck_Model.Item;
-import com.example.Recando_dos_Passaros.Pck_Model.Venda;
-import com.example.Recando_dos_Passaros.Pck_Procedure.VendaProcedure;
+import com.example.Recando_dos_Passaros.Pck_Main.Pck_Model.Item;
+import com.example.Recando_dos_Passaros.Pck_Main.Pck_Model.Venda;
+import com.example.Recando_dos_Passaros.Pck_Main.Pck_Procedure.VendaProcedure;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 

@@ -1,4 +1,4 @@
-package com.example.Recando_dos_Passaros.Pck_Model;
+package com.example.Recando_dos_Passaros.Pck_Main.Pck_Model;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;

@@ -1,7 +1,7 @@
-package com.example.Recando_dos_Passaros.Pck_Procedure;
+package com.example.Recando_dos_Passaros.Pck_Main.Pck_Procedure;
 
-import com.example.Recando_dos_Passaros.Pck_DAO.DAO;
-import com.example.Recando_dos_Passaros.Pck_Model.Produto;
+import com.example.Recando_dos_Passaros.Pck_Main.Pck_DAO.DAO;
+import com.example.Recando_dos_Passaros.Pck_Main.Pck_Model.Produto;
 import org.springframework.stereotype.Repository;
 
 import java.sql.CallableStatement;
@@ -19,14 +19,13 @@ public class ProdutoProcedure {
     public void inserir(Produto produto){
         try {
             try {
-                oCall=oConectar.getConexao(login,senha).prepareCall("CAll ins_produto(?,?,?,?,?,?,?)");
-                oCall.setInt(1,produto.getCodigo());
-                oCall.setString(2,produto.getNome());
-                oCall.setInt(3,produto.getQuantidade());
-                oCall.setInt(4,produto.getQuantidade_min());
-                oCall.setDouble(5,produto.getPreco());
-                oCall.setString(6,produto.getData());
-                oCall.setString(7, produto.getRegistro());
+                oCall=oConectar.getConexao(login,senha).prepareCall("CAll ins_produto(?,?,?,?,?,?)");
+                oCall.setString(1,produto.getNome());
+                oCall.setInt(2,produto.getQuantidade());
+                oCall.setInt(3,produto.getQuantidade_min());
+                oCall.setDouble(4,produto.getPreco());
+                oCall.setString(5,produto.getData());
+                oCall.setString(6, produto.getRegistro());
 
                 oCall.execute();
             } catch (SQLException e){
@@ -71,16 +70,13 @@ public class ProdutoProcedure {
     public void Uptade(int id,Produto produto) {
         try {
                 try {
-                    if(produto.getCodigo()==id) {
-                        oCall = oConectar.getConexao(login, senha).prepareCall("CALL upt_quantidade(?,?,?,?)");
-                        oCall.setInt(1, produto.getCodigo());
-                        oCall.setInt(2, produto.getQuantidade());
-                        oCall.setString(3, produto.getData());
-                        oCall.setString(4, produto.getRegistro());
 
+                        oCall = oConectar.getConexao(login, senha).prepareCall("CALL upt_quantidade(?,?)");
+                        oCall.setInt(1, id);
+                        oCall.setInt(2, produto.getQuantidade());
                         oCall.execute();
                         System.out.println("Estoque do codigo:" + produto.getCodigo() + " atualizado com sucesso!");
-                    }
+
                 } catch (SQLException e) {
                     e.printStackTrace();
                 }
@@ -92,15 +88,10 @@ public class ProdutoProcedure {
     public void delete(int id) {
         try {
             try {
-                Produto produto=new Produto();
-
-                if(produto.getCodigo()==id) {
-                    oCall = oConectar.getConexao(login, senha).prepareCall("CALL upt_preco(?,?,?,?)");
-
                     oCall = oConectar.getConexao(login, senha).prepareCall("CALL del_produto(?)");
                     oCall.setInt(1, id);
                     oCall.execute();
-                }
+
             } catch (SQLException e) {
                 e.printStackTrace();
             }

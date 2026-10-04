@@ -1,10 +1,10 @@
-package com.example.Recando_dos_Passaros.Controller;
+package com.example.Recando_dos_Passaros.Pck_Main.Controller;
 
-import com.example.Recando_dos_Passaros.Dto.ItemDto;
-import com.example.Recando_dos_Passaros.Pck_Model.Item;
-import com.example.Recando_dos_Passaros.Pck_Model.Venda;
-import com.example.Recando_dos_Passaros.Service.ItemService;
-import com.example.Recando_dos_Passaros.Service.VendaService;
+import com.example.Recando_dos_Passaros.Pck_Main.Dto.ItemDto;
+import com.example.Recando_dos_Passaros.Pck_Main.Pck_Model.Item;
+import com.example.Recando_dos_Passaros.Pck_Main.Pck_Model.Venda;
+import com.example.Recando_dos_Passaros.Pck_Main.Service.ItemService;
+import com.example.Recando_dos_Passaros.Pck_Main.Service.VendaService;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;

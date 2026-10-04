@@ -1,9 +1,8 @@
-package com.example.Recando_dos_Passaros.Pck_Procedure;
+package com.example.Recando_dos_Passaros.Pck_Main.Pck_Procedure;
 
-import com.example.Recando_dos_Passaros.Pck_DAO.DAO;
-import com.example.Recando_dos_Passaros.Pck_Model.Item;
-import com.example.Recando_dos_Passaros.Pck_Model.Produto;
-import com.example.Recando_dos_Passaros.Pck_Model.Venda;
+import com.example.Recando_dos_Passaros.Pck_Main.Pck_DAO.DAO;
+import com.example.Recando_dos_Passaros.Pck_Main.Pck_Model.Item;
+import com.example.Recando_dos_Passaros.Pck_Main.Pck_Model.Venda;
 import org.springframework.stereotype.Repository;
 
 

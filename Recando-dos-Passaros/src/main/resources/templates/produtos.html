@@ -1,0 +1,239 @@
+<!DOCTYPE html>
+<html lang="pt-BR" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Recanto dos Pássaros - Produtos e Serviços</title>
+    <link rel="stylesheet" th:href="@{/style.css}">
+</head>
+<body class="app-body">
+
+<!-- Container Principal do Painel -->
+<div class="app-layout">
+
+    <!-- Sidebar (Menu Lateral) -->
+    <aside class="sidebar">
+        <div class="sidebar-brand">
+            <img th:src="@{/Pck_img/Recanto-logo.jpg}" alt="Logo Recanto dos Pássaros" class="sidebar-logo">
+            <span class="sidebar-brand-name">Recanto dos Pássaros</span>
+        </div>
+
+        <nav class="sidebar-nav">
+            <div class="nav-section">
+                <span class="nav-section-title">Cadastro</span>
+                <ul class="nav-list">
+                    <li><a href="#" class="nav-item active">Produtos</a></li>
+                    <li><a href="#" class="nav-item">Estoque</a></li>
+                    <li><a href="#" class="nav-item">Fornecedor</a></li>
+                </ul>
+            </div>
+
+            <div class="nav-section">
+                <span class="nav-section-title">Venda</span>
+                <ul class="nav-list">
+                    <li><a href="#" class="nav-item">Ponto de Venda</a></li>
+                    <li><a href="#" class="nav-item">Fechamento de Caixa</a></li>
+                </ul>
+            </div>
+
+            <div class="nav-section">
+                <span class="nav-section-title">Dashboard</span>
+                <ul class="nav-list">
+                    <li><a href="#" class="nav-item">Início</a></li>
+                </ul>
+            </div>
+        </nav>
+    </aside>
+
+    <!-- Área de Conteúdo Principal -->
+    <main class="main-content">
+
+        <!-- Barra Superior (Topbar) -->
+        <header class="topbar">
+            <div class="topbar-all">
+                <button class="menu-toggle-btn" aria-label="Alternar Menu">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 12h18M3 6h18M3 18h18"/></svg>
+                </button>
+            </div>
+        </header>
+
+        <!-- Conteúdo da Página -->
+        <div class="content-body">
+
+            <!-- Cabeçalho da Seção -->
+            <div class="section-header-bar">
+                <div class="title-with-help">
+                    <h1>Produtos/Serviços</h1>
+                </div>
+                <div class="action-buttons">
+                    <input type="checkbox" id="toggle-modal" style="display: none;">
+                    <label for="toggle-modal" class="btn-primary-action" style="cursor: pointer; display: inline-block; padding: 10px 16px;">
+                        + Novo item
+                    </label>
+                </div>
+            </div>
+
+            <p class="section-description">Gerencie seu catálogo de produtos e serviços para facilitar os lançamentos</p>
+
+            <!-- Cards de Indicadores (KPIs dinâmicos via Thymeleaf) -->
+            <div class="kpi-cards-grid">
+                <div class="kpi-card">
+                    <span class="kpi-icon">📦</span>
+                    <span class="kpi-label">Total:</span>
+                    <span class="kpi-value" th:text="${totalItens}">0</span>
+                </div>
+                <div class="kpi-card">
+                    <span class="kpi-icon">💲</span>
+                    <span class="kpi-label">Valor em estoque:</span>
+                    <span class="kpi-value" th:text="${'R$ ' + #numbers.formatDecimal(valorTotalEstoque, 1, 'COMMA', 2, 'POINT')}">R$ 0,00</span>
+                </div>
+                <div class="kpi-card">
+                    <span class="kpi-icon">🛍️</span>
+                    <span class="kpi-label">Produtos:</span>
+                    <span class="kpi-value" th:text="${totalItens}">0</span>
+                </div>
+            </div>
+
+            <!-- Tabela de Produtos/Serviços -->
+            <div class="table-container">
+                <table class="data-table">
+                    <thead>
+                    <tr>
+                        <th>NOME</th>
+                        <th>TIPO</th>
+                        <th>PREÇO (ATUALIZAR)</th>
+                        <th>VALOR EM ESTOQUE</th>
+                        <th>CATEGORIA</th>
+                        <th>VALIDADE</th>
+                        <th>ESTOQUE (ATUALIZAR)</th>
+                        <th>STATUS</th>
+                        <th>AÇÕES</th>
+                    </tr>
+                    </thead>
+                    <tbody id="productTableBody">
+
+                    <!-- Estado Vazio caso não haja produtos -->
+                    <tr th:if="${#lists.isEmpty(produtos)}">
+                        <td colspan="10" class="empty-state-cell">
+                            <div class="empty-state-content">
+                                <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M21 16.5c0 .38-.21.71-.53.88l-7.9 4.44c-.16.09-.34.14-.57.14s-.41-.05-.57-.14l-7.9-4.44A1.002 1.002 0 0 1 3 16.5v-9c0-.38.21-.71.53-.88l7.9-4.44c.16-.09.34-.14.57-.14s.41.05.57.14l7.9 4.44c.32.17.53.5.53.88v9zM12 4.15L6.04 7.5 12 10.85l5.96-3.35L12 4.15z"/></svg>
+                                <p class="empty-title">Nenhum produto/serviço cadastrado</p>
+                                <p class="empty-subtitle">Comece criando seu primeiro produto ou serviço para facilitar os lançamentos.</p>
+                            </div>
+                        </td>
+                    </tr>
+
+                    <!-- Loop dinâmico iterando sobre a lista de produtos do Banco -->
+                    <tr th:each="p : ${produtos}">
+                        <td><strong th:text="${p.nome}">Nome</strong></td>
+                        <td><span class="badge-type produto">Produto</span></td>
+
+                        <!-- Coluna para atualizar o Preço rapidamente mapeando para /atualizar-preco/{id} -->
+                        <td>
+                            <form th:action="@{/recanto/produtos/atualizar-preco/{id}(id=${p.codigo})}" method="post" style="display: flex; gap: 4px; align-items: center;">
+                                <input type="number" step="0.01" name="preco" th:value="${p.preco}" style="width: 80px; padding: 4px;" required />
+                                <button type="submit" title="Salvar Novo Preço" style="background: none; border: none; cursor: pointer;">💾</button>
+                            </form>
+                        </td>
+
+                        <td>-</td>
+                        <td th:text="${'R$ ' + (p.preco * p.quantidade)}">R$ 0,00</td>
+                        <td>Outros</td>
+                        <td th:text="${p.data}">-</td>
+
+                        <!-- Coluna para atualizar o Estoque rapidamente mapeando para /atualizar/{id} -->
+                        <td>
+                            <form th:action="@{/recanto/produtos/atualizar/{id}(id=${p.codigo})}" method="post" style="display: flex; gap: 4px; align-items: center;">
+                                <input type="number" name="quantidade" th:value="${p.quantidade}" style="width: 60px; padding: 4px;" required />
+                                <button type="submit" title="Salvar Novo Estoque" style="background: none; border: none; cursor: pointer;">💾</button>
+                            </form>
+                        </td>
+
+                        <td><span class="badge-status ativo">Ativo</span></td>
+
+                        <td style="display: flex; gap: 8px; align-items: center;">
+                            <!-- Formulário de Exclusão -->
+                            <form th:action="@{/recanto/produtos/deletar}" method="post" style="display:inline;">
+                                <input type="hidden" name="id" th:value="${p.codigo}" />
+                                <button type="submit" class="btn-delete" title="Excluir" style="background:none; border:none; cursor:pointer;">🗑️</button>
+                            </form>
+                        </td>
+                    </tr>
+
+                    </tbody>
+                </table>
+            </div>
+
+        </div>
+    </main>
+</div>
+
+<!-- Modal de Cadastro / Novo Item -->
+<div id="productModal" class="modal-overlay">
+    <div class="modal-card">
+        <div class="modal-header">
+            <h2>Novo Produto ou Serviço</h2>
+            <label for="toggle-modal" class="close-modal-btn" style="cursor: pointer; font-size: 24px;">&times;</label>
+        </div>
+
+        <form th:action="@{/recanto/produtos}" th:object="${produtoDto}" method="post" id="productForm" class="modal-form">
+            <div class="form-row">
+                <div class="input-group">
+                    <label for="modalName">Nome do Item *</label>
+                    <input type="text" id="modalName" name="nome" required placeholder="Ex: Café Especial">
+                </div>
+                <div class="input-group">
+                    <label for="modalType">Tipo *</label>
+                    <select id="modalType" name="tipo" required>
+                        <option value="Produto">Produto</option>
+                        <option value="Serviço">Serviço</option>
+                    </select>
+                </div>
+            </div>
+
+            <div class="form-row">
+                <div class="input-group">
+                    <label for="modalPrice">Preço de Venda (R$) *</label>
+                    <input type="number" step="0.01" id="modalPrice" name="preco" required placeholder="0,00">
+                </div>
+                <div class="input-group">
+                    <label for="modalStock">Quantidade em Estoque</label>
+                    <input type="number" id="modalStock" name="quantidade" value="0" placeholder="0">
+                </div>
+            </div>
+
+            <div class="form-row">
+                <div class="input-group">
+                    <label for="modalMinStock">Quantidade Mínima</label>
+                    <input type="number" id="modalMinStock" name="quantidadeMinima" value="0" placeholder="0">
+                </div>
+                <div class="input-group">
+                    <label for="modalValidity">Validade</label>
+                    <input type="date" id="modalValidity" name="data">
+                </div>
+            </div>
+
+            <div class="modal-actions">
+                <label for="toggle-modal" class="btn-cancel" style="cursor: pointer; text-align: center; padding: 10px;">Cancelar</label>
+                <button type="submit" class="btn-save">Salvar Item</button>
+            </div>
+        </form>
+    </div>
+</div>
+
+<!-- Estilo Puro CSS para controlar a abertura do modal -->
+<style>
+    #toggle-modal:checked ~ .modal-overlay,
+    #toggle-modal:checked ~ * .modal-overlay,
+    body:has(#toggle-modal:checked) #productModal {
+        display: flex !important;
+        opacity: 1 !important;
+        visibility: visible !important;
+    }
+    #productModal {
+        display: none;
+    }
+</style>
+
+</body>
+</html>
