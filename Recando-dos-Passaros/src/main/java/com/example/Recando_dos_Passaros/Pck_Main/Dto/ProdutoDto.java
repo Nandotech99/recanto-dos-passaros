@@ -1,7 +1,7 @@
 package com.example.Recando_dos_Passaros.Pck_Main.Dto;
 
 
-public record ProdutoDto(int id,
+public record ProdutoDto(
                          String nome,
                          int quantidade,
                          int quantidadeMinima,

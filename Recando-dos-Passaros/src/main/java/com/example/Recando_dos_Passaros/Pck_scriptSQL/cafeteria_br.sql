@@ -8,13 +8,12 @@ CREATE TABLE venda (
 );
 
 CREATE TABLE produto (
-                         id             INT PRIMARY KEY,
+                         id             INT PRIMARY KEY  AUTO_INCREMENT,
                          nome            VARCHAR(50) NOT NULL,
                          quantidade      INT NOT NULL,
                          quantidade_min  INT NOT NULL,
                          preco           DECIMAL(10,2) NOT NULL,
                          data            DATE NOT NULL,
-                         registro        VARCHAR(100)
 );
 
 CREATE TABLE item (
@@ -25,7 +24,7 @@ CREATE TABLE item (
                       preco           DECIMAL(10,2) NOT NULL,
                       quantidade      INT NOT NULL,
                       FOREIGN KEY (cod_venda) REFERENCES venda (cod_venda),
-                      FOREIGN KEY (cod_produto) REFERENCES produto (cod)
+                      FOREIGN KEY (cod_produto) REFERENCES produto (id)
 );
 
 ---
@@ -60,7 +59,7 @@ BEGIN
     DECLARE d_nome      VARCHAR(50);
     DECLARE d_subtotal  DECIMAL(10,2);
 
-SELECT nome, preco INTO d_nome, d_preco FROM produto WHERE cod = p_cod_produto;
+SELECT nome, preco INTO d_nome, d_preco FROM produto WHERE id = p_cod_produto;
 
 SET d_subtotal = soma_subtotal(p_cod_produto, p_quantidade);
 
@@ -81,7 +80,7 @@ CREATE TRIGGER baixa_estoque
 BEGIN
     UPDATE produto
     SET quantidade = quantidade - NEW.quantidade
-    WHERE cod = NEW.cod_produto;
+    WHERE id = NEW.cod_produto;
 END //
 DELIMITER ;
 
@@ -116,26 +115,24 @@ BEGIN
 SELECT cod AS CODIGO,
        nome AS PRODUTO,
        quantidade AS QUANTIDADE,
-       quantidade_min AS QTD_MINIMA,
+       quantidade_min AS QUANTIDADE_MIN,
        preco AS PRECO,
-       DATE_FORMAT(data, '%d/%m/%Y') AS DATA,
-       registro AS DESCRICAO
+       DATE_FORMAT(data, '%d/%m/%Y') AS DATA
+
 FROM produto;
 END //
 
 DELIMITER //
 CREATE PROCEDURE ins_produto(
-    IN p_cod INT,
     IN p_nome VARCHAR(50),
     IN p_quantidade INT,
     IN p_quantidade_min INT,
     IN p_preco DECIMAL(5,2),
     IN p_data VARCHAR(10),
-    IN p_registro VARCHAR(100)
 )
 BEGIN
-INSERT INTO produto(cod, nome, quantidade, quantidade_min, preco, data, registro)
-VALUES(p_cod, p_nome, p_quantidade, p_quantidade_min, p_preco, STR_TO_DATE(p_data, '%d/%m/%Y'), p_registro);
+INSERT INTO produto(nome, quantidade, quantidade_min, preco, data)
+VALUES(p_nome, p_quantidade, p_quantidade_min, p_preco, STR_TO_DATE(p_data, '%d/%m/%Y'));
 END //
 
 DELIMITER //
@@ -147,8 +144,7 @@ BEGIN
 UPDATE produto
 SET quantidade = p_quantidade,
     data = STR_TO_DATE(p_data, '%d/%m/%Y'),
-    registro = p_registro
-WHERE cod = p_cod;
+WHERE id = p_cod;
 END //
 
 DELIMITER //
@@ -162,15 +158,14 @@ BEGIN
 UPDATE produto
 set preco = p_preco,
     data = str_to_date(p_data,'%d/%m/%Y'),
-    registro = p_registro
-WHERE cod = p_cod;
+WHERE id = p_cod;
 END //
 
 DELIMITER //
 CREATE PROCEDURE del_produto(IN p_cod INT)
 BEGIN
 DELETE FROM item WHERE cod_produto = p_cod;
-DELETE FROM produto WHERE cod = p_cod;
+DELETE FROM produto WHERE id = p_cod;
 END //
 
 -- 5. SEGURANÇA E TESTES

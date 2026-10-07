@@ -12,8 +12,8 @@ import java.util.ArrayList;
 public class ItemProcedure {
     CallableStatement oCall;
     DAO oConectar = new DAO();
-    private static final String login ="nando";
-    private static final String senha ="12";
+    private static final String login ="root";
+    private static final String senha ="";
 
     public ArrayList<Item> get(int codVenda){
         ArrayList<Item> lista = new ArrayList<>();

@@ -33,7 +33,7 @@ public class ProdutoController {
         model.addAttribute("totalItens", totalItens);
         model.addAttribute("valorTotalEstoque", valorTotalEstoque);
         model.addAttribute("totalProdutos", totalProdutos);
-        model.addAttribute("produtoDto", new ProdutoDto(0, "", 0, 0, 0.0, "", ""));
+        model.addAttribute("produtoDto", new ProdutoDto("", 0, 0, 0.0, "", ""));
         return "produtos";
     }
 
@@ -44,7 +44,9 @@ public class ProdutoController {
             @RequestParam("quantidadeMinima") int quantidadeMinima,
             @RequestParam("preco") double preco,
             @RequestParam("data") String data) {
+
         Produto produto = new Produto();
+
         produto.setNome(nome);
         produto.setQuantidade(quantidade);
         produto.setQuantidade_min(quantidadeMinima);

@@ -102,19 +102,17 @@
                         <th>NOME</th>
                         <th>TIPO</th>
                         <th>PREÇO (ATUALIZAR)</th>
-                        <th>VALOR EM ESTOQUE</th>
-                        <th>CATEGORIA</th>
                         <th>VALIDADE</th>
                         <th>ESTOQUE (ATUALIZAR)</th>
                         <th>STATUS</th>
-                        <th>AÇÕES</th>
+                        <th>EXCLUIR</th>
                     </tr>
                     </thead>
                     <tbody id="productTableBody">
 
                     <!-- Estado Vazio caso não haja produtos -->
                     <tr th:if="${#lists.isEmpty(produtos)}">
-                        <td colspan="10" class="empty-state-cell">
+                        <td colspan="7" class="empty-state-cell">
                             <div class="empty-state-content">
                                 <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M21 16.5c0 .38-.21.71-.53.88l-7.9 4.44c-.16.09-.34.14-.57.14s-.41-.05-.57-.14l-7.9-4.44A1.002 1.002 0 0 1 3 16.5v-9c0-.38.21-.71.53-.88l7.9-4.44c.16-.09.34-.14.57-.14s.41.05.57.14l7.9 4.44c.32.17.53.5.53.88v9zM12 4.15L6.04 7.5 12 10.85l5.96-3.35L12 4.15z"/></svg>
                                 <p class="empty-title">Nenhum produto/serviço cadastrado</p>
@@ -125,10 +123,13 @@
 
                     <!-- Loop dinâmico iterando sobre a lista de produtos do Banco -->
                     <tr th:each="p : ${produtos}">
+                        <!-- 1. NOME -->
                         <td><strong th:text="${p.nome}">Nome</strong></td>
+
+                        <!-- 2. TIPO -->
                         <td><span class="badge-type produto">Produto</span></td>
 
-                        <!-- Coluna para atualizar o Preço rapidamente mapeando para /atualizar-preco/{id} -->
+                        <!-- 3. PREÇO (ATUALIZAR) -->
                         <td>
                             <form th:action="@{/recanto/produtos/atualizar-preco/{id}(id=${p.codigo})}" method="post" style="display: flex; gap: 4px; align-items: center;">
                                 <input type="number" step="0.01" name="preco" th:value="${p.preco}" style="width: 80px; padding: 4px;" required />
@@ -136,12 +137,10 @@
                             </form>
                         </td>
 
-                        <td>-</td>
-                        <td th:text="${'R$ ' + (p.preco * p.quantidade)}">R$ 0,00</td>
-                        <td>Outros</td>
+                        <!-- 4. VALIDADE -->
                         <td th:text="${p.data}">-</td>
 
-                        <!-- Coluna para atualizar o Estoque rapidamente mapeando para /atualizar/{id} -->
+                        <!-- 5. ESTOQUE (ATUALIZAR) -->
                         <td>
                             <form th:action="@{/recanto/produtos/atualizar/{id}(id=${p.codigo})}" method="post" style="display: flex; gap: 4px; align-items: center;">
                                 <input type="number" name="quantidade" th:value="${p.quantidade}" style="width: 60px; padding: 4px;" required />
@@ -149,10 +148,11 @@
                             </form>
                         </td>
 
+                        <!-- 6. STATUS -->
                         <td><span class="badge-status ativo">Ativo</span></td>
 
+                        <!-- 7. AÇÕES -->
                         <td style="display: flex; gap: 8px; align-items: center;">
-                            <!-- Formulário de Exclusão -->
                             <form th:action="@{/recanto/produtos/deletar}" method="post" style="display:inline;">
                                 <input type="hidden" name="id" th:value="${p.codigo}" />
                                 <button type="submit" class="btn-delete" title="Excluir" style="background:none; border:none; cursor:pointer;">🗑️</button>
@@ -208,7 +208,7 @@
                     <input type="number" id="modalMinStock" name="quantidadeMinima" value="0" placeholder="0">
                 </div>
                 <div class="input-group">
-                    <label for="modalValidity">Validade</label>
+                    <label for="modalValidity">Registro</label>
                     <input type="date" id="modalValidity" name="data">
                 </div>
             </div>
