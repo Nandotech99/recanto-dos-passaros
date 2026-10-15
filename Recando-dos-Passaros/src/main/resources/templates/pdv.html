@@ -1,0 +1,319 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Recanto dos Pássaros - Ponto de Venda (PDV)</title>
+    <link rel="stylesheet" href="/style.css">
+    <style>
+        /* Estilos adicionais específicos para o layout do PDV */
+        .pdv-layout-grid {
+            display: grid;
+            grid-template-columns: 1fr 400px;
+            gap: 20px;
+            height: calc(100vh - 140px);
+        }
+        @media (max-width: 1024px) {
+            .pdv-layout-grid {
+                grid-template-columns: 1fr;
+                height: auto;
+            }
+        }
+        .pdv-catalog {
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+            overflow-y: auto;
+        }
+        .pdv-search-bar {
+            display: flex;
+            gap: 10px;
+        }
+        .pdv-search-bar input {
+            flex: 1;
+            padding: 10px 14px;
+            border: 1px solid #ddd;
+            border-radius: 6px;
+            font-size: 14px;
+        }
+        .pdv-products-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+            gap: 12px;
+        }
+        .pdv-product-card {
+            background: #fff;
+            border: 1px solid #e0e0e0;
+            border-radius: 8px;
+            padding: 12px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+        }
+        .pdv-product-card:hover {
+            border-color: #2e7d32;
+            box-shadow: 0 4px 12px rgba(46, 125, 50, 0.1);
+        }
+        .pdv-product-title {
+            font-weight: 600;
+            font-size: 14px;
+            color: #333;
+            margin-bottom: 8px;
+        }
+        .pdv-product-price {
+            font-size: 16px;
+            font-weight: 700;
+            color: #2e7d32;
+        }
+        .pdv-cart-panel {
+            background: #fff;
+            border: 1px solid #e0e0e0;
+            border-radius: 8px;
+            display: flex;
+            flex-direction: column;
+            padding: 16px;
+            height: 100%;
+        }
+        .pdv-cart-header {
+            font-size: 18px;
+            font-weight: bold;
+            margin-bottom: 12px;
+            border-bottom: 1px solid #eee;
+            padding-bottom: 8px;
+        }
+        .pdv-cart-items {
+            flex: 1;
+            overflow-y: auto;
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+            margin-bottom: 12px;
+        }
+        .pdv-cart-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 8px;
+            background: #f9f9f9;
+            border-radius: 6px;
+            font-size: 13px;
+        }
+        .pdv-cart-summary {
+            border-top: 1px solid #eee;
+            padding-top: 12px;
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+        .pdv-total-row {
+            display: flex;
+            justify-content: space-between;
+            font-size: 18px;
+            font-weight: bold;
+            color: #111;
+        }
+        .btn-finalize {
+            background-color: #2e7d32;
+            color: white;
+            border: none;
+            padding: 12px;
+            border-radius: 6px;
+            font-size: 16px;
+            font-weight: bold;
+            cursor: pointer;
+            text-align: center;
+            transition: background 0.2s;
+        }
+        .btn-finalize:hover {
+            background-color: #1b5e20;
+        }
+    </style>
+</head>
+<body class="app-body">
+
+<!-- Container Principal do Painel -->
+<div class="app-layout">
+
+    <!-- Sidebar (Menu Lateral Mantido Idêntico) -->
+    <aside class="sidebar">
+        <div class="sidebar-brand">
+            <img src="/Pck_img/Recanto-logo.jpg" alt="Logo Recanto dos Pássaros" class="sidebar-logo">
+            <span class="sidebar-brand-name">Recanto dos Pássaros</span>
+        </div>
+
+        <nav class="sidebar-nav">
+            <div class="nav-section">
+                <span class="nav-section-title">Cadastro</span>
+                <ul class="nav-list">
+                    <li><a href="#" class="nav-item">Produtos</a></li>
+                    <li><a href="#" class="nav-item">Estoque</a></li>
+                    <li><a href="#" class="nav-item">Fornecedor</a></li>
+                </ul>
+            </div>
+
+            <div class="nav-section">
+                <span class="nav-section-title">Venda</span>
+                <ul class="nav-list">
+                    <li><a href="#" class="nav-item active">Ponto de Venda</a></li>
+                    <li><a href="#" class="nav-item">Fechamento de Caixa</a></li>
+                </ul>
+            </div>
+
+            <div class="nav-section">
+                <span class="nav-section-title">Dashboard</span>
+                <ul class="nav-list">
+                    <li><a href="#" class="nav-item">Início</a></li>
+                </ul>
+            </div>
+        </nav>
+    </aside>
+
+    <!-- Área de Conteúdo Principal -->
+    <main class="main-content">
+
+        <!-- Barra Superior (Topbar) -->
+        <header class="topbar">
+            <div class="topbar-all">
+                <button class="menu-toggle-btn" aria-label="Alternar Menu">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 12h18M3 6h18M3 18h18"/></svg>
+                </button>
+            </div>
+        </header>
+
+        <!-- Conteúdo da Página PDV -->
+        <div class="content-body">
+
+            <!-- Cabeçalho da Seção -->
+            <div class="section-header-bar">
+                <div class="title-with-help">
+                    <h1>Ponto de Venda (PDV)</h1>
+                </div>
+            </div>
+
+            <p class="section-description">Realize vendas rápidas selecionando os produtos ou buscando pelo código/nome</p>
+
+            <!-- Layout de 2 Colunas do PDV -->
+            <div class="pdv-layout-grid">
+
+                <!-- Coluna Esquerda: Catálogo e Busca -->
+                <div class="pdv-catalog">
+                    <div class="pdv-search-bar">
+                        <input type="text" id="searchProduct" placeholder="Pesquisar produto por nome ou código..." />
+                    </div>
+
+                    <!-- Grade de Produtos Disponíveis -->
+                    <div class="pdv-products-grid">
+                        <!-- Exemplo de Card de Produto -->
+                        <div class="pdv-product-card" onclick="adicionarAoCarrinho('Café Especial', 15.90)">
+                            <div class="pdv-product-title">Café Especial</div>
+                            <div class="pdv-product-price">R$ 15,90</div>
+                        </div>
+                        <div class="pdv-product-card" onclick="adicionarAoCarrinho('Ração Premium 1kg', 45.00)">
+                            <div class="pdv-product-title">Ração Premium 1kg</div>
+                            <div class="pdv-product-price">R$ 45,00</div>
+                        </div>
+                        <div class="pdv-product-card" onclick="adicionarAoCarrinho('Brinquedo para Pássaros', 22.50)">
+                            <div class="pdv-product-title">Brinquedo para Pássaros</div>
+                            <div class="pdv-product-price">R$ 22,50</div>
+                        </div>
+                        <div class="pdv-product-card" onclick="adicionarAoCarrinho('Consulta Veterinária', 100.00)">
+                            <div class="pdv-product-title">Consulta Veterinária</div>
+                            <div class="pdv-product-price">R$ 100,00</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Coluna Direita: Carrinho / Caixa -->
+                <div class="pdv-cart-panel">
+                    <div class="pdv-cart-header">Carrinho de Compras</div>
+
+                    <div class="pdv-cart-items" id="cartItemsContainer">
+                        <!-- Itens adicionados aparecerão aqui dinamicamente -->
+                        <div style="color: #888; text-align: center; margin-top: 40px; font-size: 14px;">
+                            Nenhum item adicionado ainda.
+                        </div>
+                    </div>
+
+                    <div class="pdv-cart-summary">
+                        <div class="pdv-total-row">
+                            <span>Total:</span>
+                            <span id="cartTotal">R$ 0,00</span>
+                        </div>
+                        <button class="btn-finalize" onclick="finalizarVenda()">Finalizar Venda</button>
+                    </div>
+                </div>
+
+            </div>
+
+        </div>
+    </main>
+</div>
+
+<!-- Script Simples de PDV para interatividade do carrinho -->
+<script>
+    let carrinho = [];
+
+    function adicionarAoCarrinho(nome, preco) {
+        let itemExistente = carrinho.find(item => item.name === nome);
+        if (itemExistente) {
+            itemExistente.quantidade++;
+        } else {
+            carrinho.push({ name: nome, price: preco, quantidade: 1 });
+        }
+        atualizarCarrinho();
+    }
+
+    function atualizarCarrinho() {
+        const container = document.getElementById('cartItemsContainer');
+        const totalSpan = document.getElementById('cartTotal');
+
+        if (carrinho.length === 0) {
+            container.innerHTML = '<div style="color: #888; text-align: center; margin-top: 40px; font-size: 14px;">Nenhum item adicionado ainda.</div>';
+            totalSpan.innerText = 'R$ 0,00';
+            return;
+        }
+
+        container.innerHTML = '';
+        let total = 0;
+
+        carrinho.forEach((item, index) => {
+            let subtotal = item.price * item.quantidade;
+            total += subtotal;
+
+            container.innerHTML += `
+                <div class="pdv-cart-item">
+                    <div>
+                        <strong>${item.name}</strong><br>
+                        <small>${item.quantidade}x R$ ${item.price.toFixed(2).replace('.', ',')}</small>
+                    </div>
+                    <div style="display: flex; align-items: center; gap: 8px;">
+                        <span>R$ ${subtotal.toFixed(2).replace('.', ',')}</span>
+                        <button onclick="removerItem(${index})" style="background:none; border:none; color:red; cursor:pointer;">❌</button>
+                    </div>
+                </div>
+            `;
+        });
+
+        totalSpan.innerText = `R$ ${total.toFixed(2).replace('.', ',')}`;
+    }
+
+    function removerItem(index) {
+        carrinho.splice(index, 1);
+        atualizarCarrinho();
+    }
+
+    function finalizarVenda() {
+        if (carrinho.length === 0) {
+            alert('Adicione itens ao carrinho antes de finalizar a venda.');
+            return;
+        }
+        alert('Venda finalizada com sucesso!');
+        carrinho = [];
+        atualizarCarrinho();
+    }
+</script>
+
+</body>
+</html>

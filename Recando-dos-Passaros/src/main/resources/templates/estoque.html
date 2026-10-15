@@ -1,0 +1,204 @@
+<!DOCTYPE html>
+<html lang="pt-BR" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Recanto dos Pássaros - Controle de Estoque</title>
+    <link rel="stylesheet" th:href="@{/style.css}">
+</head>
+<body class="app-body">
+
+<!-- Checkbox global para controle do modal -->
+<input type="checkbox" id="toggle-modal" style="display: none;">
+
+<!-- Layout Principal -->
+<div class="app-layout">
+
+    <!-- Sidebar (Menu Lateral) -->
+    <aside class="sidebar">
+        <div class="sidebar-brand">
+            <img th:src="@{/Pck_img/Recanto-logo.jpg}" alt="Logo Recanto dos Pássaros" class="sidebar-logo">
+            <span class="sidebar-brand-name">Recanto dos Pássaros</span>
+        </div>
+
+        <nav class="sidebar-nav">
+            <div class="nav-section">
+                <span class="nav-section-title">Cadastro</span>
+                <ul class="nav-list">
+                    <li><a th:href="@{/produtos}" class="nav-item">Produtos</a></li>
+                    <li><a th:href="@{/estoque}" class="nav-item active">Estoque</a></li>
+                    <li><a th:href="@{/fornecedores}" class="nav-item">Fornecedor</a></li>
+                </ul>
+            </div>
+
+            <div class="nav-section">
+                <span class="nav-section-title">Venda</span>
+                <ul class="nav-list">
+                    <li><a href="#" class="nav-item">Ponto de Venda</a></li>
+                    <li><a href="#" class="nav-item">Fechamento de Caixa</a></li>
+                </ul>
+            </div>
+
+            <div class="nav-section">
+                <span class="nav-section-title">Dashboard</span>
+                <ul class="nav-list">
+                    <li><a href="#" class="nav-item">Início</a></li>
+                </ul>
+            </div>
+        </nav>
+    </aside>
+
+    <!-- Área Principal -->
+    <main class="main-content">
+
+        <!-- Topbar -->
+        <header class="topbar">
+            <div class="topbar-all">
+                <button class="menu-toggle-btn" aria-label="Alternar Menu">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 12h18M3 6h18M3 18h18"/></svg>
+                </button>
+            </div>
+        </header>
+
+        <!-- Conteúdo Interno -->
+        <div class="content-body">
+
+            <!-- Cabeçalho da Seção -->
+            <div class="section-header-bar">
+                <div class="title-with-help">
+                    <h1>Controle de Estoque</h1>
+                </div>
+                <div class="action-buttons">
+                    <label for="toggle-modal" class="btn-primary-action" style="cursor: pointer; display: inline-block;">
+                        + Movimentar Estoque
+                    </label>
+                </div>
+            </div>
+
+            <p class="section-description">Monitore os saldos atuais e gerencie entradas e saídas de itens</p>
+
+            <!-- KPI Cards (Indicadores de Estoque) -->
+            <div class="kpi-cards-grid">
+                <div class="kpi-card">
+                    <span class="kpi-icon">📦</span>
+                    <div>
+                        <div class="kpi-label">Total em Estoque</div>
+                        <div class="kpi-value" th:text="${totalItensEstoque != null ? totalItensEstoque : '0'}">0</div>
+                    </div>
+                </div>
+                <div class="kpi-card">
+                    <span class="kpi-icon">⚠️</span>
+                    <div>
+                        <div class="kpi-label">Abaixo do Mínimo</div>
+                        <div class="kpi-value" style="color: var(--color-required, #A8201A);" th:text="${totalCriticos != null ? totalCriticos : '0'}">0</div>
+                    </div>
+                </div>
+                <div class="kpi-card">
+                    <span class="kpi-icon">💰</span>
+                    <div>
+                        <div class="kpi-label">Valor Total do Estoque</div>
+                        <div class="kpi-value" th:text="${valorTotalEstoque != null ? 'R$ ' + #numbers.formatDecimal(valorTotalEstoque, 1, 'COMMA', 2, 'POINT') : 'R$ 0,00'}">R$ 0,00</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Tabela de Dados -->
+            <div class="table-container">
+                <table class="data-table">
+                    <thead>
+                    <tr>
+                        <th>CÓDIGO</th>
+                        <th>PRODUTO</th>
+                        <th>CATEGORIA</th>
+                        <th>QTD. ATUAL</th>
+                        <th>QTD. MÍNIMA</th>
+                        <th>STATUS</th>
+                        <th>AÇÕES</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+
+                    <!-- Estado Vazio (Caso não haja registros) -->
+                    <tr th:if="${#lists.isEmpty(estoqueList)}">
+                        <td colspan="7" class="empty-state-cell">
+                            <div class="empty-state-content">
+                                <span style="font-size: 2.5rem;">📦</span>
+                                <p class="empty-title">Nenhum registro encontrado</p>
+                                <p class="empty-subtitle">Não há dados de estoque cadastrados no momento. Utilize o botão acima para registrar uma movimentação.</p>
+                            </div>
+                        </td>
+                    </tr>
+
+                    <!-- Linhas Dinâmicas via Thymeleaf -->
+                    <tr th:each="item : ${estoqueList}">
+                        <td th:text="${item.codigo}">#001</td>
+                        <td><strong th:text="${item.nomeProduto}">Ração Premium</strong></td>
+                        <td>
+                            <span class="badge-type produto" th:text="${item.categoria}">Alimentação</span>
+                        </td>
+                        <td th:text="${item.quantidadeAtual}">25</td>
+                        <td th:text="${item.quantidadeMinima}">10</td>
+                        <td>
+                            <span th:if="${item.quantidadeAtual <= item.quantidadeMinima}" class="badge-status" style="background-color: #FEE2E2; color: #991B1B;">Baixo</span>
+                            <span th:if="${item.quantidadeAtual > item.quantidadeMinima}" class="badge-status ativo">Normal</span>
+                        </td>
+                        <td>
+                            <label for="toggle-modal" class="btn-sm-action" style="cursor: pointer; display: inline-block; padding: 0.2rem 0.5rem; font-size: 0.8rem; background: var(--bg-main); border: 1px solid var(--border-color); border-radius: 4px;">Ajustar</label>
+                        </td>
+                    </tr>
+
+                    </tbody>
+                </table>
+            </div>
+
+        </div>
+    </main>
+</div>
+
+<!-- Modal de Movimentação -->
+<div id="productModal" class="modal-overlay">
+    <div class="modal-card">
+        <div class="modal-header">
+            <h2>Movimentação de Estoque</h2>
+            <label for="toggle-modal" class="close-modal-btn" style="cursor: pointer; font-size: 24px;">&times;</label>
+        </div>
+
+        <form th:action="@{/estoque/salvar}" method="post" class="modal-form">
+            <div class="form-row">
+                <div class="input-group">
+                    <label for="produtoSelect">Produto *</label>
+                    <select id="produtoSelect" name="codigoProduto" required>
+                        <option value="">Selecione o produto...</option>
+                        <option th:each="p : ${produtosDisponiveis}" th:value="${p.codigo}" th:text="${p.nome}">Ração</option>
+                    </select>
+                </div>
+                <div class="input-group">
+                    <label for="tipoMovimento">Tipo de Movimento *</label>
+                    <select id="tipoMovimento" name="tipo" required>
+                        <option value="ENTRADA">Entrada (+)</option>
+                        <option value="SAIDA">Saída (-)</option>
+                    </select>
+                </div>
+            </div>
+
+            <div class="form-row">
+                <div class="input-group">
+                    <label for="quantidadeMov">Quantidade *</label>
+                    <input type="number" id="quantidadeMov" name="quantidade" min="1" placeholder="Ex: 10" required>
+                </div>
+                <div class="input-group">
+                    <label for="motivoMov">Motivo / Observação</label>
+                    <input type="text" id="motivoMov" name="observacao" placeholder="Ex: Compra de fornecedor, Venda, Avaria">
+                </div>
+            </div>
+
+            <div class="modal-actions">
+                <label for="toggle-modal" class="btn-cancel" style="cursor: pointer; display: inline-flex; align-items: center; justify-content: center;">Cancelar</label>
+                <button type="submit" class="btn-save">Salvar Movimento</button>
+            </div>
+        </form>
+    </div>
+</div>
+
+</body>
+</html>
