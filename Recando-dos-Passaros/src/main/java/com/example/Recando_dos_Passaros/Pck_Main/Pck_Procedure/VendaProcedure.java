@@ -16,7 +16,7 @@ public class VendaProcedure {
     CallableStatement oCall;
     DAO oConectar = new DAO();
     private static final String login ="root";
-    private static final String senha ="";
+    private static final String senha ="P@$$w0rd";
 
     public ArrayList<Venda> get(){
         ArrayList<Venda> lista = new ArrayList<>();

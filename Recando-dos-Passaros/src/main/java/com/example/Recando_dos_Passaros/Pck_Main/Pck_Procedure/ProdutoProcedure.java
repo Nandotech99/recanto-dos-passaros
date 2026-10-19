@@ -14,18 +14,17 @@ public class ProdutoProcedure {
     CallableStatement oCall;
     DAO oConectar = new DAO();
     private static final String login ="root";
-    private static final String senha ="";
+    private static final String senha ="P@$$w0rd";
 
     public void inserir(Produto produto){
         try {
             try {
-                oCall=oConectar.getConexao(login,senha).prepareCall("CAll ins_produto(?,?,?,?,?,?)");
+                oCall=oConectar.getConexao(login,senha).prepareCall("CAll ins_produto(?,?,?,?,?)");
                 oCall.setString(1,produto.getNome());
                 oCall.setInt(2,produto.getQuantidade());
                 oCall.setInt(3,produto.getQuantidade_min());
                 oCall.setDouble(4,produto.getPreco());
                 oCall.setString(5,produto.getData());
-                oCall.setString(6, produto.getRegistro());
 
                 oCall.execute();
             } catch (SQLException e){
@@ -54,7 +53,6 @@ public class ProdutoProcedure {
                     produto.setQuantidade_min(rs.getInt("QUANTIDADE_MIN"));
                     produto.setPreco((rs.getDouble("PRECO")));
                     produto.setData(rs.getString("DATA"));
-                    produto.setRegistro(rs.getString("DESCRICAO"));
 
                     lista.add(produto); // Adiciona o produto na lista
                 }
@@ -103,11 +101,9 @@ public class ProdutoProcedure {
     public void AtualizarPreco(int id,Produto produto) {
         try {
             try {
-                    oCall = oConectar.getConexao(login, senha).prepareCall("CALL upt_preco(?,?,?,?)");
+                    oCall = oConectar.getConexao(login, senha).prepareCall("CALL upt_preco(?,?)");
                     oCall.setInt(1, id);
                     oCall.setDouble(2, produto.getPreco());
-                    oCall.setString(3, produto.getData());
-                    oCall.setString(4, produto.getRegistro());
 
                     oCall.execute();
                     System.out.println("Preço do codigo:" + produto.getCodigo() + " atualizado com sucesso!");

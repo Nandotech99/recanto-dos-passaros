@@ -13,7 +13,7 @@ CREATE TABLE produto (
                          quantidade      INT NOT NULL,
                          quantidade_min  INT NOT NULL,
                          preco           DECIMAL(10,2) NOT NULL,
-                         data            DATE NOT NULL,
+                         data            VARCHAR(50) NOT NUL
 );
 
 CREATE TABLE item (
@@ -112,7 +112,7 @@ END //
 DELIMITER //
 CREATE PROCEDURE exibir_produto()
 BEGIN
-SELECT cod AS CODIGO,
+SELECT id AS CODIGO,
        nome AS PRODUTO,
        quantidade AS QUANTIDADE,
        quantidade_min AS QUANTIDADE_MIN,
@@ -124,42 +124,38 @@ END //
 
 DELIMITER //
 CREATE PROCEDURE ins_produto(
-    IN p_nome VARCHAR(50),
-    IN p_quantidade INT,
-    IN p_quantidade_min INT,
-    IN p_preco DECIMAL(5,2),
-    IN p_data VARCHAR(10),
-)
-BEGIN
-INSERT INTO produto(nome, quantidade, quantidade_min, preco, data)
-VALUES(p_nome, p_quantidade, p_quantidade_min, p_preco, STR_TO_DATE(p_data, '%d/%m/%Y'));
-END //
+     IN p_nome VARCHAR(50),
+        IN p_quantidade INT,
+        IN p_quantidade_min INT,
+        IN p_preco DECIMAL(5,2),
+        IN p_data VARCHAR(10)
+    )
+    BEGIN
+    INSERT INTO produto(nome, quantidade, quantidade_min, preco, data)
+    VALUES(p_nome, p_quantidade, p_quantidade_min, p_preco, STR_TO_DATE(p_data, '%Y-%m-%d'));
+    END //
 
 DELIMITER //
 CREATE PROCEDURE upt_quantidade(
-    IN p_cod INT, IN p_quantidade INT,
-    IN p_data VARCHAR(20), IN p_registro VARCHAR(100)
+    IN p_cod INT,
+    IN p_quantidade INT
 )
 BEGIN
 UPDATE produto
-SET quantidade = p_quantidade,
-    data = STR_TO_DATE(p_data, '%d/%m/%Y'),
+SET quantidade = p_quantidade
 WHERE id = p_cod;
 END //
 
 DELIMITER //
 CREATE PROCEDURE upt_preco(
-    IN p_cod 		INT,
-    IN p_preco		DECIMAL(10,2),
-    IN p_data		VARCHAR(20),
-    IN p_registro	VARCHAR(100)
-)
-BEGIN
-UPDATE produto
-set preco = p_preco,
-    data = str_to_date(p_data,'%d/%m/%Y'),
-WHERE id = p_cod;
-END //
+     IN p_cod 		INT,
+     IN p_preco		DECIMAL(10,2)
+ )
+ BEGIN
+ UPDATE produto
+ set preco = p_preco
+ WHERE id = p_cod;
+ END //
 
 DELIMITER //
 CREATE PROCEDURE del_produto(IN p_cod INT)
