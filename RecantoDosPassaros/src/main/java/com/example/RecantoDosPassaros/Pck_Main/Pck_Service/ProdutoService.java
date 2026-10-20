@@ -1,4 +1,4 @@
-package com.example.RecantoDosPassaros.Pck_Main.Service;
+package com.example.RecantoDosPassaros.Pck_Main.Pck_Service;
 
 import com.example.RecantoDosPassaros.Pck_Main.Pck_Model.Produto;
 import com.example.RecantoDosPassaros.Pck_Main.Pck_Procedure.ProdutoProcedure;

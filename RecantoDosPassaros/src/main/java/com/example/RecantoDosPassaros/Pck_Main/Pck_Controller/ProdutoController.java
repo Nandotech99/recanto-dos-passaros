@@ -1,8 +1,8 @@
-package com.example.RecantoDosPassaros.Pck_Main.Controller;
+package com.example.RecantoDosPassaros.Pck_Main.Pck_Controller;
 
-import com.example.RecantoDosPassaros.Pck_Main.Dto.ProdutoDto;
+import com.example.RecantoDosPassaros.Pck_Main.Pck_DTO.ProdutoDto;
 import com.example.RecantoDosPassaros.Pck_Main.Pck_Model.Produto;
-import com.example.RecantoDosPassaros.Pck_Main.Service.ProdutoService;
+import com.example.RecantoDosPassaros.Pck_Main.Pck_Service.ProdutoService;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;

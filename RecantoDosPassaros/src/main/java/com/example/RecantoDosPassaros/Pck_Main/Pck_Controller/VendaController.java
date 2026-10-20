@@ -1,10 +1,10 @@
-package com.example.RecantoDosPassaros.Pck_Main.Controller;
+package com.example.RecantoDosPassaros.Pck_Main.Pck_Controller;
 
-import com.example.RecantoDosPassaros.Pck_Main.Dto.ItemDto;
+import com.example.RecantoDosPassaros.Pck_Main.Pck_DTO.ItemDto;
 import com.example.RecantoDosPassaros.Pck_Main.Pck_Model.Item;
 import com.example.RecantoDosPassaros.Pck_Main.Pck_Model.Venda;
-import com.example.RecantoDosPassaros.Pck_Main.Service.ItemService;
-import com.example.RecantoDosPassaros.Pck_Main.Service.VendaService;
+import com.example.RecantoDosPassaros.Pck_Main.Pck_Service.ItemService;
+import com.example.RecantoDosPassaros.Pck_Main.Pck_Service.VendaService;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
