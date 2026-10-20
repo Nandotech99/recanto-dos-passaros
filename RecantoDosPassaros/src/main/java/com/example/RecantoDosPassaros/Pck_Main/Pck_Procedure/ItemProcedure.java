@@ -1,7 +1,7 @@
-package com.example.Recando_dos_Passaros.Pck_Main.Pck_Procedure;
+package com.example.RecantoDosPassaros.Pck_Main.Pck_Procedure;
 
-import com.example.Recando_dos_Passaros.Pck_Main.Pck_DAO.DAO;
-import com.example.Recando_dos_Passaros.Pck_Main.Pck_Model.Item;
+import com.example.RecantoDosPassaros.Pck_Main.Pck_DAO.DAO;
+import com.example.RecantoDosPassaros.Pck_Main.Pck_Model.Item;
 import org.springframework.stereotype.Repository;
 
 import java.sql.CallableStatement;

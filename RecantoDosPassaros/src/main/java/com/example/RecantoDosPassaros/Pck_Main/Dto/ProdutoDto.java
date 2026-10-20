@@ -1,4 +1,4 @@
-package com.example.Recando_dos_Passaros.Pck_Main.Dto;
+package com.example.RecantoDosPassaros.Pck_Main.Dto;
 
 
 public record ProdutoDto(

@@ -1,7 +1,7 @@
-package com.example.Recando_dos_Passaros.Pck_Main.Service;
+package com.example.RecantoDosPassaros.Pck_Main.Service;
 
-import com.example.Recando_dos_Passaros.Pck_Main.Pck_Model.Produto;
-import com.example.Recando_dos_Passaros.Pck_Main.Pck_Procedure.ProdutoProcedure;
+import com.example.RecantoDosPassaros.Pck_Main.Pck_Model.Produto;
+import com.example.RecantoDosPassaros.Pck_Main.Pck_Procedure.ProdutoProcedure;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
