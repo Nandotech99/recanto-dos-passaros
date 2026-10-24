@@ -13,7 +13,7 @@ CREATE TABLE produto (
                          quantidade      INT NOT NULL,
                          quantidade_min  INT NOT NULL,
                          preco           DECIMAL(10,2) NOT NULL,
-                         data            VARCHAR(50) NOT NUL
+                         data            VARCHAR(50) NOT NULL
 );
 
 CREATE TABLE item (
