@@ -5,7 +5,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Recanto dos Pássaros - Fechamento de Caixa</title>
     <link rel="stylesheet" th:href="@{/style.css}" href="/style.css">
-    <li><a th:href="@{/recanto/caixa}" class="nav-item active">Fechamento de Caixa</a></li>
     <style>
         /* Estilos adicionais específicos para Fechamento de Caixa */
         .cash-register-grid {
@@ -70,7 +69,7 @@
 <!-- Container Principal do Painel -->
 <div class="app-layout">
 
-    <!-- Sidebar (Menu Lateral Mantido Idêntico) -->
+    <!-- Sidebar (Menu Lateral) -->
     <aside class="sidebar">
         <div class="sidebar-brand">
             <img th:src="@{/Pck_img/Recanto-logo.jpg}" src="/Pck_img/Recanto-logo.jpg" alt="Logo Recanto dos Pássaros" class="sidebar-logo">
@@ -81,8 +80,8 @@
             <div class="nav-section">
                 <span class="nav-section-title">Cadastro</span>
                 <ul class="nav-list">
-                    <li><a href="#" class="nav-item">Produtos</a></li>
-                    <li><a href="#" class="nav-item">Estoque</a></li>
+                    <li><a th:href="@{/recanto/produtos}" class="nav-item">Produtos</a></li>
+                    <li><a th:href="@{/estoque}" class="nav-item">Estoque</a></li>
                     <li><a href="#" class="nav-item">Fornecedor</a></li>
                 </ul>
             </div>
@@ -90,8 +89,8 @@
             <div class="nav-section">
                 <span class="nav-section-title">Venda</span>
                 <ul class="nav-list">
-                    <li><a href="#" class="nav-item">Ponto de Venda</a></li>
-                    <li><a href="#" class="nav-item active">Fechamento de Caixa</a></li>
+                    <li><a th:href="@{/recanto/vendas}" class="nav-item">Ponto de Venda</a></li>
+                    <li><a th:href="@{/recanto/caixa}" class="nav-item active">Fechamento de Caixa</a></li>
                 </ul>
             </div>
 
@@ -165,10 +164,9 @@
                 <table class="data-table">
                     <thead>
                     <tr>
-                        <th>HORÁRIO</th>
+                        <th>CÓDIGO DA VENDA</th>
                         <th>TIPO</th>
                         <th>DESCRIÇÃO / ORIGEM</th>
-                        <th>FORMA DE PAGAMENTO</th>
                         <th>VALOR</th>
                     </tr>
                     </thead>
@@ -176,7 +174,7 @@
 
                     <!-- Estado Vazio caso não haja movimentações -->
                     <tr th:if="${#lists.isEmpty(movimentacoes)}">
-                        <td colspan="5" class="empty-state-cell">
+                        <td colspan="4" class="empty-state-cell">
                             <div class="empty-state-content">
                                 <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M21 16.5c0 .38-.21.71-.53.88l-7.9 4.44c-.16.09-.34.14-.57.14s-.41-.05-.57-.14l-7.9-4.44A1.002 1.002 0 0 1 3 16.5v-9c0-.38.21-.71.53-.88l7.9-4.44c.16-.09.34-.14.57-.14s.41.05.57.14l7.9 4.44c.32.17.53.5.53.88v9zM12 4.15L6.04 7.5 12 10.85l5.96-3.35L12 4.15z"/></svg>
                                 <p class="empty-title">Nenhuma movimentação registrada hoje</p>
@@ -185,18 +183,17 @@
                         </td>
                     </tr>
 
-                    <!-- Loop dinâmico iterando sobre as movimentações -->
-                    <tr th:each="m : ${movimentacoes}">
-                        <td th:text="${m.horario}">08:00</td>
+                    <!-- Loop dinâmico iterando sobre as vendas -->
+                    <tr th:each="v : ${movimentacoes}">
+                        <td th:text="'#' + ${v.cod_venda}">#001</td>
                         <td>
-                            <span class="badge-mov" th:classappend="${m.tipo == 'Entrada' ? 'entrada' : 'saida'}" th:text="${m.tipo}">Entrada</span>
+                            <span class="badge-mov entrada">Venda</span>
                         </td>
-                        <td><strong th:text="${m.descricao}">Abertura de Caixa</strong></td>
-                        <td th:text="${m.formaPagamento}">Dinheiro</td>
+                        <td><strong>Venda realizada no PDV</strong></td>
                         <td>
-                            <span th:style="${m.tipo == 'Entrada' ? 'color: #2e7d32; font-weight:600;' : 'color: #c62828; font-weight:600;'}"
-                                  th:text="${(m.tipo == 'Entrada' ? '+ R$ ' : '- R$ ') + #numbers.formatDecimal(m.valor, 1, 'COMMA', 2, 'POINT')}">
-                                + R$ 150,00
+                            <span style="color: #2e7d32; font-weight:600;"
+                                  th:text="${'+ R$ ' + #numbers.formatDecimal(v.valor_total, 1, 'COMMA', 2, 'POINT')}">
+                                + R$ 0,00
                             </span>
                         </td>
                     </tr>
@@ -244,7 +241,7 @@
     </div>
 </div>
 
-<!-- Estilo Puro CSS para controlar a abertura do modal (mesmo padrão do painel) -->
+<!-- Estilo Puro CSS para controlar a abertura do modal -->
 <style>
     #toggle-modal:checked ~ .modal-overlay,
     #toggle-modal:checked ~ * .modal-overlay,
