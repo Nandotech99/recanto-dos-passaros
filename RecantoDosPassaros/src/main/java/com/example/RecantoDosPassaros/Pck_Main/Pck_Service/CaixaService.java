@@ -13,7 +13,7 @@ public class CaixaService {
     private final VendaService vendaService;
 
     public double getSaldoInicial() {
-        // Exemplo de valor fixo ou busca de abertura de caixa (troco inicial)
+        // Valor padrão de abertura de caixa (troco inicial)
         return 150.00;
     }
 
@@ -22,16 +22,14 @@ public class CaixaService {
         double total = 0.0;
         if (vendas != null) {
             for (Venda v : vendas) {
-                // Supondo que a venda possua um método getValor() ou similar
-                // total += v.getValor();
+                total += v.getValor_total(); // Utiliza o atributo real da classe Venda
             }
         }
-        // Retorno demonstrativo baseado no HTML de referência caso a lista esteja vazia
-        return vendas == null || vendas.isEmpty() ? 1280.00 : total;
+        return total;
     }
 
     public double getTotalSaidas() {
-        // Retorna o somatório de sangrias/saídas do dia
+        // Retorna o somatório de sangrias/saídas do dia (pode ser ajustado conforme sua regra de negócio)
         return 50.00;
     }
 
@@ -40,6 +38,6 @@ public class CaixaService {
     }
 
     public void fecharCaixa(double dinheiroContado, double digitalContado, String observacoes) {
-        // Lógica para registrar o fechamento de caixa no banco de dados ou procedure
+        // Lógica para registrar o fechamento de caixa
     }
 }
