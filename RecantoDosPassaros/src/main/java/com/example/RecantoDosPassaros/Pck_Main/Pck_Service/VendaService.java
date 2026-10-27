@@ -15,7 +15,7 @@ public class VendaService {
     public int postVenda(){
         return vendaProcedure.post();
     }
-    public ArrayList<Venda> get(){
+    public ArrayList<Venda> getVenda(){
         return vendaProcedure.get();
     }
 }
