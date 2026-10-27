@@ -33,6 +33,10 @@ private ProdutoProcedure produtoProcedure;
         produtoProcedure.AtualizarPreco(id,produto);
     }
 
+
+    public Produto getProdById(int codigoProduto) {
+            return produtoProcedure.getById(codigoProduto);
+    }
 }
 
 

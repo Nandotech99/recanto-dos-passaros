@@ -64,7 +64,32 @@ public class ProdutoProcedure {
         }
         return lista;
     }
+    public Produto getById(int id) {
+        Produto produto = null;
+        try {
+            try {
+                oCall = oConectar.getConexao(login, senha).prepareCall("CALL exibir_produto_por_id(?)");
+                oCall.setInt(1, id);
+                ResultSet rs = oCall.executeQuery();
 
+                if (rs.next()) {
+                    produto = new Produto();
+
+                    produto.setCodigo(rs.getInt("CODIGO"));
+                    produto.setNome(rs.getString("PRODUTO"));
+                    produto.setQuantidade(rs.getInt("QUANTIDADE"));
+                    produto.setQuantidade_min(rs.getInt("QUANTIDADE_MIN"));
+                    produto.setPreco(rs.getDouble("PRECO"));
+                    produto.setData(rs.getString("DATA"));
+                }
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        } finally {
+            oConectar.desconectar();
+        }
+        return produto;
+    }
     public void Uptade(int id,Produto produto) {
         try {
                 try {

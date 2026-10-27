@@ -7,45 +7,40 @@ import com.example.RecantoDosPassaros.Pck_Main.Pck_Service.ItemService;
 import com.example.RecantoDosPassaros.Pck_Main.Pck_Service.VendaService;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.*; // Importante para RestController
 
 import java.util.List;
 
 @AllArgsConstructor
-@RestController
+@RestController // <--- Garanta que está como @RestController e não @Controller
 @RequestMapping("/recanto/venda")
 public class VendaController {
-    private  final VendaService vendaService;
+    private final VendaService vendaService;
     private final ItemService itemService;
 
     @GetMapping
     @ResponseStatus(HttpStatus.OK)
     public List<Venda> getVenda(){
-
-       return vendaService.getVenda();
+        return vendaService.getVenda();
     }
 
     @PostMapping
     public int abrirVenda(){
-       return vendaService.postVenda();
+        return vendaService.postVenda();
     }
 
     @PostMapping("/addItem")
     @ResponseStatus(HttpStatus.CREATED)
     public void addItem(@RequestBody ItemDto itemDto){
-            Item item = new Item();
-
-            item.setCod_produtoFK(itemDto.codProd());
-            item.setCod_vendaFK(itemDto.codVenda());
-            item.setQuantidadeFK(itemDto.qtd());
-
-            vendaService.postItem(item);
-
+        Item item = new Item();
+        item.setCod_produtoFK(itemDto.codProd());
+        item.setCod_vendaFK(itemDto.codVenda());
+        item.setQuantidadeFK(itemDto.qtd());
+        vendaService.postItem(item);
     }
 
     @GetMapping("/itens")
     public List<Item> getItem(@RequestBody ItemDto itemDto){
-        return   itemService.getItem(itemDto.codVenda());
+        return itemService.getItem(itemDto.codVenda());
     }
-
 }

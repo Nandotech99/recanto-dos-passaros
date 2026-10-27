@@ -9,7 +9,7 @@ public class DAO {
 
     private static final String URL = "jdbc:mysql://127.0.0.1:3306/cafeteria-bd";// trocar a porta
     private static final String login = "root";
-    private static final String senha ="";
+    private static final String senha ="P@$$w0rd";
 
     public DAO()
     {

@@ -4,7 +4,7 @@ import com.example.RecantoDosPassaros.Pck_Main.Pck_DTO.ProdutoDto;
 import com.example.RecantoDosPassaros.Pck_Main.Pck_Model.Produto;
 import com.example.RecantoDosPassaros.Pck_Main.Pck_Service.ProdutoService;
 import lombok.AllArgsConstructor;
-import org.springframework.stereotype.Controller;
+import org.springframework.stereotype.Controller; // <-- Certifique-se de usar o Controller do Spring MVC
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 

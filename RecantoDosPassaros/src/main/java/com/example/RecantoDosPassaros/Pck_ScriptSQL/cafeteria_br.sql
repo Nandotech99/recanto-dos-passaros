@@ -108,7 +108,21 @@ FROM item i
          INNER JOIN produto p ON i.cod_produto = p.cod
 WHERE i.cod_venda = p_cod_venda;
 END //
+DELIMITER //
 
+CREATE PROCEDURE exibir_produto_por_id(IN p_cod INT)
+BEGIN
+    SELECT id AS CODIGO,
+           nome AS PRODUTO,
+           quantidade AS QUANTIDADE,
+           quantidade_min AS QUANTIDADE_MIN,
+           preco AS PRECO,
+           DATE_FORMAT(data, '%d/%m/%Y') AS DATA
+    FROM produto
+    WHERE id = p_cod;
+END //
+
+DELIMITER ;
 DELIMITER //
 CREATE PROCEDURE exibir_produto()
 BEGIN

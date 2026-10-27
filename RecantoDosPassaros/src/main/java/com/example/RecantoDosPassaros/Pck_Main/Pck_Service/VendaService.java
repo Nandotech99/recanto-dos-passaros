@@ -6,16 +6,24 @@ import com.example.RecantoDosPassaros.Pck_Main.Pck_Procedure.VendaProcedure;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @AllArgsConstructor
 @Service
 public class VendaService {
+
     private final VendaProcedure vendaProcedure;
+
     public int postVenda(){
         return vendaProcedure.post();
     }
+
     public ArrayList<Venda> getVenda(){
         return vendaProcedure.get();
+    }
+
+    public void postItem(Item item) {
+        vendaProcedure.postItem(item);
     }
 }
