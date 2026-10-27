@@ -18,3 +18,4 @@ public class VendaService {
     public ArrayList<Venda> get(){
         return vendaProcedure.get();
     }
+}
