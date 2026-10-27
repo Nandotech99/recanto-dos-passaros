@@ -14,3 +14,7 @@ public class VendaService {
     private final VendaProcedure vendaProcedure;
     public int postVenda(){
         return vendaProcedure.post();
+    }
+    public ArrayList<Venda> get(){
+        return vendaProcedure.get();
+    }
