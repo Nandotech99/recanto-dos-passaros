@@ -13,8 +13,8 @@ public class ProdutoProcedure {
 
     CallableStatement oCall;
     DAO oConectar = new DAO();
-    private static final String login ="root";
-    private static final String senha ="P@$$w0rd";
+    private static final String login ="nando";
+    private static final String senha ="12";
 
     public void inserir(Produto produto){
         try {
@@ -50,8 +50,8 @@ public class ProdutoProcedure {
                     produto.setCodigo(rs.getInt("CODIGO"));
                     produto.setNome(rs.getString("PRODUTO"));
                     produto.setQuantidade(rs.getInt("QUANTIDADE"));
-                    produto.setQuantidade_min(rs.getInt("QUANTIDADE_MIN"));
-                    produto.setPreco((rs.getDouble("PRECO")));
+                    produto.setQuantidade_min(rs.getInt("QUANTIDADE MINIMA"));
+                    produto.setPreco((rs.getDouble("PREÇO")));
                     produto.setData(rs.getString("DATA"));
 
                     lista.add(produto); // Adiciona o produto na lista

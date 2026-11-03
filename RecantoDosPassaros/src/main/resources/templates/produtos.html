@@ -4,42 +4,480 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Recanto dos Pássaros - Produtos e Serviços</title>
-    <link rel="stylesheet" th:href="@{/style.css}">
+    <style>
+        :root {
+            --bg-sidebar: #f5dcc4;
+            --bg-main: #fcf2e8;
+            --primary-color: #492e1b;
+            --accent-brown: #7c4a2a;
+            --border-color: #5b3a21;
+            --table-header: #5c3a21;
+            --table-header-text: #ffffff;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body.app-body {
+            background-color: var(--bg-main);
+            color: var(--primary-color);
+            display: flex;
+            height: 100vh;
+            overflow: hidden;
+        }
+
+        .app-layout {
+            display: flex;
+            width: 100%;
+            height: 100%;
+        }
+
+        /* Sidebar (Menu Lateral) */
+        .sidebar {
+            width: 260px;
+            background-color: var(--bg-sidebar);
+            border-right: 2px solid var(--border-color);
+            display: flex;
+            flex-direction: column;
+            padding: 20px;
+            overflow-y: auto;
+        }
+
+        .sidebar-brand {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-align: center;
+            margin-bottom: 25px;
+            padding-bottom: 15px;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .sidebar-logo {
+            width: 130px;
+            height: auto;
+            margin-bottom: 10px;
+            border-radius: 8px;
+        }
+
+        .sidebar-nav {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+
+        .nav-section-title {
+            font-size: 0.8rem;
+            font-weight: bold;
+            color: var(--accent-brown);
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin-bottom: 8px;
+            display: block;
+        }
+
+        .nav-list {
+            list-style: none;
+            display: flex;
+            flex-direction: column;
+            gap: 4px;
+        }
+
+        .nav-item {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 10px 12px;
+            border-radius: 6px;
+            text-decoration: none;
+            color: var(--primary-color);
+            font-weight: 500;
+            font-size: 0.95rem;
+            transition: background 0.2s;
+        }
+
+        .nav-item:hover, .nav-item.active {
+            background-color: #ebd0b9;
+            font-weight: bold;
+        }
+
+        /* Área de Conteúdo Principal */
+        .main-content {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            overflow-y: auto;
+        }
+
+        .topbar {
+            padding: 20px 40px 10px 40px;
+            display: flex;
+            justify-content: flex-start;
+            align-items: center;
+        }
+
+        .btn-inicio {
+            background-color: #f7ebd9;
+            border: 1px solid var(--border-color);
+            padding: 6px 16px;
+            border-radius: 20px;
+            font-weight: 600;
+            cursor: pointer;
+            color: var(--primary-color);
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            text-decoration: none;
+            font-size: 0.9rem;
+        }
+
+        .content-body {
+            padding: 10px 40px 40px 40px;
+        }
+
+        /* Cabeçalho da Seção */
+        .section-header-bar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 6px;
+        }
+
+        .title-with-help h1 {
+            font-size: 2.2rem;
+            color: var(--primary-color);
+            display: inline-flex;
+            align-items: center;
+            gap: 12px;
+            font-weight: 700;
+        }
+
+        .section-description {
+            color: #7a5238;
+            font-size: 0.95rem;
+            margin-bottom: 25px;
+        }
+
+        /* Botão Novo Produto */
+        .btn-primary-action {
+            background-color: var(--primary-color);
+            color: #ffffff;
+            border: none;
+            border-radius: 8px;
+            padding: 10px 20px;
+            font-weight: 600;
+            font-size: 0.95rem;
+            cursor: pointer;
+            transition: background 0.2s;
+            text-decoration: none;
+        }
+
+        .btn-primary-action:hover {
+            background-color: #432917;
+        }
+
+        /* Card de Total de Produtos */
+        .top-kpi-container {
+            display: flex;
+            justify-content: flex-end;
+            margin-bottom: 20px;
+        }
+
+        .kpi-box {
+            background-color: #ffffff;
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            padding: 12px 20px;
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            box-shadow: 0 2px 4px rgba(92, 58, 33, 0.05);
+        }
+
+        .kpi-box-label {
+            font-weight: bold;
+            font-size: 0.9rem;
+            color: var(--primary-color);
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .kpi-box-value {
+            font-size: 1.4rem;
+            font-weight: bold;
+            color: var(--primary-color);
+        }
+
+        /* Container da Tabela e Filtros */
+        .table-wrapper-card {
+            background-color: #f8ebe4;
+            border: 3px solid var(--border-color);
+            border-radius: 10px;
+            padding: 20px;
+        }
+
+        .filter-bar {
+            display: flex;
+            gap: 15px;
+            margin-bottom: 20px;
+            flex-wrap: wrap;
+        }
+
+        .search-box, .filter-dropdown {
+            background-color: #ffffff;
+            border: 1px solid var(--border-color);
+            border-radius: 6px;
+            padding: 8px 12px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .search-box {
+            flex: 1;
+            min-width: 280px;
+        }
+
+        .search-box input, .filter-dropdown select {
+            border: none;
+            outline: none;
+            background: transparent;
+            width: 100%;
+            font-size: 0.9rem;
+            color: var(--primary-color);
+        }
+
+        /* Tabela de Dados Centralizada e com Linhas Verticais Mais Escuras */
+        .data-table {
+            width: 100%;
+            border-collapse: collapse;
+            background-color: #5b3a21;
+            border-radius: 6px;
+            overflow: hidden;
+            border: 4px solid var(--border-color);
+            table-layout: fixed;
+        }
+
+        .data-table th {
+            background-color: var(--table-header);
+            color: var(--table-header-text);
+            text-align: center;
+            padding: 12px 10px;
+            font-size: 0.85rem;
+            letter-spacing: 0.5px;
+            border-right: 1px solid var(--border-color);
+        }
+
+        .data-table th:last-child {
+            border-right: none;
+        }
+
+        .data-table td {
+            padding: 12px 10px;
+            text-align: center;
+            border-bottom: 1px solid var(--border-color);
+            border-right: 4px solid var(--border-color);
+            font-size: 0.9rem;
+            color: var(--primary-color);
+            vertical-align: middle;
+        }
+
+        .data-table td:last-child {
+            border-right: none;
+        }
+
+        /* Larguras e centralização das colunas */
+        .data-table th:nth-child(1), .data-table td:nth-child(1) { width: 12%; }
+        .data-table th:nth-child(2), .data-table td:nth-child(2) { width: 32%; }
+        .data-table th:nth-child(3), .data-table td:nth-child(3) { width: 20%; }
+        .data-table th:nth-child(4), .data-table td:nth-child(4) { width: 21%; }
+        .data-table th:nth-child(5), .data-table td:nth-child(5) { width: 15%; }
+
+        .data-table tbody tr:nth-child(even) {
+            background-color: #c6bbb2;
+        }
+
+        .data-table tbody tr:nth-child(odd) {
+            background-color: #fdf3e9;
+        }
+
+        .inline-form {
+            display: inline-flex;
+            gap: 6px;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .inline-input {
+            width: 80px;
+            padding: 4px 6px;
+            border: 1px solid var(--border-color);
+            border-radius: 4px;
+            text-align: center;
+            font-size: 0.9rem;
+        }
+
+        .btn-icon-action {
+            background: none;
+            border: none;
+            cursor: pointer;
+            font-size: 1.1rem;
+            padding: 2px;
+            transition: transform 0.1s;
+        }
+
+        .btn-icon-action:hover {
+            transform: scale(1.15);
+        }
+
+        /* Modal Styles */
+        #toggle-modal:checked ~ .modal-overlay,
+        body:has(#toggle-modal:checked) #productModal {
+            display: flex !important;
+            opacity: 1 !important;
+            visibility: visible !important;
+        }
+
+        .modal-overlay {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5);
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+        }
+
+        .modal-card {
+            background-color: #fcf2e8;
+            border: 2px solid var(--border-color);
+            border-radius: 12px;
+            width: 100%;
+            max-width: 500px;
+            padding: 25px;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.15);
+        }
+
+        .modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+            border-bottom: 1px solid var(--border-color);
+            padding-bottom: 10px;
+        }
+
+        .modal-header h2 {
+            font-size: 1.4rem;
+            color: var(--primary-color);
+        }
+
+        .close-modal-btn {
+            cursor: pointer;
+            font-size: 1.5rem;
+            color: var(--primary-color);
+            font-weight: bold;
+        }
+
+        .modal-form {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+
+        .form-row {
+            display: flex;
+            gap: 15px;
+        }
+
+        .input-group {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            gap: 5px;
+        }
+
+        .input-group label {
+            font-size: 0.85rem;
+            font-weight: 600;
+            color: var(--primary-color);
+        }
+
+        .input-group input, .input-group select {
+            padding: 8px 10px;
+            border: 1px solid var(--border-color);
+            border-radius: 6px;
+            font-size: 0.9rem;
+            background-color: #ffffff;
+            color: var(--primary-color);
+        }
+
+        .modal-actions {
+            display: flex;
+            justify-content: flex-end;
+            gap: 10px;
+            margin-top: 10px;
+        }
+
+        .btn-cancel {
+            background-color: transparent;
+            border: 1px solid var(--border-color);
+            padding: 8px 16px;
+            border-radius: 6px;
+            cursor: pointer;
+            color: var(--primary-color);
+            font-weight: 600;
+        }
+
+        .btn-save {
+            background-color: var(--primary-color);
+            color: #ffffff;
+            border: none;
+            padding: 8px 20px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-weight: 600;
+        }
+    </style>
 </head>
 <body class="app-body">
+
+<!-- Checkbox oculta para controlar o Modal via Puro CSS -->
+<input type="checkbox" id="toggle-modal" style="display: none;">
 
 <!-- Container Principal do Painel -->
 <div class="app-layout">
 
-    <!-- Sidebar (Menu Lateral) -->
+    <!-- Sidebar (Menu Lateral com Ícones) -->
     <aside class="sidebar">
         <div class="sidebar-brand">
             <img th:src="@{/Pck_img/Recanto-logo.jpg}" alt="Logo Recanto dos Pássaros" class="sidebar-logo">
-            <span class="sidebar-brand-name">Recanto dos Pássaros</span>
         </div>
 
         <nav class="sidebar-nav">
             <div class="nav-section">
                 <span class="nav-section-title">Cadastro</span>
                 <ul class="nav-list">
-                    <li><a href="#" class="nav-item active">Produtos</a></li>
-                    <li><a href="#" class="nav-item">Estoque</a></li>
-                    <li><a href="#" class="nav-item">Fornecedor</a></li>
+                    <li><a href="#" class="nav-item active">📦 Produtos</a></li>
+                    <li><a href="#" class="nav-item">📋 Estoque</a></li>
+                    <li><a href="#" class="nav-item">🏢 Fornecedor</a></li>
                 </ul>
             </div>
 
             <div class="nav-section">
                 <span class="nav-section-title">Venda</span>
                 <ul class="nav-list">
-                    <li><a href="#" class="nav-item">Ponto de Venda</a></li>
-                    <li><a href="#" class="nav-item">Fechamento de Caixa</a></li>
-                </ul>
-            </div>
-
-            <div class="nav-section">
-                <span class="nav-section-title">Dashboard</span>
-                <ul class="nav-list">
-                    <li><a href="#" class="nav-item">Início</a></li>
+                    <li><a href="#" class="nav-item">🏷️ Ponto de Venda</a></li>
+                    <li><a href="#" class="nav-item">💰 Fechamento de Caixa</a></li>
+                    <li><a href="#" class="nav-item">🛍️ Verificar Vendas</a></li>
                 </ul>
             </div>
         </nav>
@@ -50,11 +488,10 @@
 
         <!-- Barra Superior (Topbar) -->
         <header class="topbar">
-            <div class="topbar-all">
-                <button class="menu-toggle-btn" aria-label="Alternar Menu">
-                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 12h18M3 6h18M3 18h18"/></svg>
-                </button>
-            </div>
+            <a href="#" class="btn-inicio">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path><polyline points="9 22 9 12 15 12 15 22"></polyline></svg>
+                Início
+            </a>
         </header>
 
         <!-- Conteúdo da Página -->
@@ -63,105 +500,119 @@
             <!-- Cabeçalho da Seção -->
             <div class="section-header-bar">
                 <div class="title-with-help">
-                    <h1>Produtos/Serviços</h1>
+                    <h1>Produtos <span style="font-size: 1.8rem;">📦</span></h1>
                 </div>
                 <div class="action-buttons">
-                    <input type="checkbox" id="toggle-modal" style="display: none;">
-                    <label for="toggle-modal" class="btn-primary-action" style="cursor: pointer; display: inline-block; padding: 10px 16px;">
-                        + Novo item
+                    <label for="toggle-modal" class="btn-primary-action" style="cursor: pointer;">
+                        + Novo produto
                     </label>
                 </div>
             </div>
 
-            <p class="section-description">Gerencie seu catálogo de produtos e serviços para facilitar os lançamentos</p>
+            <p class="section-description">Aqui você pode gerenciar seu estoque e quais produtos você ainda tem nele</p>
 
-            <!-- Cards de Indicadores (KPIs dinâmicos via Thymeleaf) -->
-            <div class="kpi-cards-grid">
-                <div class="kpi-card">
-                    <span class="kpi-icon">📦</span>
-                    <span class="kpi-label">Total:</span>
-                    <span class="kpi-value" th:text="${totalItens}">0</span>
-                </div>
-                <div class="kpi-card">
-                    <span class="kpi-icon">💲</span>
-                    <span class="kpi-label">Valor em estoque:</span>
-                    <span class="kpi-value" th:text="${'R$ ' + #numbers.formatDecimal(valorTotalEstoque, 1, 'COMMA', 2, 'POINT')}">R$ 0,00</span>
-                </div>
-                <div class="kpi-card">
-                    <span class="kpi-icon">🛍️</span>
-                    <span class="kpi-label">Produtos:</span>
-                    <span class="kpi-value" th:text="${totalItens}">0</span>
+            <!-- Card de Total de Produtos alinhado à direita -->
+            <div class="top-kpi-container">
+                <div class="kpi-box">
+                   <span class="kpi-box-label">
+<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M16.5 9.4l-9-5.19M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"></path><polyline points="3.27 6.96 12 12.01 20.73 6.96"></polyline><line x1="12" y1="22.08" x2="12" y2="12"></line></svg>                       TOTAL DE PRODUTOS:
+                   </span>
+                    <span class="kpi-box-value" th:text="${totalProdutos}">5</span>
                 </div>
             </div>
 
-            <!-- Tabela de Produtos/Serviços -->
-            <div class="table-container">
-                <table class="data-table">
-                    <thead>
-                    <tr>
-                        <th>NOME</th>
-                        <th>TIPO</th>
-                        <th>PREÇO (ATUALIZAR)</th>
-                        <th>VALIDADE</th>
-                        <th>ESTOQUE (ATUALIZAR)</th>
-                        <th>STATUS</th>
-                        <th>EXCLUIR</th>
-                    </tr>
-                    </thead>
-                    <tbody id="productTableBody">
+            <!-- Wrapper da Tabela e Filtros -->
+            <div class="table-wrapper-card">
 
-                    <!-- Estado Vazio caso não haja produtos -->
-                    <tr th:if="${#lists.isEmpty(produtos)}">
-                        <td colspan="7" class="empty-state-cell">
-                            <div class="empty-state-content">
-                                <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M21 16.5c0 .38-.21.71-.53.88l-7.9 4.44c-.16.09-.34.14-.57.14s-.41-.05-.57-.14l-7.9-4.44A1.002 1.002 0 0 1 3 16.5v-9c0-.38.21-.71.53-.88l7.9-4.44c.16-.09.34-.14.57-.14s.41.05.57.14l7.9 4.44c.32.17.53.5.53.88v9zM12 4.15L6.04 7.5 12 10.85l5.96-3.35L12 4.15z"/></svg>
-                                <p class="empty-title">Nenhum produto/serviço cadastrado</p>
-                                <p class="empty-subtitle">Comece criando seu primeiro produto ou serviço para facilitar os lançamentos.</p>
-                            </div>
-                        </td>
-                    </tr>
+                <!-- Barra de Pesquisa e Filtros -->
+                <div class="filter-bar">
+                    <div class="search-box">
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
+                        <input type="text" placeholder="Buscar: Insira código ou nome do produto...">
+                    </div>
+                    <div class="filter-dropdown">
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="22 3 2 3 10 12.46 10 19 14 21 14 12.46 22 3"></polygon></svg>
+                        <span style="font-size: 0.85rem; font-weight: 600;">Selecionar</span>
+                        <select style="border: none; outline: none; background: transparent; font-size: 0.85rem;">
+                            <option value="">Todos</option>
+                        </select>
+                    </div>
+                    <div class="filter-dropdown">
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="4" y1="21" x2="4" y2="14"></line><line x1="4" y1="10" x2="4" y2="3"></line><line x1="12" y1="21" x2="12" y2="12"></line><line x1="12" y1="8" x2="12" y2="3"></line><line x1="20" y1="21" x2="20" y2="16"></line><line x1="20" y1="12" x2="20" y2="3"></line><line x1="1" y1="14" x2="7" y2="14"></line><line x1="9" y1="8" x2="15" y2="8"></line><line x1="17" y1="16" x2="23" y2="16"></line></svg>
+                        <span style="font-size: 0.85rem; font-weight: 600;">Filtro</span>
+                        <select style="border: none; outline: none; background: transparent; font-size: 0.85rem;">
+                            <option value="">Padrão</option>
+                        </select>
+                    </div>
+                </div>
 
-                    <!-- Loop dinâmico iterando sobre a lista de produtos do Banco -->
-                    <tr th:each="p : ${produtos}">
-                        <!-- 1. NOME -->
-                        <td><strong th:text="${p.nome}">Nome</strong></td>
+                <!-- Tabela de Produtos -->
+                <div class="table-container">
+                    <table class="data-table">
+                        <thead>
+                        <tr>
+                            <th>CÓDIGO</th>
+                            <th>
+                                <div style="display: inline-flex; align-items: center; justify-content: center; gap: 6px;">
+                                    PRODUTO
+                                </div>
+                            </th>
+                            <th>PREÇO</th>
+                            <th>CATEGORIA</th>
+                            <th>AÇÕES</th>
+                        </tr>
+                        </thead>
+                        <tbody id="productTableBody">
 
-                        <!-- 2. TIPO -->
-                        <td><span class="badge-type produto">Produto</span></td>
+                        <!-- Estado Vazio caso não haja produtos -->
+                        <tr th:if="${#lists.isEmpty(produtos)}">
+                            <td colspan="5" style="padding: 30px; text-align: center;">
+                                <p style="font-weight: 600; color: var(--primary-color);">Nenhum produto cadastrado.</p>
+                            </td>
+                        </tr>
 
-                        <!-- 3. PREÇO (ATUALIZAR) -->
-                        <td>
-                            <form th:action="@{/recanto/produtos/atualizar-preco/{id}(id=${p.codigo})}" method="post" style="display: flex; gap: 4px; align-items: center;">
-                                <input type="number" step="0.01" name="preco" th:value="${p.preco}" style="width: 80px; padding: 4px;" required />
-                                <button type="submit" title="Salvar Novo Preço" style="background: none; border: none; cursor: pointer;">💾</button>
-                            </form>
-                        </td>
+                        <!-- Loop dinâmico iterando sobre a lista de produtos -->
+                        <tr th:each="p : ${produtos}">
+                            <!-- 1. CÓDIGO -->
+                            <td><strong th:text="${p.codigo}">01</strong></td>
 
-                        <!-- 4. VALIDADE -->
-                        <td th:text="${p.data}">-</td>
+                            <!-- 2. PRODUTO (Nome) -->
+                            <td><span th:text="${p.nome}">Pão de queijo</span></td>
 
-                        <!-- 5. ESTOQUE (ATUALIZAR) -->
-                        <td>
-                            <form th:action="@{/recanto/produtos/atualizar/{id}(id=${p.codigo})}" method="post" style="display: flex; gap: 4px; align-items: center;">
-                                <input type="number" name="quantidade" th:value="${p.quantidade}" style="width: 60px; padding: 4px;" required />
-                                <button type="submit" title="Salvar Novo Estoque" style="background: none; border: none; cursor: pointer;">💾</button>
-                            </form>
-                        </td>
+                            <!-- 3. PREÇO (Com modo de visualização e formulário de edição inline) -->
+                            <td>
+                                <!-- Modo normal (texto) -->
+                                <span th:id="'preco-texto-' + ${p.codigo}" th:text="${p.preco}">25,00</span>
 
-                        <!-- 6. STATUS -->
-                        <td><span class="badge-status ativo">Ativo</span></td>
+                                <!-- Formulário oculto que aparece ao clicar no lápis -->
+                                <form th:id="'preco-form-' + ${p.codigo}" th:action="@{/recanto/produtos/atualizar-preco/{id}(id=${p.codigo})}" method="post" class="inline-form" style="display: none;">
+                                    <input type="number" step="0.01" name="preco" th:value="${p.preco}" class="inline-input" required />
+                                    <button type="submit" class="btn-icon-action" title="Salvar Alteração">💾</button>
+                                </form>
+                            </td>
 
-                        <!-- 7. AÇÕES -->
-                        <td style="display: flex; gap: 8px; align-items: center;">
-                            <form th:action="@{/recanto/produtos/deletar}" method="post" style="display:inline;">
-                                <input type="hidden" name="id" th:value="${p.codigo}" />
-                                <button type="submit" class="btn-delete" title="Excluir" style="background:none; border:none; cursor:pointer;">🗑️</button>
-                            </form>
-                        </td>
-                    </tr>
+                            <!-- 4. CATEGORIA -->
+                            <td><span th:text="${p.tipo != null ? p.tipo : 'ALIMENTO'}">ALIMENTO</span></td>
 
-                    </tbody>
-                </table>
+                            <!-- 5. AÇÕES -->
+                            <td>
+                                <div style="display: flex; gap: 8px; justify-content: center; align-items: center;">
+                                    <!-- Botão Lápis que ativa a edição do preço na mesma linha -->
+                                    <button type="button" class="btn-icon-action" th:onclick="'habilitarEdicao(' + ${p.codigo} + ')'" title="Editar Preço">✏️</button>
+
+                                    <!-- Botão Excluir (Lixeira) -->
+                                    <form th:action="@{/recanto/produtos/deletar}" method="post" style="display:inline;">
+                                        <input type="hidden" name="id" th:value="${p.codigo}" />
+                                        <button type="submit" class="btn-icon-action" title="Excluir">🗑️</button>
+                                    </form>
+                                </div>
+                            </td>
+                        </tr>
+
+                        </tbody>
+                    </table>
+                </div>
+
             </div>
 
         </div>
@@ -173,20 +624,21 @@
     <div class="modal-card">
         <div class="modal-header">
             <h2>Novo Produto ou Serviço</h2>
-            <label for="toggle-modal" class="close-modal-btn" style="cursor: pointer; font-size: 24px;">&times;</label>
+            <label for="toggle-modal" class="close-modal-btn">&times;</label>
         </div>
 
-        <form th:action="@{/recanto/produtos}" th:object="${produtoDto}" method="post" id="productForm" class="modal-form">
+        <form th:action="@{/recanto/produtos}" method="post" id="productForm" class="modal-form">
             <div class="form-row">
                 <div class="input-group">
                     <label for="modalName">Nome do Item *</label>
-                    <input type="text" id="modalName" name="nome" required placeholder="Ex: Café Especial">
+                    <input type="text" id="modalName" name="nome" required placeholder="Ex: Pão de queijo">
                 </div>
                 <div class="input-group">
-                    <label for="modalType">Tipo *</label>
+                    <label for="modalType">Tipo / Categoria *</label>
                     <select id="modalType" name="tipo" required>
-                        <option value="Produto">Produto</option>
-                        <option value="Serviço">Serviço</option>
+                        <option value="ALIMENTO">Alimento</option>
+                        <option value="PRODUTO">Produto</option>
+                        <option value="SERVIÇO">Serviço</option>
                     </select>
                 </div>
             </div>
@@ -208,32 +660,34 @@
                     <input type="number" id="modalMinStock" name="quantidadeMinima" value="0" placeholder="0">
                 </div>
                 <div class="input-group">
-                    <label for="modalValidity">Registro</label>
+                    <label for="modalValidity">Registro / Data</label>
                     <input type="date" id="modalValidity" name="data">
                 </div>
             </div>
 
             <div class="modal-actions">
-                <label for="toggle-modal" class="btn-cancel" style="cursor: pointer; text-align: center; padding: 10px;">Cancelar</label>
+                <label for="toggle-modal" class="btn-cancel" style="cursor: pointer; display: inline-flex; align-items: center;">Cancelar</label>
                 <button type="submit" class="btn-save">Salvar Item</button>
             </div>
         </form>
     </div>
 </div>
 
-<!-- Estilo Puro CSS para controlar a abertura do modal -->
-<style>
-    #toggle-modal:checked ~ .modal-overlay,
-    #toggle-modal:checked ~ * .modal-overlay,
-    body:has(#toggle-modal:checked) #productModal {
-        display: flex !important;
-        opacity: 1 !important;
-        visibility: visible !important;
+<!-- Script simples para alternar entre visualização e edição do preço -->
+<script>
+    function habilitarEdicao(codigo) {
+        var spanTexto = document.getElementById('preco-texto-' + codigo);
+        var formEdicao = document.getElementById('preco-form-' + codigo);
+
+        if (spanTexto.style.display !== 'none') {
+            spanTexto.style.display = 'none';
+            formEdicao.style.display = 'inline-flex';
+        } else {
+            spanTexto.style.display = 'inline';
+            formEdicao.style.display = 'none';
+        }
     }
-    #productModal {
-        display: none;
-    }
-</style>
+</script>
 
 </body>
 </html>

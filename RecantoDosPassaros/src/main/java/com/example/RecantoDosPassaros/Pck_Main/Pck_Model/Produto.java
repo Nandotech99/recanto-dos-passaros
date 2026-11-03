@@ -29,5 +29,5 @@ public class Produto {
     private int quantidade_min;
     private double preco;
     private String data;
-    private String registro;
+    private String tipo;
 }

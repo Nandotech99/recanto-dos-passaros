@@ -7,15 +7,15 @@ public class DAO {
     private String connStr;
     private Connection conn;
 
-    private static final String URL = "jdbc:mysql://127.0.0.1:3306/cafeteria-bd";// trocar a porta
-    private static final String login = "root";
-    private static final String senha ="P@$$w0rd";
+    private static final String URL = "jdbc:mysql://localhost:3306/cafeteria_bd?useSSL=false&serverTimezone=UTC";// trocar a porta
+    private static final String login = "nando";
+    private static final String senha ="12";
 
     public DAO()
     {
         this.sDriver="com.mysql.cj.jdbc.Driver";
         this.sServidor="localhost";
-        this.connStr="jdbc:mysql://127.0.0.1:3306/cafeteria-bd";
+        this.connStr="jdbc:mysql://localhost:3306/cafeteria_bd?useSSL=false&serverTimezone=UTC";
 
     }
     public Connection getConexao(String login,String senha)throws SQLException{
