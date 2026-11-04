@@ -2,18 +2,29 @@
 -- 1. ESTRUTURA DE TABELAS
 ---
 
+DROP TABLE IF EXISTS item;
+DROP TABLE IF EXISTS estoque;
+DROP TABLE IF EXISTS produto;
+DROP TABLE IF EXISTS venda;
+
 CREATE TABLE venda (
                        cod_venda   INT PRIMARY KEY AUTO_INCREMENT,
                        valortotal  DECIMAL(10,2) NOT NULL DEFAULT 0
 );
 
 CREATE TABLE produto (
-                         id             INT PRIMARY KEY  AUTO_INCREMENT,
-                         nome            VARCHAR(50) NOT NULL,
+                         id          INT PRIMARY KEY AUTO_INCREMENT,
+                         nome        VARCHAR(50) NOT NULL,
+                         preco       DECIMAL(10,2) NOT NULL,
+                         categoria   VARCHAR(50) NOT NULL
+);
+
+CREATE TABLE estoque (
+                         cod_estoque     INT PRIMARY KEY AUTO_INCREMENT,
+                         cod_produto     INT NOT NULL,
                          quantidade      INT NOT NULL,
                          quantidade_min  INT NOT NULL,
-                         preco           DECIMAL(10,2) NOT NULL,
-                         data            VARCHAR(50) NOT NULL
+                         FOREIGN KEY (cod_produto) REFERENCES produto (id)
 );
 
 CREATE TABLE item (
@@ -36,10 +47,11 @@ CREATE FUNCTION soma_subtotal(p_cod_produto INT, p_quantidade INT)
     RETURNS DECIMAL(10,2)
     DETERMINISTIC
 BEGIN
-    DECLARE f_preco DECIMAL(5,2);
-SELECT preco INTO f_preco FROM produto WHERE cod = p_cod_produto;
+    DECLARE f_preco DECIMAL(10,2);
+SELECT preco INTO f_preco FROM produto WHERE id = p_cod_produto;
 RETURN f_preco * p_quantidade;
 END //
+DELIMITER ;
 
 DELIMITER //
 CREATE PROCEDURE abrir_venda(OUT p_cod_venda INT)
@@ -47,27 +59,29 @@ BEGIN
 INSERT INTO venda(valortotal) VALUES (0);
 SET p_cod_venda = LAST_INSERT_ID();
 END //
+DELIMITER ;
 
 DELIMITER //
 CREATE PROCEDURE add_item_venda(
-    IN p_id_venda 		INT,
-    IN p_id_produto 	INT,
-    IN p_quantidade 	INT
+    IN p_id_venda      INT,
+    IN p_id_produto    INT,
+    IN p_quantidade    INT
 )
 BEGIN
-    DECLARE d_preco     DECIMAL(5,2);
+    DECLARE d_preco     DECIMAL(10,2);
     DECLARE d_nome      VARCHAR(50);
     DECLARE d_subtotal  DECIMAL(10,2);
 
-SELECT nome, preco INTO d_nome, d_preco FROM produto WHERE id = p_cod_produto;
+SELECT nome, preco INTO d_nome, d_preco FROM produto WHERE id = p_id_produto;
 
-SET d_subtotal = soma_subtotal(p_cod_produto, p_quantidade);
+SET d_subtotal = soma_subtotal(p_id_produto, p_quantidade);
 
 INSERT INTO item(cod_venda, cod_produto, nome, preco, quantidade)
-VALUES (p_cod_venda, p_cod_produto, d_nome, d_preco, p_quantidade);
+VALUES (p_id_venda, p_id_produto, d_nome, d_preco, p_quantidade);
 
-UPDATE venda SET valortotal = valortotal + d_subtotal WHERE cod_venda = p_cod_venda;
+UPDATE venda SET valortotal = valortotal + d_subtotal WHERE cod_venda = p_id_venda;
 END //
+DELIMITER ;
 
 ---
 -- 3. AUTOMATIZAÇÃO (TRIGGERS)
@@ -78,14 +92,14 @@ CREATE TRIGGER baixa_estoque
     AFTER INSERT ON item
     FOR EACH ROW
 BEGIN
-    UPDATE produto
+    UPDATE estoque
     SET quantidade = quantidade - NEW.quantidade
-    WHERE id = NEW.cod_produto;
+    WHERE cod_produto = NEW.cod_produto;
 END //
 DELIMITER ;
 
 ---
--- 4. PROCEDIMENTOS DE CONSULTA (CRUD)
+-- 4. PROCEDIMENTOS DE CONSULTA E CRUD
 ---
 
 DELIMITER //
@@ -95,59 +109,85 @@ SELECT cod_venda AS CODIGO, valortotal AS VALOR_TOTAL
 FROM venda
 WHERE cod_venda = p_cod_venda OR p_cod_venda IS NULL;
 END //
+DELIMITER ;
 
 DELIMITER //
 CREATE PROCEDURE exibir_item(IN p_cod_venda INT)
 BEGIN
-SELECT i.cod_item 		AS ITEM,
-       i.cod_produto 	AS COD_PROD,
-       p.nome 			AS PRODUTO,
-       p.preco 			AS PRECO,
-       i.quantidade 	AS QUANTIDADE
+SELECT i.cod_item       AS ITEM,
+       i.cod_produto    AS COD_PROD,
+       p.nome           AS PRODUTO,
+       p.preco          AS PRECO,
+       i.quantidade     AS QUANTIDADE
 FROM item i
-         INNER JOIN produto p ON i.cod_produto = p.cod
+         INNER JOIN produto p ON i.cod_produto = p.id
 WHERE i.cod_venda = p_cod_venda;
 END //
-DELIMITER //
+DELIMITER ;
 
+DELIMITER //
 CREATE PROCEDURE exibir_produto_por_id(IN p_cod INT)
 BEGIN
-    SELECT id AS CODIGO,
-           nome AS PRODUTO,
-           quantidade AS QUANTIDADE,
-           quantidade_min AS QUANTIDADE_MIN,
-           preco AS PRECO,
-           DATE_FORMAT(data, '%d/%m/%Y') AS DATA
-    FROM produto
-    WHERE id = p_cod;
+SELECT p.id AS CODIGO,
+       p.nome AS PRODUTO,
+       p.preco AS PRECO,
+       p.categoria AS CATEGORIA,
+       e.quantidade AS QUANTIDADE,
+       e.quantidade_min AS QUANTIDADE_MIN
+FROM produto p
+         LEFT JOIN estoque e ON p.id = e.cod_produto
+WHERE p.id = p_cod;
 END //
-
 DELIMITER ;
+
 DELIMITER //
 CREATE PROCEDURE exibir_produto()
 BEGIN
-SELECT id AS CODIGO,
-       nome AS PRODUTO,
-       quantidade AS QUANTIDADE,
-       quantidade_min AS QUANTIDADE_MIN,
-       preco AS PRECO,
-       DATE_FORMAT(data, '%d/%m/%Y') AS DATA
-
-FROM produto;
+SELECT p.id AS CODIGO,
+       p.nome AS PRODUTO,
+       p.preco AS PRECO,
+       p.categoria AS CATEGORIA,
+       e.quantidade AS QUANTIDADE,
+       e.quantidade_min AS QUANTIDADE_MIN
+FROM produto p
+         LEFT JOIN estoque e ON p.id = e.cod_produto;
 END //
+DELIMITER ;
+
+DELIMITER //
+CREATE PROCEDURE exibir_estoque()
+BEGIN
+SELECT p.id AS CODIGO,
+       p.nome AS PRODUTO,
+       p.categoria AS CATEGORIA,
+       e.quantidade AS QUANTIDADE_ATUAL,
+       e.quantidade_min AS QUANTIDADE_MINIMA,
+       (e.quantidade * p.preco) AS VALOR_ESTOQUE
+FROM estoque e
+         INNER JOIN produto p ON e.cod_produto = p.id;
+END //
+DELIMITER ;
 
 DELIMITER //
 CREATE PROCEDURE ins_produto(
-     IN p_nome VARCHAR(50),
-        IN p_quantidade INT,
-        IN p_quantidade_min INT,
-        IN p_preco DECIMAL(5,2),
-        IN p_data VARCHAR(10)
-    )
-    BEGIN
-    INSERT INTO produto(nome, quantidade, quantidade_min, preco, data)
-    VALUES(p_nome, p_quantidade, p_quantidade_min, p_preco, STR_TO_DATE(p_data, '%Y-%m-%d'));
-    END //
+    IN p_nome VARCHAR(50),
+    IN p_preco DECIMAL(10,2),
+    IN p_categoria VARCHAR(50),
+    IN p_quantidade_inicial INT,
+    IN p_quantidade_min INT
+)
+BEGIN
+    DECLARE v_id_produto INT;
+
+INSERT INTO produto(nome, preco, categoria)
+VALUES(p_nome, p_preco, p_categoria);
+
+SET v_id_produto = LAST_INSERT_ID();
+
+INSERT INTO estoque(cod_produto, quantidade, quantidade_min)
+VALUES(v_id_produto, p_quantidade_inicial, p_quantidade_min);
+END //
+DELIMITER ;
 
 DELIMITER //
 CREATE PROCEDURE upt_quantidade(
@@ -155,40 +195,29 @@ CREATE PROCEDURE upt_quantidade(
     IN p_quantidade INT
 )
 BEGIN
-UPDATE produto
+UPDATE estoque
 SET quantidade = p_quantidade
-WHERE id = p_cod;
+WHERE cod_produto = p_cod;
 END //
+DELIMITER ;
 
 DELIMITER //
 CREATE PROCEDURE upt_preco(
-     IN p_cod 		INT,
-     IN p_preco		DECIMAL(10,2)
- )
- BEGIN
- UPDATE produto
- set preco = p_preco
- WHERE id = p_cod;
- END //
+    IN p_cod INT,
+    IN p_preco DECIMAL(10,2)
+)
+BEGIN
+UPDATE produto
+SET preco = p_preco
+WHERE id = p_cod;
+END //
+DELIMITER ;
 
 DELIMITER //
 CREATE PROCEDURE del_produto(IN p_cod INT)
 BEGIN
 DELETE FROM item WHERE cod_produto = p_cod;
+DELETE FROM estoque WHERE cod_produto = p_cod;
 DELETE FROM produto WHERE id = p_cod;
 END //
-
--- 5. SEGURANÇA E TESTES
-
-DROP TABLE IF EXISTS produto;
-DROP TABLE IF EXISTS item;
-DROP TABLE IF EXISTS venda;
-
-SELECT *
-FROM produto;
-
-SELECT *
-FROM item;
-
-SELECT *
-FROM venda;
+DELIMITER ;
