@@ -25,9 +25,9 @@
             <div class="nav-section">
                 <span class="nav-section-title">Cadastro</span>
                 <ul class="nav-list">
-                    <li><a th:href="@{/produtos}" class="nav-item">Produtos</a></li>
-                    <li><a th:href="@{/estoque}" class="nav-item active">Estoque</a></li>
-                    <li><a th:href="@{/fornecedores}" class="nav-item">Fornecedor</a></li>
+                    <li><a th:href="@{/recanto/produtos}" class="nav-item">Produtos</a></li>
+                    <li><a th:href="@{/recanto/estoque}" class="nav-item active">Estoque</a></li>
+                    <li><a href="#" class="nav-item">Fornecedor</a></li>
                 </ul>
             </div>
 
@@ -90,7 +90,8 @@
                     <span class="kpi-icon">⚠️</span>
                     <div>
                         <div class="kpi-label">Abaixo do Mínimo</div>
-                        <div class="kpi-value" style="color: var(--color-required, #A8201A);" th:text="${totalCriticos != null ? totalCriticos : '0'}">0</div>
+                        <!-- Corrigido o erro de sintaxe do estilo CSS que estava cortado (-- color-required, #A) -->
+                        <div class="kpi-value" style="color: #991B1B;" th:text="${totalCriticos != null ? totalCriticos : '0'}">0</div>
                     </div>
                 </div>
                 <div class="kpi-card">
@@ -155,50 +156,53 @@
     </main>
 </div>
 
-<!-- Modal de Movimentação -->
+<!-- Modal de Cadastro / Novo Item -->
 <div id="productModal" class="modal-overlay">
     <div class="modal-card">
         <div class="modal-header">
-            <h2>Movimentação de Estoque</h2>
-            <label for="toggle-modal" class="close-modal-btn" style="cursor: pointer; font-size: 24px;">&times;</label>
+            <h2>Novo Produto</h2>
+            <label for="toggle-modal" class="close-modal-btn">&times;</label>
         </div>
 
-        <form th:action="@{/estoque/salvar}" method="post" class="modal-form">
+        <form th:action="@{/recanto/produtos}" method="post" id="productForm" class="modal-form">
             <div class="form-row">
                 <div class="input-group">
-                    <label for="produtoSelect">Produto *</label>
-                    <select id="produtoSelect" name="codigoProduto" required>
-                        <option value="">Selecione o produto...</option>
-                        <option th:each="p : ${produtosDisponiveis}" th:value="${p.codigo}" th:text="${p.nome}">Ração</option>
-                    </select>
+                    <label for="modalName">Nome*</label>
+                    <input type="text" id="modalName" name="nome" required placeholder="Ex: Pão de queijo">
+                </div>
+                <div class="input-group">
+                    <label for="modalPrice">Preço (R$) *</label>
+                    <input type="number" step="0.01" id="modalPrice" name="preco" required placeholder="0,00">
+                </div>
+            </div>
+
+            <div class="form-row">
+                <div class="input-group">
+                    <label for="modalStock">Quantidade em Estoque</label>
+                    <input type="number" id="modalStock" name="quantidade" value="0" placeholder="0">
                 </div>
                 <div class="input-group">
                     <label for="modalMinStock">Quantidade Mínima</label>
                     <input type="number" id="modalMinStock" name="quantidadeMinima" value="0" placeholder="0">
                 </div>
-                <div class="input-group">
-                    <label for="tipoMovimento">Tipo de Movimento *</label>
-                    <select id="tipoMovimento" name="tipo" required>
-                        <option value="ENTRADA">Entrada (+)</option>
-                        <option value="SAIDA">Saída (-)</option>
+            </div>
+
+            <div class="form-row">
+                <div class="input-group" style="flex: 1;">
+                    <label for="modalCategory">Categoria *</label>
+                    <select id="modalCategory" name="categoria" required>
+                        <option value="DOCE">Doce</option>
+                        <option value="SALGADO">Salgado</option>
+                        <option value="LANCHE">Lanche</option>
+                        <option value="BEBIDA">Bebida</option>
+                        <option value="REFEIÇÃO">Refeição</option>
                     </select>
                 </div>
             </div>
 
-            <div class="form-row">
-                <div class="input-group">
-                    <label for="quantidadeMov">Quantidade *</label>
-                    <input type="number" id="quantidadeMov" name="quantidade" min="1" placeholder="Ex: 10" required>
-                </div>
-                <div class="input-group">
-                    <label for="motivoMov">Motivo / Observação</label>
-                    <input type="text" id="motivoMov" name="observacao" placeholder="Ex: Compra de fornecedor, Venda, Avaria">
-                </div>
-            </div>
-
             <div class="modal-actions">
-                <label for="toggle-modal" class="btn-cancel" style="cursor: pointer; display: inline-flex; align-items: center; justify-content: center;">Cancelar</label>
-                <button type="submit" class="btn-save">Salvar Movimento</button>
+                <label for="toggle-modal" class="btn-cancel" style="cursor: pointer; display: inline-flex; align-items: center;">Cancelar</label>
+                <button type="submit" class="btn-save">Salvar Item</button>
             </div>
         </form>
     </div>

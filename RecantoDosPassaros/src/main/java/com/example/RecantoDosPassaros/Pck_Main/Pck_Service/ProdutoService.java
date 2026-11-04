@@ -9,34 +9,33 @@ import java.util.List;
 @Service
 public class ProdutoService {
 
-private ProdutoProcedure produtoProcedure;
+    private final ProdutoProcedure produtoProcedure;
 
     public ProdutoService(ProdutoProcedure produtoProcedure) {
         this.produtoProcedure = produtoProcedure;
     }
-    public void produtoSave(Produto produto){
-        produtoProcedure.inserir( produto);
+
+    public void produtoSave(Produto produto) {
+        produtoProcedure.inserir(produto);
     }
 
-    public List<Produto> getProdList(){
+    public List<Produto> getProdList() {
         return produtoProcedure.consulta();
     }
 
-    public void deleteProd(int id){
+    public void deleteProd(int id) {
         produtoProcedure.delete(id);
     }
 
-    public void putProd(int id,Produto produto){
-         produtoProcedure.Uptade(id ,produto);
-    }
-    public void putProdPreco(int id, Produto produto){
-        produtoProcedure.AtualizarPreco(id,produto);
+    public void putProd(int id, Produto produto) {
+        produtoProcedure.Uptade(id, produto);
     }
 
+    public void putProdPreco(int id, Produto produto) {
+        produtoProcedure.AtualizarPreco(id, produto);
+    }
 
     public Produto getProdById(int codigoProduto) {
-            return produtoProcedure.getById(codigoProduto);
+        return produtoProcedure.getById(codigoProduto);
     }
 }
-
-

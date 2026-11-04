@@ -22,12 +22,12 @@ public class Produto {
                 retornam o valor, ou seja, eles devolvem
                 o valor do set
          */
-        // TABELA - PRODUTO
-        private int codigo;
+
+    // TABELAS - PRODUTO E ESTOQUE
+    private int codigo;
     private String nome;
     private int quantidade;
     private int quantidade_min;
     private double preco;
-    private String data;
-    private String tipo;
+    private String categoria;
 }

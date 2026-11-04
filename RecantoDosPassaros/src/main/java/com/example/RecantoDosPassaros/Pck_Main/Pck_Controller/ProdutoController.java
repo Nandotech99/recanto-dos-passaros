@@ -4,7 +4,7 @@ import com.example.RecantoDosPassaros.Pck_Main.Pck_DTO.ProdutoDto;
 import com.example.RecantoDosPassaros.Pck_Main.Pck_Model.Produto;
 import com.example.RecantoDosPassaros.Pck_Main.Pck_Service.ProdutoService;
 import lombok.AllArgsConstructor;
-import org.springframework.stereotype.Controller; // <-- Certifique-se de usar o Controller do Spring MVC
+import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
@@ -14,7 +14,7 @@ import java.util.List;
 @Controller
 @RequestMapping("/recanto/produtos")
 public class ProdutoController {
-    private ProdutoService produtoService;
+    private final ProdutoService produtoService;
 
     @GetMapping
     public String getProds(Model model) {
@@ -33,7 +33,8 @@ public class ProdutoController {
         model.addAttribute("totalItens", totalItens);
         model.addAttribute("valorTotalEstoque", valorTotalEstoque);
         model.addAttribute("totalProdutos", totalProdutos);
-        model.addAttribute("produtoDto", new ProdutoDto("", 0, 0, 0.0, "", ""));
+        // Atualizado para coincidir com os 5 campos do novo ProdutoDto (sem data, com categoria)
+        model.addAttribute("produtoDto", new ProdutoDto("", 0, 0, 0.0, ""));
         return "produtos";
     }
 
@@ -43,7 +44,7 @@ public class ProdutoController {
             @RequestParam("quantidade") int quantidade,
             @RequestParam("quantidadeMinima") int quantidadeMinima,
             @RequestParam("preco") double preco,
-            @RequestParam("data") String data) {
+            @RequestParam("categoria") String categoria) { // Alterado de "data" para "categoria"
 
         Produto produto = new Produto();
 
@@ -51,7 +52,7 @@ public class ProdutoController {
         produto.setQuantidade(quantidade);
         produto.setQuantidade_min(quantidadeMinima);
         produto.setPreco(preco);
-        produto.setData(data);
+        produto.setCategoria(categoria); // Alterado de setData para setCategoria
 
         produtoService.produtoSave(produto);
 
@@ -68,7 +69,6 @@ public class ProdutoController {
     public String putProdEstoque(
             @PathVariable("id") int id,
             @RequestParam("quantidade") int quantidade
-
     ) {
         Produto produto = new Produto();
         produto.setQuantidade(quantidade);

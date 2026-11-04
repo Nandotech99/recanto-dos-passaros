@@ -8,134 +8,112 @@ import java.sql.CallableStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
+
 @Repository
 public class ProdutoProcedure {
 
     CallableStatement oCall;
     DAO oConectar = new DAO();
-    private static final String login ="nando";
-    private static final String senha ="12";
+    private static final String login = "nando";
+    private static final String senha = "12";
 
-    public void inserir(Produto produto){
+    public void inserir(Produto produto) {
         try {
-            try {
-                oCall=oConectar.getConexao(login,senha).prepareCall("CAll ins_produto(?,?,?,?,?)");
-                oCall.setString(1,produto.getNome());
-                oCall.setInt(2,produto.getQuantidade());
-                oCall.setInt(3,produto.getQuantidade_min());
-                oCall.setDouble(4,produto.getPreco());
-                oCall.setString(5,produto.getData());
-
-                oCall.execute();
-            } catch (SQLException e){
-                e.printStackTrace();
-            }
+            oCall = oConectar.getConexao(login, senha).prepareCall("CALL ins_produto(?,?,?,?,?)");
+            oCall.setString(1, produto.getNome());
+            oCall.setDouble(2, produto.getPreco());
+            oCall.setString(3, produto.getCategoria());
+            oCall.setInt(4, produto.getQuantidade());
+            oCall.setInt(5, produto.getQuantidade_min());
+            oCall.execute();
+        } catch (SQLException e) {
+            e.printStackTrace();
         } finally {
             oConectar.desconectar();
         }
     }
 
-
-
-
     public ArrayList<Produto> consulta() {
-        ArrayList<Produto> lista = new ArrayList<>(); // Lista para guardar os produtos encontrados
+        ArrayList<Produto> lista = new ArrayList<>();
         try {
-            try {
-                oCall = oConectar.getConexao(login, senha).prepareCall("CALL exibir_produto()");
-                ResultSet rs = oCall.executeQuery();
-                while (rs.next()) {
-                    Produto produto = new Produto();
-                    // Pega os dados das colunas do banco e coloca no objeto Model
-                    produto.setCodigo(rs.getInt("CODIGO"));
-                    produto.setNome(rs.getString("PRODUTO"));
-                    produto.setQuantidade(rs.getInt("QUANTIDADE"));
-                    produto.setQuantidade_min(rs.getInt("QUANTIDADE MINIMA"));
-                    produto.setPreco((rs.getDouble("PREÇO")));
-                    produto.setData(rs.getString("DATA"));
+            oCall = oConectar.getConexao(login, senha).prepareCall("CALL exibir_produto()");
+            ResultSet rs = oCall.executeQuery();
+            while (rs.next()) {
+                Produto produto = new Produto();
+                produto.setCodigo(rs.getInt("CODIGO"));
+                produto.setNome(rs.getString("PRODUTO"));
+                produto.setPreco(rs.getDouble("PRECO"));
+                produto.setCategoria(rs.getString("CATEGORIA"));
+                produto.setQuantidade(rs.getInt("QUANTIDADE"));
+                produto.setQuantidade_min(rs.getInt("QUANTIDADE_MIN")); // Padronizado
 
-                    lista.add(produto); // Adiciona o produto na lista
-                }
-            } catch (SQLException e) {
-                e.printStackTrace();
+                lista.add(produto);
             }
+        } catch (SQLException e) {
+            e.printStackTrace();
         } finally {
             oConectar.desconectar();
         }
         return lista;
     }
+
     public Produto getById(int id) {
         Produto produto = null;
         try {
-            try {
-                oCall = oConectar.getConexao(login, senha).prepareCall("CALL exibir_produto_por_id(?)");
-                oCall.setInt(1, id);
-                ResultSet rs = oCall.executeQuery();
+            oCall = oConectar.getConexao(login, senha).prepareCall("CALL exibir_produto_por_id(?)");
+            oCall.setInt(1, id);
+            ResultSet rs = oCall.executeQuery();
 
-                if (rs.next()) {
-                    produto = new Produto();
-
-                    produto.setCodigo(rs.getInt("CODIGO"));
-                    produto.setNome(rs.getString("PRODUTO"));
-                    produto.setQuantidade(rs.getInt("QUANTIDADE"));
-                    produto.setQuantidade_min(rs.getInt("QUANTIDADE_MIN"));
-                    produto.setPreco(rs.getDouble("PRECO"));
-                    produto.setData(rs.getString("DATA"));
-                }
-            } catch (SQLException e) {
-                e.printStackTrace();
+            if (rs.next()) {
+                produto = new Produto();
+                produto.setCodigo(rs.getInt("CODIGO"));
+                produto.setNome(rs.getString("PRODUTO"));
+                produto.setPreco(rs.getDouble("PRECO"));
+                produto.setCategoria(rs.getString("CATEGORIA"));
+                produto.setQuantidade(rs.getInt("QUANTIDADE"));
+                produto.setQuantidade_min(rs.getInt("QUANTIDADE_MIN")); // Padronizado
             }
+        } catch (SQLException e) {
+            e.printStackTrace();
         } finally {
             oConectar.desconectar();
         }
         return produto;
     }
-    public void Uptade(int id,Produto produto) {
+
+    public void Uptade(int id, Produto produto) {
         try {
-                try {
-
-                        oCall = oConectar.getConexao(login, senha).prepareCall("CALL upt_quantidade(?,?)");
-                        oCall.setInt(1, id);
-                        oCall.setInt(2, produto.getQuantidade());
-                        oCall.execute();
-                        System.out.println("Estoque do codigo:" + produto.getCodigo() + " atualizado com sucesso!");
-
-                } catch (SQLException e) {
-                    e.printStackTrace();
-                }
-            } finally {
-                oConectar.desconectar();
-            }
+            oCall = oConectar.getConexao(login, senha).prepareCall("CALL upt_quantidade(?,?)");
+            oCall.setInt(1, id);
+            oCall.setInt(2, produto.getQuantidade());
+            oCall.execute();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } finally {
+            oConectar.desconectar();
+        }
     }
 
     public void delete(int id) {
         try {
-            try {
-                    oCall = oConectar.getConexao(login, senha).prepareCall("CALL del_produto(?)");
-                    oCall.setInt(1, id);
-                    oCall.execute();
-
-            } catch (SQLException e) {
-                e.printStackTrace();
-            }
+            oCall = oConectar.getConexao(login, senha).prepareCall("CALL del_produto(?)");
+            oCall.setInt(1, id);
+            oCall.execute();
+        } catch (SQLException e) {
+            e.printStackTrace();
         } finally {
             oConectar.desconectar();
         }
+    }
 
-        }
-    public void AtualizarPreco(int id,Produto produto) {
+    public void AtualizarPreco(int id, Produto produto) {
         try {
-            try {
-                    oCall = oConectar.getConexao(login, senha).prepareCall("CALL upt_preco(?,?)");
-                    oCall.setInt(1, id);
-                    oCall.setDouble(2, produto.getPreco());
-
-                    oCall.execute();
-                    System.out.println("Preço do codigo:" + produto.getCodigo() + " atualizado com sucesso!");
-
-            } catch (SQLException e) {
-                e.printStackTrace();
-            }
+            oCall = oConectar.getConexao(login, senha).prepareCall("CALL upt_preco(?,?)");
+            oCall.setInt(1, id);
+            oCall.setDouble(2, produto.getPreco());
+            oCall.execute();
+        } catch (SQLException e) {
+            e.printStackTrace();
         } finally {
             oConectar.desconectar();
         }

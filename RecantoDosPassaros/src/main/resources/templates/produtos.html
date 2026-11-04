@@ -285,6 +285,7 @@
             font-size: 0.9rem;
             color: var(--primary-color);
             vertical-align: middle;
+            font-weight: bold; /* <-- ADICIONADO AQUI PARA DEIXAR AS LINHAS EM BOLD/NEGRITO */
         }
 
         .data-table td:last-child {
@@ -320,6 +321,7 @@
             border-radius: 4px;
             text-align: center;
             font-size: 0.9rem;
+            font-weight: bold;
         }
 
         .btn-icon-action {
@@ -528,7 +530,7 @@
                 <div class="filter-bar">
                     <div class="search-box">
                         <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
-                        <input type="text" placeholder="Buscar: Insira código ou nome do produto...">
+                        <input type="text" id="inputBusca" onkeyup="filtrarTabela()" placeholder="Buscar: Insira código ou nome do produto...">
                     </div>
                     <div class="filter-dropdown">
                         <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="22 3 2 3 10 12.46 10 19 14 21 14 12.46 22 3"></polygon></svg>
@@ -574,7 +576,7 @@
                         <!-- Loop dinâmico iterando sobre a lista de produtos -->
                         <tr th:each="p : ${produtos}">
                             <!-- 1. CÓDIGO -->
-                            <td><strong th:text="${p.codigo}">01</strong></td>
+                            <td><span th:text="${p.codigo}">01</span></td>
 
                             <!-- 2. PRODUTO (Nome) -->
                             <td><span th:text="${p.nome}">Pão de queijo</span></td>
@@ -592,7 +594,7 @@
                             </td>
 
                             <!-- 4. CATEGORIA -->
-                            <td><span th:text="${p.tipo != null ? p.tipo : 'ALIMENTO'}">ALIMENTO</span></td>
+                            <td><span th:text="${p.categoria != null ? p.categoria : 'OUTROS'}">DOCE</span></td>
 
                             <!-- 5. AÇÕES -->
                             <td>
@@ -634,11 +636,13 @@
                     <input type="text" id="modalName" name="nome" required placeholder="Ex: Pão de queijo">
                 </div>
                 <div class="input-group">
-                    <label for="modalType">Tipo / Categoria *</label>
-                    <select id="modalType" name="tipo" required>
-                        <option value="ALIMENTO">Alimento</option>
-                        <option value="PRODUTO">Produto</option>
-                        <option value="SERVIÇO">Serviço</option>
+                    <label for="modalCategory">Categoria *</label>
+                    <select id="modalCategory" name="categoria" required>
+                        <option value="DOCE">Doce</option>
+                        <option value="SALGADO">Salgado</option>
+                        <option value="LANCHE">Lanche</option>
+                        <option value="BEBIDA">Bebida</option>
+                        <option value="REFEIÇÃO">Refeição</option>
                     </select>
                 </div>
             </div>
@@ -655,13 +659,9 @@
             </div>
 
             <div class="form-row">
-                <div class="input-group">
+                <div class="input-group" style="flex: 1;">
                     <label for="modalMinStock">Quantidade Mínima</label>
                     <input type="number" id="modalMinStock" name="quantidadeMinima" value="0" placeholder="0">
-                </div>
-                <div class="input-group">
-                    <label for="modalValidity">Registro / Data</label>
-                    <input type="date" id="modalValidity" name="data">
                 </div>
             </div>
 
@@ -685,6 +685,44 @@
         } else {
             spanTexto.style.display = 'inline';
             formEdicao.style.display = 'none';
+        }
+    }
+</script>
+
+<script>
+    function filtrarTabela() {
+        // Pega o valor digitado no input e converte para letras minúsculas (para busca case-insensitive)
+        var input = document.getElementById('inputBusca');
+        var filtro = input.value.toLowerCase();
+
+        // Pega o corpo da tabela e todas as linhas de produtos
+        var tabela = document.getElementById('productTableBody');
+        var linhas = tabela.getElementsByTagName('tr');
+
+        // Percorre todas as linhas da tabela (exceto se for a linha de estado vazio)
+        for (var i = 0; i < linhas.length; i++) {
+            var linha = linhas[i];
+
+            // Verifica se é a linha de "Nenhum produto cadastrado" para não quebrá-la
+            if (linha.getElementsByTagName('td').length <= 1) {
+                continue;
+            }
+
+            // Pega as colunas de Código (índice 0) e Nome do Produto (índice 1)
+            var colunaCodigo = linha.getElementsByTagName('td')[0];
+            var colunaNome = linha.getElementsByTagName('td')[1];
+
+            if (colunaCodigo && colunaNome) {
+                var textoCodigo = colunaCodigo.textContent || colunaCodigo.innerText;
+                var textoNome = colunaNome.textContent || colunaNome.innerText;
+
+                // Verifica se o texto digitado bate com o código ou com o nome
+                if (textoCodigo.toLowerCase().indexOf(filtro) > -1 || textoNome.toLowerCase().indexOf(filtro) > -1) {
+                    linha.style.display = ""; // Mostra a linha
+                } else {
+                    linha.style.display = "none"; // Oculta a linha
+                }
+            }
         }
     }
 </script>
