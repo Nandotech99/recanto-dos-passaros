@@ -285,7 +285,7 @@
             font-size: 0.9rem;
             color: var(--primary-color);
             vertical-align: middle;
-            font-weight: bold; /* <-- ADICIONADO AQUI PARA DEIXAR AS LINHAS EM BOLD/NEGRITO */
+            font-weight: bold;
         }
 
         .data-table td:last-child {
@@ -511,13 +511,13 @@
                 </div>
             </div>
 
-            <p class="section-description">Aqui você pode gerenciar seu estoque e quais produtos você ainda tem nele</p>
+            <p class="section-description">Aqui você pode gerenciar os seus produtos, podendo cadastrar, pesquisar, filtrar, editar e remover itens e os respetivos preços e categorias </p>
 
             <!-- Card de Total de Produtos alinhado à direita -->
             <div class="top-kpi-container">
                 <div class="kpi-box">
                    <span class="kpi-box-label">
-<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M16.5 9.4l-9-5.19M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"></path><polyline points="3.27 6.96 12 12.01 20.73 6.96"></polyline><line x1="12" y1="22.08" x2="12" y2="12"></line></svg>                       TOTAL DE PRODUTOS:
+                       <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M16.5 9.4l-9-5.19M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"></path><polyline points="3.27 6.96 12 12.01 20.73 6.96"></polyline><line x1="12" y1="22.08" x2="12" y2="12"></line></svg>                       TOTAL DE PRODUTOS:
                    </span>
                     <span class="kpi-box-value" th:text="${totalProdutos}">5</span>
                 </div>
@@ -532,18 +532,17 @@
                         <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
                         <input type="text" id="inputBusca" onkeyup="filtrarTabela()" placeholder="Buscar: Insira código ou nome do produto...">
                     </div>
-                    <div class="filter-dropdown">
-                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="22 3 2 3 10 12.46 10 19 14 21 14 12.46 22 3"></polygon></svg>
-                        <span style="font-size: 0.85rem; font-weight: 600;">Selecionar</span>
-                        <select style="border: none; outline: none; background: transparent; font-size: 0.85rem;">
-                            <option value="">Todos</option>
-                        </select>
-                    </div>
+
                     <div class="filter-dropdown">
                         <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="4" y1="21" x2="4" y2="14"></line><line x1="4" y1="10" x2="4" y2="3"></line><line x1="12" y1="21" x2="12" y2="12"></line><line x1="12" y1="8" x2="12" y2="3"></line><line x1="20" y1="21" x2="20" y2="16"></line><line x1="20" y1="12" x2="20" y2="3"></line><line x1="1" y1="14" x2="7" y2="14"></line><line x1="9" y1="8" x2="15" y2="8"></line><line x1="17" y1="16" x2="23" y2="16"></line></svg>
                         <span style="font-size: 0.85rem; font-weight: 600;">Filtro</span>
-                        <select style="border: none; outline: none; background: transparent; font-size: 0.85rem;">
-                            <option value="">Padrão</option>
+                        <select id="filtroCategoria" onchange="filtrarTabela()" style="border: none; outline: none; background: transparent; font-size: 0.85rem;">
+                            <option value="">Todas as Categorias</option>
+                            <option value="DOCE">Doce</option>
+                            <option value="SALGADO">Salgado</option>
+                            <option value="LANCHE">Lanche</option>
+                            <option value="BEBIDA">Bebida</option>
+                            <option value="REFEIÇÃO">Refeição</option>
                         </select>
                     </div>
                 </div>
@@ -581,12 +580,9 @@
                             <!-- 2. PRODUTO (Nome) -->
                             <td><span th:text="${p.nome}">Pão de queijo</span></td>
 
-                            <!-- 3. PREÇO (Com modo de visualização e formulário de edição inline) -->
+                            <!-- 3. PREÇO -->
                             <td>
-                                <!-- Modo normal (texto) -->
                                 <span th:id="'preco-texto-' + ${p.codigo}" th:text="${p.preco}">25,00</span>
-
-                                <!-- Formulário oculto que aparece ao clicar no lápis -->
                                 <form th:id="'preco-form-' + ${p.codigo}" th:action="@{/recanto/produtos/atualizar-preco/{id}(id=${p.codigo})}" method="post" class="inline-form" style="display: none;">
                                     <input type="number" step="0.01" name="preco" th:value="${p.preco}" class="inline-input" required />
                                     <button type="submit" class="btn-icon-action" title="Salvar Alteração">💾</button>
@@ -599,10 +595,7 @@
                             <!-- 5. AÇÕES -->
                             <td>
                                 <div style="display: flex; gap: 8px; justify-content: center; align-items: center;">
-                                    <!-- Botão Lápis que ativa a edição do preço na mesma linha -->
                                     <button type="button" class="btn-icon-action" th:onclick="'habilitarEdicao(' + ${p.codigo} + ')'" title="Editar Preço">✏️</button>
-
-                                    <!-- Botão Excluir (Lixeira) -->
                                     <form th:action="@{/recanto/produtos/deletar}" method="post" style="display:inline;">
                                         <input type="hidden" name="id" th:value="${p.codigo}" />
                                         <button type="submit" class="btn-icon-action" title="Excluir">🗑️</button>
@@ -673,7 +666,7 @@
     </div>
 </div>
 
-<!-- Script simples para alternar entre visualização e edição do preço -->
+<!-- Script para alternar edição de preço -->
 <script>
     function habilitarEdicao(codigo) {
         var spanTexto = document.getElementById('preco-texto-' + codigo);
@@ -689,38 +682,45 @@
     }
 </script>
 
+<!-- Script de Busca e Filtro por Categoria -->
 <script>
     function filtrarTabela() {
-        // Pega o valor digitado no input e converte para letras minúsculas (para busca case-insensitive)
-        var input = document.getElementById('inputBusca');
-        var filtro = input.value.toLowerCase();
+        var inputBusca = document.getElementById('inputBusca');
+        var filtroTexto = inputBusca.value.toLowerCase();
 
-        // Pega o corpo da tabela e todas as linhas de produtos
+        var selectCategoria = document.getElementById('filtroCategoria');
+        var filtroCategoria = selectCategoria.value.toUpperCase();
+
         var tabela = document.getElementById('productTableBody');
         var linhas = tabela.getElementsByTagName('tr');
 
-        // Percorre todas as linhas da tabela (exceto se for a linha de estado vazio)
         for (var i = 0; i < linhas.length; i++) {
             var linha = linhas[i];
 
-            // Verifica se é a linha de "Nenhum produto cadastrado" para não quebrá-la
+            // Ignora a linha de estado vazio
             if (linha.getElementsByTagName('td').length <= 1) {
                 continue;
             }
 
-            // Pega as colunas de Código (índice 0) e Nome do Produto (índice 1)
             var colunaCodigo = linha.getElementsByTagName('td')[0];
             var colunaNome = linha.getElementsByTagName('td')[1];
+            var colunaCategoria = linha.getElementsByTagName('td')[3];
 
-            if (colunaCodigo && colunaNome) {
+            if (colunaCodigo && colunaNome && colunaCategoria) {
                 var textoCodigo = colunaCodigo.textContent || colunaCodigo.innerText;
                 var textoNome = colunaNome.textContent || colunaNome.innerText;
+                var textoCategoria = colunaCategoria.textContent || colunaCategoria.innerText.trim().toUpperCase();
 
-                // Verifica se o texto digitado bate com o código ou com o nome
-                if (textoCodigo.toLowerCase().indexOf(filtro) > -1 || textoNome.toLowerCase().indexOf(filtro) > -1) {
-                    linha.style.display = ""; // Mostra a linha
+                // Valida se o texto bate com a busca (código ou nome)
+                var atendeBusca = textoCodigo.toLowerCase().indexOf(filtroTexto) > -1 || textoNome.toLowerCase().indexOf(filtroTexto) > -1;
+
+                // Valida se a categoria bate com o select (ou se está vazio/todas)
+                var atendeCategoria = filtroCategoria === "" || textoCategoria === filtroCategoria;
+
+                if (atendeBusca && atendeCategoria) {
+                    linha.style.display = "";
                 } else {
-                    linha.style.display = "none"; // Oculta a linha
+                    linha.style.display = "none";
                 }
             }
         }
