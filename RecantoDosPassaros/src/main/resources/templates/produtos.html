@@ -468,8 +468,8 @@
             <div class="nav-section">
                 <span class="nav-section-title">Cadastro</span>
                 <ul class="nav-list">
-                    <li><a href="#" class="nav-item active">📦 Produtos</a></li>
-                    <li><a href="#" class="nav-item">📋 Estoque</a></li>
+                    <li><a th:href="@{/recanto/produtos}" class="nav-item active">📦 Produtos</a></li>
+                    <li><a th:href="@{/recanto/estoque}" class="nav-item">📋 Estoque</a></li>
                     <li><a href="#" class="nav-item">🏢 Fornecedor</a></li>
                 </ul>
             </div>
@@ -618,14 +618,14 @@
 <div id="productModal" class="modal-overlay">
     <div class="modal-card">
         <div class="modal-header">
-            <h2>Novo Produto ou Serviço</h2>
+            <h2>Novo Produto</h2>
             <label for="toggle-modal" class="close-modal-btn">&times;</label>
         </div>
 
         <form th:action="@{/recanto/produtos}" method="post" id="productForm" class="modal-form">
             <div class="form-row">
                 <div class="input-group">
-                    <label for="modalName">Nome do Item *</label>
+                    <label for="modalName">Nome do Produto *</label>
                     <input type="text" id="modalName" name="nome" required placeholder="Ex: Pão de queijo">
                 </div>
                 <div class="input-group">
@@ -642,7 +642,7 @@
 
             <div class="form-row">
                 <div class="input-group">
-                    <label for="modalPrice">Preço de Venda (R$) *</label>
+                    <label for="modalPrice">Preço(R$)*</label>
                     <input type="number" step="0.01" id="modalPrice" name="preco" required placeholder="0,00">
                 </div>
                 <div class="input-group">
@@ -660,7 +660,7 @@
 
             <div class="modal-actions">
                 <label for="toggle-modal" class="btn-cancel" style="cursor: pointer; display: inline-flex; align-items: center;">Cancelar</label>
-                <button type="submit" class="btn-save">Salvar Item</button>
+                <button type="submit" class="btn-save">Salvar Produto</button>
             </div>
         </form>
     </div>
