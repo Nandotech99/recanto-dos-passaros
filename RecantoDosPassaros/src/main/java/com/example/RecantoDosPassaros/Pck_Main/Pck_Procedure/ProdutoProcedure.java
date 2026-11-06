@@ -14,8 +14,8 @@ public class ProdutoProcedure {
 
     CallableStatement oCall;
     DAO oConectar = new DAO();
-    private static final String login = "nando";
-    private static final String senha = "12";
+    private static final String login = "root";
+    private static final String senha = "P@$$w0rd";
 
     public void inserir(Produto produto) {
         try {

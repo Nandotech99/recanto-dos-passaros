@@ -197,7 +197,7 @@ CREATE PROCEDURE upt_quantidade(
 BEGIN
 UPDATE estoque
 SET quantidade = p_quantidade
-WHERE id = p_cod;
+WHERE cod_produto = p_cod;
 END //
 DELIMITER ;
 
