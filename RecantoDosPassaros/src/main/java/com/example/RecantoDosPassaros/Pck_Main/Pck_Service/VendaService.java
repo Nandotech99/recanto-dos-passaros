@@ -13,11 +13,19 @@ import java.util.List;
 public class VendaService {
     private final VendaProcedure vendaProcedure;
 
+    // Abre uma nova venda e retorna o ID gerado
     public int postVenda() {
         return vendaProcedure.post();
     }
 
-    public Object getVenda() {
-        return vendaProcedure;
+    // Adiciona um item à venda (baixa o estoque e atualiza o total via procedure)
+    public void postItemVenda(Item item) {
+        vendaProcedure.postItem(item);
     }
+
+    // Retorna a lista de todas as vendas cadastradas
+    public List<Venda> getVenda() {
+        return vendaProcedure.get();
+    }
+
 }

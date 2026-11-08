@@ -1,0 +1,479 @@
+<!DOCTYPE html>
+<html lang="pt-BR" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Recanto dos Pássaros - Verificar Vendas</title>
+    <style>
+        :root {
+            --bg-sidebar: #f5dcc4;
+            --bg-main: #fcf2e8;
+            --primary-color: #492e1b;
+            --accent-brown: #7c4a2a;
+            --border-color: #5b3a21;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body.app-body {
+            background-color: var(--bg-main);
+            color: var(--primary-color);
+            display: flex;
+            height: 100vh;
+            overflow: hidden;
+        }
+
+        .app-layout {
+            display: flex;
+            width: 100%;
+            height: 100%;
+        }
+
+        /* Sidebar (Menu Lateral) */
+        .sidebar {
+            width: 260px;
+            background-color: var(--bg-sidebar);
+            border-right: 2px solid var(--border-color);
+            display: flex;
+            flex-direction: column;
+            padding: 20px;
+            overflow-y: auto;
+        }
+
+        .sidebar-brand {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-align: center;
+            margin-bottom: 25px;
+            padding-bottom: 15px;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .sidebar-logo {
+            width: 130px;
+            height: auto;
+            margin-bottom: 10px;
+            border-radius: 8px;
+        }
+
+        .sidebar-nav {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+
+        .nav-section-title {
+            font-size: 0.8rem;
+            font-weight: bold;
+            color: var(--accent-brown);
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin-bottom: 8px;
+            display: block;
+        }
+
+        .nav-list {
+            list-style: none;
+            display: flex;
+            flex-direction: column;
+            gap: 4px;
+        }
+
+        .nav-item {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 10px 12px;
+            border-radius: 6px;
+            text-decoration: none;
+            color: var(--primary-color);
+            font-weight: 500;
+            font-size: 0.95rem;
+            transition: background 0.2s;
+        }
+
+        .nav-item:hover, .nav-item.active {
+            background-color: #ebd0b9;
+            font-weight: bold;
+        }
+
+        /* Área de Conteúdo Principal */
+        .main-content {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            overflow-y: auto;
+        }
+
+        .topbar {
+            padding: 20px 40px 10px 40px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .btn-inicio {
+            background-color: #f7ebd9;
+            border: 1px solid var(--border-color);
+            padding: 6px 16px;
+            border-radius: 20px;
+            font-weight: 600;
+            cursor: pointer;
+            color: var(--primary-color);
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            text-decoration: none;
+            font-size: 0.9rem;
+        }
+
+        .user-info {
+            text-align: right;
+            font-size: 0.9rem;
+            color: var(--primary-color);
+        }
+
+        .user-info span {
+            font-size: 0.75rem;
+            color: #7a5238;
+            display: block;
+        }
+
+        .content-body {
+            padding: 10px 40px 40px 40px;
+        }
+
+        /* Cabeçalho da Seção */
+        .section-header-container {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: 25px;
+        }
+
+        .title-with-icon h1 {
+            font-size: 2.2rem;
+            color: var(--primary-color);
+            display: inline-flex;
+            align-items: center;
+            gap: 12px;
+            font-weight: 700;
+        }
+
+        .section-description {
+            color: #7a5238;
+            font-size: 0.95rem;
+            margin-top: 4px;
+        }
+
+        /* Cartões de Indicadores (KPIs) */
+        .kpi-cards-container {
+            display: flex;
+            gap: 20px;
+        }
+
+        .kpi-card {
+            background: #ffffff;
+            border: 2px solid var(--border-color);
+            border-radius: 14px;
+            padding: 12px 24px;
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            min-width: 260px;
+            box-shadow: 0 2px 5px rgba(73, 46, 27, 0.05);
+        }
+
+        .kpi-icon {
+            font-size: 1.5rem;
+        }
+
+        .kpi-content span {
+            font-size: 0.85rem;
+            font-weight: bold;
+            color: var(--primary-color);
+            display: block;
+        }
+
+        .kpi-content strong {
+            font-size: 1.1rem;
+            color: #2e7d32;
+        }
+
+        .kpi-card.pending strong {
+            color: #c62828;
+        }
+
+        /* Container Principal da Tabela / Filtros */
+        .table-container-card {
+            background: #f7ebd9;
+            border: 2px solid var(--border-color);
+            border-radius: 12px;
+            padding: 24px;
+        }
+
+        .filter-bar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+            gap: 20px;
+        }
+
+        .search-box {
+            background: #ffffff;
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            padding: 8px 14px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            flex: 1;
+            max-width: 450px;
+        }
+
+        .search-box input {
+            border: none;
+            outline: none;
+            width: 100%;
+            font-size: 0.95rem;
+            background: transparent;
+            color: var(--primary-color);
+        }
+
+        .filter-dropdown {
+            background: #ffffff;
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            padding: 8px 14px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-size: 0.9rem;
+            font-weight: 600;
+            color: var(--primary-color);
+        }
+
+        .filter-dropdown select {
+            border: none;
+            outline: none;
+            background: transparent;
+            font-size: 0.9rem;
+            color: var(--primary-color);
+            cursor: pointer;
+        }
+
+        /* Tabela Estilizada */
+        .custom-table {
+            width: 100%;
+            border-collapse: collapse;
+            background: #ffffff;
+            border-radius: 8px;
+            overflow: hidden;
+            border: 1px solid var(--border-color);
+        }
+
+        .custom-table th {
+            background-color: var(--primary-color);
+            color: #ffffff;
+            text-align: center;
+            padding: 12px 16px;
+            font-size: 0.9rem;
+            font-weight: 600;
+            letter-spacing: 0.5px;
+        }
+
+        .custom-table td {
+            padding: 12px 16px;
+            text-align: center;
+            font-size: 0.95rem;
+            border-bottom: 1px solid #ebd0b9;
+        }
+
+        /* Efeito Zebrado Alternado idêntico à imagem */
+        .custom-table tbody tr:nth-child(even) {
+            background-color: #e3d2c3;
+        }
+
+        .custom-table tbody tr:nth-child(odd) {
+            background-color: #ffffff;
+        }
+
+        .custom-table tbody tr:hover {
+            background-color: #f5dcc4;
+        }
+
+        .status-pago {
+            color: #1e7e34;
+            font-weight: bold;
+        }
+
+        .status-pendente {
+            color: #c62828;
+            font-weight: bold;
+        }
+
+        .btn-icon-action {
+            background: none;
+            border: none;
+            cursor: pointer;
+            font-size: 1.1rem;
+            color: var(--primary-color);
+            transition: transform 0.1s;
+        }
+
+        .btn-icon-action:hover {
+            transform: scale(1.15);
+        }
+    </style>
+</head>
+<body class="app-body">
+
+<div class="app-layout">
+
+    <!-- Sidebar / Menu Lateral -->
+    <aside class="sidebar">
+        <div class="sidebar-brand">
+            <img th:src="@{/Pck_img/Recanto-logo.jpg}" src="/Pck_img/Recanto-logo.jpg" alt="Logo Recanto dos Pássaros" class="sidebar-logo">
+        </div>
+
+        <nav class="sidebar-nav">
+            <div class="nav-section">
+                <span class="nav-section-title">Cadastro</span>
+                <ul class="nav-list">
+                    <li><a th:href="@{/recanto/produtos}" class="nav-item">📦 Produtos</a></li>
+                    <li><a th:href="@{/recanto/estoque}" class="nav-item">📋 Estoque</a></li>
+                    <li><a href="#" class="nav-item">🏢 Fornecedor</a></li>
+                </ul>
+            </div>
+
+            <div class="nav-section">
+                <span class="nav-section-title">Venda</span>
+                <ul class="nav-list">
+                    <li><a th:href="@{/recanto/pdv}" class="nav-item">🏷️ Ponto de Venda</a></li>
+                    <li><a href="#" class="nav-item">💰 Fechamento de Caixa</a></li>
+                    <li><a th:href="@{/recanto/vendas}" class="nav-item active">🛍️ Verificar Vendas</a></li>
+                </ul>
+            </div>
+        </nav>
+    </aside>
+
+    <!-- Área de Conteúdo Principal -->
+    <main class="main-content">
+
+        <header class="topbar">
+            <a th:href="@{/recanto/pdv}" class="btn-inicio">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path><polyline points="9 22 9 12 15 12 15 22"></polyline></svg>
+                Início
+            </a>
+            <div class="user-info">
+                <strong>User</strong>
+                <span>Proprietário</span>
+            </div>
+        </header>
+
+        <div class="content-body">
+
+            <!-- Cabeçalho e Cards de Indicadores -->
+            <div class="section-header-container">
+                <div class="title-with-icon">
+                    <h1>Verificar Vendas 🛍️</h1>
+                    <p class="section-description">Acompanhe as vendas feitas ao longo do dia</p>
+                </div>
+
+                <div class="kpi-cards-container">
+                    <div class="kpi-card">
+                        <span class="kpi-icon">💲</span>
+                        <div class="kpi-content">
+                            <span>Total de vendas pagas:</span>
+                            <strong th:text="${totalVendasPagas != null ? 'R$ ' + #numbers.formatDecimal(totalVendasPagas, 1, 'COMMA', 2, 'POINT') : 'R$ 20,90'}">R$ 20,90</strong>
+                        </div>
+                    </div>
+
+                    <div class="kpi-card pending">
+                        <span class="kpi-icon">⚠️</span>
+                        <div class="kpi-content">
+                            <span>Vendas pendentes:</span>
+                            <strong th:text="${totalVendasPendentes != null ? 'R$ ' + #numbers.formatDecimal(totalVendasPendentes, 1, 'COMMA', 2, 'POINT') : 'R$ 9,90'}">R$ 9,90</strong>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Tabela e Filtros -->
+            <div class="table-container-card">
+                <div class="filter-bar">
+                    <div class="search-box">
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
+                        <input type="text" id="searchVendas" placeholder="Pesquisar venda por código ou data..." />
+                    </div>
+
+                    <div class="filter-dropdown">
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="22 3 2 3 10 12.46 10 19 14 21 14 12.46 22 3"></polygon></svg>
+                        <span>Filtro</span>
+                        <select id="filtroStatus">
+                            <option value="">Todas</option>
+                            <option value="PAGO">Pago</option>
+                            <option value="PENDENTE">Pendente</option>
+                        </select>
+                    </div>
+                </div>
+
+                <table class="custom-table">
+                    <thead>
+                    <tr>
+                        <th>CÓDIGO</th>
+                        <th>DATA</th>
+                        <th>VALOR TOTAL</th>
+                        <th>VER ITENS</th>
+                        <th>STATUS</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <!-- Exemplo dinâmico Thymeleaf com base na lista do Controller -->
+                    <tr th:if="${vendas != null}" th:each="v : ${vendas}">
+                        <td th:text="${'#' + v.cod_venda}">#01</td>                        <td th:text="${v.data_venda}">25/10/2026</td>
+                        <td th:text="${'R$ ' + #numbers.formatDecimal(v.valor_total, 1, 'COMMA', 2, 'POINT')}">R$ 20,90</td>
+                        <td>
+                            <button class="btn-icon-action" title="Ver Itens">📋</button>
+                        </td>
+                        <td>
+                            <span th:class="${v.status == 'PAGO' ? 'status-pago' : 'status-pendente'}" th:text="${v.status}">PAGO</span>
+                        </td>
+                    </tr>
+
+                    <!-- Linhas estáticas de demonstração conforme a imagem de referência -->
+                    <tr th:if="${vendas == null || #lists.isEmpty(vendas)}">
+                        <td>01</td>
+                        <td>25/10/2026</td>
+                        <td>R$ 20,90</td>
+                        <td><button class="btn-icon-action" title="Ver Itens">📋</button></td>
+                        <td><span class="status-pago">PAGO</span></td>
+                    </tr>
+                    <tr th:if="${vendas == null || #lists.isEmpty(vendas)}">
+                        <td>02</td>
+                        <td>25/10/2026</td>
+                        <td>R$ 9,90</td>
+                        <td><button class="btn-icon-action" title="Ver Itens">📋</button></td>
+                        <td><span class="status-pendente">PENDENTE</span></td>
+                    </tr>
+                    <tr><td>&nbsp;</td><td></td><td></td><td></td><td></td></tr>
+                    <tr><td>&nbsp;</td><td></td><td></td><td></td><td></td></tr>
+                    <tr><td>&nbsp;</td><td></td><td></td><td></td><td></td></tr>
+                    <tr><td>&nbsp;</td><td></td><td></td><td></td><td></td></tr>
+                    </tbody>
+                </table>
+            </div>
+
+        </div>
+    </main>
+</div>
+
+</body>
+</html>

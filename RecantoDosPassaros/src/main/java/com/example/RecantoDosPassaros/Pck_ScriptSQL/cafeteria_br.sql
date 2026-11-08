@@ -6,10 +6,11 @@ DROP TABLE IF EXISTS item;
 DROP TABLE IF EXISTS estoque;
 DROP TABLE IF EXISTS produto;
 DROP TABLE IF EXISTS venda;
-
 CREATE TABLE venda (
-                       cod_venda   INT PRIMARY KEY AUTO_INCREMENT,
-                       valortotal  DECIMAL(10,2) NOT NULL DEFAULT 0
+                       cod_venda INT PRIMARY KEY AUTO_INCREMENT,
+                       valortotal DECIMAL(10,2) NOT NULL DEFAULT 0,
+                       data_venda DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
+                       status VARCHAR(20) NOT NULL DEFAULT 'PAGO'
 );
 
 CREATE TABLE produto (
@@ -56,9 +57,9 @@ DELIMITER ;
 DELIMITER //
 CREATE PROCEDURE abrir_venda(OUT p_cod_venda INT)
 BEGIN
-INSERT INTO venda(valortotal) VALUES (0);
+INSERT INTO venda(valortotal, data_venda) VALUES (0, NOW());
 SET p_cod_venda = LAST_INSERT_ID();
-END //
+END//
 DELIMITER ;
 
 DELIMITER //
@@ -68,18 +69,22 @@ CREATE PROCEDURE add_item_venda(
     IN p_quantidade    INT
 )
 BEGIN
-    DECLARE d_preco     DECIMAL(10,2);
-    DECLARE d_nome      VARCHAR(50);
-    DECLARE d_subtotal  DECIMAL(10,2);
+    DECLARE d_preco DECIMAL(10,2);
+    DECLARE d_nome VARCHAR(50);
+    DECLARE d_subtotal DECIMAL(10,2);
 
-SELECT nome, preco INTO d_nome, d_preco FROM produto WHERE id = p_id_produto;
+SELECT nome, preco INTO d_nome, d_preco
+FROM produto
+WHERE id = p_cod_produto;
 
-SET d_subtotal = soma_subtotal(p_id_produto, p_quantidade);
+SET d_subtotal = soma_subtotal(p_cod_produto, p_quantidade);
 
 INSERT INTO item(cod_venda, cod_produto, nome, preco, quantidade)
-VALUES (p_id_venda, p_id_produto, d_nome, d_preco, p_quantidade);
+VALUES (p_cod_venda, p_cod_produto, d_nome, d_preco, p_quantidade);
 
-UPDATE venda SET valortotal = valortotal + d_subtotal WHERE cod_venda = p_id_venda;
+UPDATE venda
+SET valortotal = valortotal + d_subtotal
+WHERE cod_venda = p_cod_venda;
 END //
 DELIMITER ;
 
@@ -105,7 +110,10 @@ DELIMITER ;
 DELIMITER //
 CREATE PROCEDURE exibir_venda(IN p_cod_venda INT)
 BEGIN
-SELECT cod_venda AS CODIGO, valortotal AS VALOR_TOTAL
+SELECT cod_venda AS CODIGO,
+       valortotal AS VALOR_TOTAL,
+       data_venda AS DATA_VENDA,
+       status AS STATUS
 FROM venda
 WHERE cod_venda = p_cod_venda OR p_cod_venda IS NULL;
 END //

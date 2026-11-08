@@ -13,5 +13,6 @@ public class Venda {
     // TABELA - VENDA
     private int cod_venda;
     private double valor_total;
-
+    private String data_venda;
+    private String status; // Adicionado para suportar a exibição de Vendas Pagas/Pendentes
 }

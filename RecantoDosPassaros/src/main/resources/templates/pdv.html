@@ -1,246 +1,439 @@
 <!DOCTYPE html>
-<html lang="pt-BR">
+<html lang="pt-BR" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Recanto dos Pássaros - Ponto de Venda (PDV)</title>
-    <link rel="stylesheet" href="/style.css">
     <style>
-        /* Estilos adicionais específicos para o layout do PDV */
+        :root {
+            --bg-sidebar: #f5dcc4;
+            --bg-main: #fcf2e8;
+            --primary-color: #492e1b;
+            --accent-brown: #7c4a2a;
+            --border-color: #5b3a21;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body.app-body {
+            background-color: var(--bg-main);
+            color: var(--primary-color);
+            display: flex;
+            height: 100vh;
+            overflow: hidden;
+        }
+
+        .app-layout {
+            display: flex;
+            width: 100%;
+            height: 100%;
+        }
+
+        /* Sidebar (Menu Lateral) */
+        .sidebar {
+            width: 260px;
+            background-color: var(--bg-sidebar);
+            border-right: 2px solid var(--border-color);
+            display: flex;
+            flex-direction: column;
+            padding: 20px;
+            overflow-y: auto;
+        }
+
+        .sidebar-brand {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-align: center;
+            margin-bottom: 25px;
+            padding-bottom: 15px;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .sidebar-logo {
+            width: 130px;
+            height: auto;
+            margin-bottom: 10px;
+            border-radius: 8px;
+        }
+
+        .sidebar-nav {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+
+        .nav-section-title {
+            font-size: 0.8rem;
+            font-weight: bold;
+            color: var(--accent-brown);
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin-bottom: 8px;
+            display: block;
+        }
+
+        .nav-list {
+            list-style: none;
+            display: flex;
+            flex-direction: column;
+            gap: 4px;
+        }
+
+        .nav-item {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 10px 12px;
+            border-radius: 6px;
+            text-decoration: none;
+            color: var(--primary-color);
+            font-weight: 500;
+            font-size: 0.95rem;
+            transition: background 0.2s;
+        }
+
+        .nav-item:hover, .nav-item.active {
+            background-color: #ebd0b9;
+            font-weight: bold;
+        }
+
+        /* Área de Conteúdo Principal */
+        .main-content {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            overflow-y: auto;
+        }
+
+        .topbar {
+            padding: 20px 40px 10px 40px;
+            display: flex;
+            justify-content: flex-start;
+            align-items: center;
+        }
+
+        .btn-inicio {
+            background-color: #f7ebd9;
+            border: 1px solid var(--border-color);
+            padding: 6px 16px;
+            border-radius: 20px;
+            font-weight: 600;
+            cursor: pointer;
+            color: var(--primary-color);
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            text-decoration: none;
+            font-size: 0.9rem;
+        }
+
+        .content-body {
+            padding: 10px 40px 40px 40px;
+        }
+
+        /* Cabeçalho da Seção */
+        .section-header-bar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 6px;
+        }
+
+        .title-with-help h1 {
+            font-size: 2.2rem;
+            color: var(--primary-color);
+            display: inline-flex;
+            align-items: center;
+            gap: 12px;
+            font-weight: 700;
+        }
+
+        .section-description {
+            color: #7a5238;
+            font-size: 0.95rem;
+            margin-bottom: 25px;
+        }
+
+        .btn-primary-action {
+            background-color: var(--primary-color);
+            color: #ffffff;
+            border: none;
+            border-radius: 8px;
+            padding: 10px 20px;
+            font-weight: 600;
+            font-size: 0.95rem;
+            cursor: pointer;
+            text-decoration: none;
+            transition: background 0.2s;
+        }
+
+        .btn-primary-action:hover {
+            background-color: #342012;
+        }
+
+        /* Grid do PDV */
         .pdv-layout-grid {
             display: grid;
-            grid-template-columns: 1fr 400px;
-            gap: 20px;
-            height: calc(100vh - 140px);
+            grid-template-columns: 1fr 360px;
+            gap: 25px;
+            align-items: start;
         }
-        @media (max-width: 1024px) {
-            .pdv-layout-grid {
-                grid-template-columns: 1fr;
-                height: auto;
-            }
-        }
+
         .pdv-catalog {
             display: flex;
             flex-direction: column;
-            gap: 16px;
-            overflow-y: auto;
+            gap: 20px;
         }
+
         .pdv-search-bar {
+            background-color: #ffffff;
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            padding: 10px 15px;
             display: flex;
+            align-items: center;
             gap: 10px;
         }
+
         .pdv-search-bar input {
-            flex: 1;
-            padding: 10px 14px;
-            border: 1px solid #ddd;
-            border-radius: 6px;
-            font-size: 14px;
+            border: none;
+            outline: none;
+            width: 100%;
+            font-size: 0.95rem;
+            background: transparent;
+            color: var(--primary-color);
         }
+
         .pdv-products-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
-            gap: 12px;
+            grid-template-columns: repeat(auto-fill, minmax(190px, 1fr));
+            gap: 15px;
         }
+
         .pdv-product-card {
-            background: #fff;
-            border: 1px solid #e0e0e0;
-            border-radius: 8px;
-            padding: 12px;
+            background: #fcefdc;
+            border: 1px solid var(--border-color);
+            border-radius: 10px;
+            overflow: hidden;
             cursor: pointer;
-            transition: all 0.2s ease;
+            transition: transform 0.1s, box-shadow 0.1s;
             display: flex;
             flex-direction: column;
-            justify-content: space-between;
+            padding: 14px;
         }
+
         .pdv-product-card:hover {
-            border-color: #2e7d32;
-            box-shadow: 0 4px 12px rgba(46, 125, 50, 0.1);
+            transform: translateY(-2px);
+            box-shadow: 0 4px 10px rgba(73, 46, 27, 0.15);
         }
-        .pdv-product-title {
+
+        .pdv-product-info {
+            display: flex;
+            flex-direction: column;
+            gap: 4px;
+        }
+
+        .pdv-product-code {
+            font-size: 0.8rem;
+            color: var(--accent-brown);
             font-weight: 600;
-            font-size: 14px;
-            color: #333;
-            margin-bottom: 8px;
         }
+
+        .pdv-product-title {
+            font-weight: bold;
+            font-size: 1rem;
+            color: var(--primary-color);
+        }
+
+        .pdv-product-category {
+            font-size: 0.75rem;
+            color: #7a5238;
+            background: #ebd0b9;
+            padding: 2px 6px;
+            border-radius: 4px;
+            width: fit-content;
+            margin-top: 2px;
+        }
+
         .pdv-product-price {
-            font-size: 16px;
-            font-weight: 700;
+            font-size: 1.1rem;
+            font-weight: bold;
             color: #2e7d32;
+            margin-top: 8px;
         }
+
+        /* Painel do Carrinho */
         .pdv-cart-panel {
-            background: #fff;
-            border: 1px solid #e0e0e0;
-            border-radius: 8px;
+            background: #f7ebd9;
+            border: 2px solid var(--border-color);
+            border-radius: 10px;
             display: flex;
             flex-direction: column;
             padding: 16px;
-            height: 100%;
+            height: calc(100vh - 180px);
+            position: sticky;
+            top: 20px;
         }
+
         .pdv-cart-header {
-            font-size: 18px;
+            font-size: 1.1rem;
             font-weight: bold;
-            margin-bottom: 12px;
-            border-bottom: 1px solid #eee;
+            margin-bottom: 15px;
+            border-bottom: 1px solid var(--border-color);
             padding-bottom: 8px;
+            color: var(--primary-color);
         }
+
         .pdv-cart-items {
             flex: 1;
             overflow-y: auto;
             display: flex;
             flex-direction: column;
-            gap: 8px;
-            margin-bottom: 12px;
+            gap: 10px;
+            margin-bottom: 15px;
+            padding-right: 4px;
         }
+
         .pdv-cart-item {
             display: flex;
             justify-content: space-between;
             align-items: center;
-            padding: 8px;
-            background: #f9f9f9;
+            padding: 10px;
+            background: #ffffff;
+            border: 1px solid #ebd0b9;
             border-radius: 6px;
-            font-size: 13px;
+            font-size: 0.9rem;
         }
+
         .pdv-cart-summary {
-            border-top: 1px solid #eee;
+            border-top: 1px solid var(--border-color);
             padding-top: 12px;
             display: flex;
             flex-direction: column;
-            gap: 8px;
+            gap: 12px;
         }
-        .pdv-total-row {
-            display: flex;
-            justify-content: space-between;
-            font-size: 18px;
-            font-weight: bold;
-            color: #111;
-        }
+
         .btn-finalize {
-            background-color: #2e7d32;
+            background-color: #1e7e34;
             color: white;
             border: none;
             padding: 12px;
             border-radius: 6px;
-            font-size: 16px;
+            font-size: 1rem;
             font-weight: bold;
             cursor: pointer;
             text-align: center;
             transition: background 0.2s;
         }
+
         .btn-finalize:hover {
-            background-color: #1b5e20;
+            background-color: #155724;
         }
     </style>
 </head>
 <body class="app-body">
 
-<!-- Container Principal do Painel -->
 <div class="app-layout">
 
-    <!-- Sidebar (Menu Lateral Mantido Idêntico) -->
+    <!-- Sidebar -->
     <aside class="sidebar">
         <div class="sidebar-brand">
-            <img src="/Pck_img/Recanto-logo.jpg" alt="Logo Recanto dos Pássaros" class="sidebar-logo">
-            <span class="sidebar-brand-name">Recanto dos Pássaros</span>
+            <img th:src="@{/Pck_img/Recanto-logo.jpg}" src="/Pck_img/Recanto-logo.jpg" alt="Logo Recanto dos Pássaros" class="sidebar-logo">
         </div>
 
         <nav class="sidebar-nav">
             <div class="nav-section">
                 <span class="nav-section-title">Cadastro</span>
                 <ul class="nav-list">
-                    <li><a href="#" class="nav-item">Produtos</a></li>
-                    <li><a href="#" class="nav-item">Estoque</a></li>
-                    <li><a href="#" class="nav-item">Fornecedor</a></li>
+                    <li><a th:href="@{/recanto/produtos}" class="nav-item">📦 Produtos</a></li>
+                    <li><a th:href="@{/recanto/estoque}" class="nav-item">📋 Estoque</a></li>
+                    <li><a href="#" class="nav-item">🏢 Fornecedor</a></li>
                 </ul>
             </div>
 
             <div class="nav-section">
                 <span class="nav-section-title">Venda</span>
                 <ul class="nav-list">
-                    <li><a href="#" class="nav-item active">Ponto de Venda</a></li>
-                    <li><a href="#" class="nav-item">Fechamento de Caixa</a></li>
-                </ul>
-            </div>
-
-            <div class="nav-section">
-                <span class="nav-section-title">Dashboard</span>
-                <ul class="nav-list">
-                    <li><a href="#" class="nav-item">Início</a></li>
+                    <li><a th:href="@{/recanto/pdv}" class="nav-item active">🏷️ Ponto de Venda</a></li>
+                    <li><a href="#" class="nav-item">💰 Fechamento de Caixa</a></li>
+                    <li><a th:href="@{/recanto/pdv/verificar}" class="nav-item">🛍️ Verificar Vendas</a></li>
                 </ul>
             </div>
         </nav>
     </aside>
 
-    <!-- Área de Conteúdo Principal -->
+    <!-- Área Principal -->
     <main class="main-content">
 
-        <!-- Barra Superior (Topbar) -->
         <header class="topbar">
-            <div class="topbar-all">
-                <button class="menu-toggle-btn" aria-label="Alternar Menu">
-                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 12h18M3 6h18M3 18h18"/></svg>
-                </button>
-            </div>
+            <a href="#" class="btn-inicio">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path><polyline points="9 22 9 12 15 12 15 22"></polyline></svg>
+                Início
+            </a>
         </header>
 
-        <!-- Conteúdo da Página PDV -->
         <div class="content-body">
 
-            <!-- Cabeçalho da Seção -->
             <div class="section-header-bar">
                 <div class="title-with-help">
-                    <h1>Ponto de Venda (PDV)</h1>
+                    <h1>Ponto de Venda <span style="font-size: 1.5rem;">🏷️</span></h1>
                 </div>
+                <button class="btn-primary-action" onclick="novaVenda()">+ Nova venda</button>
             </div>
 
-            <p class="section-description">Realize vendas rápidas selecionando os produtos ou buscando pelo código/nome</p>
+            <p class="section-description">Realize vendas rápidas selecionando os produtos cadastrados no banco de dados</p>
 
-            <!-- Layout de 2 Colunas do PDV -->
             <div class="pdv-layout-grid">
 
-                <!-- Coluna Esquerda: Catálogo e Busca -->
+                <!-- Catálogo Dinâmico de Produtos (Banco de Dados) -->
                 <div class="pdv-catalog">
                     <div class="pdv-search-bar">
-                        <input type="text" id="searchProduct" placeholder="Pesquisar produto por nome ou código..." />
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
+                        <input type="text" id="searchProduct" placeholder="Buscar produto cadastrado..." />
                     </div>
 
-                    <!-- Grade de Produtos Disponíveis -->
                     <div class="pdv-products-grid">
-                        <!-- Exemplo de Card de Produto -->
-                        <div class="pdv-product-card" onclick="adicionarAoCarrinho('Café Especial', 15.90)">
-                            <div class="pdv-product-title">Café Especial</div>
-                            <div class="pdv-product-price">R$ 15,90</div>
+
+                        <!-- Mensagem caso não haja produtos cadastrados -->
+                        <div th:if="${#lists.isEmpty(produtos)}" style="grid-column: 1 / -1; text-align: center; padding: 40px; color: #7a5238;">
+                            <strong>Nenhum produto cadastrado no banco de dados.</strong>
                         </div>
-                        <div class="pdv-product-card" onclick="adicionarAoCarrinho('Ração Premium 1kg', 45.00)">
-                            <div class="pdv-product-title">Ração Premium 1kg</div>
-                            <div class="pdv-product-price">R$ 45,00</div>
+
+                        <!-- Loop seguro utilizando data-* do Thymeleaf -->
+                        <div class="pdv-product-card"
+                             th:each="p : ${produtos}"
+                             th:data-codigo="${p.codigo}"
+                             th:data-nome="${p.nome}"
+                             th:data-preco="${p.preco}"
+                             onclick="clicarCardProduto(this)">
+                            <div class="pdv-product-info">
+                                <span class="pdv-product-code" th:text="'#' + ${p.codigo}">#01</span>
+                                <div class="pdv-product-title" th:text="${p.nome}">Nome do Produto</div>
+                                <span class="pdv-product-category" th:text="${p.categoria}">CATEGORIA</span>
+                                <div class="pdv-product-price" th:text="${'R$ ' + #numbers.formatDecimal(p.preco, 1, 'COMMA', 2, 'POINT')}">R$ 0,00</div>
+                            </div>
                         </div>
-                        <div class="pdv-product-card" onclick="adicionarAoCarrinho('Brinquedo para Pássaros', 22.50)">
-                            <div class="pdv-product-title">Brinquedo para Pássaros</div>
-                            <div class="pdv-product-price">R$ 22,50</div>
-                        </div>
-                        <div class="pdv-product-card" onclick="adicionarAoCarrinho('Consulta Veterinária', 100.00)">
-                            <div class="pdv-product-title">Consulta Veterinária</div>
-                            <div class="pdv-product-price">R$ 100,00</div>
-                        </div>
+
                     </div>
                 </div>
 
-                <!-- Coluna Direita: Carrinho / Caixa -->
+                <!-- Carrinho de Compras -->
                 <div class="pdv-cart-panel">
                     <div class="pdv-cart-header">Carrinho de Compras</div>
 
                     <div class="pdv-cart-items" id="cartItemsContainer">
-                        <!-- Itens adicionados aparecerão aqui dinamicamente -->
-                        <div style="color: #888; text-align: center; margin-top: 40px; font-size: 14px;">
+                        <div style="color: #888; text-align: center; margin-top: 40px; font-size: 0.9rem;">
                             Nenhum item adicionado ainda.
                         </div>
                     </div>
 
                     <div class="pdv-cart-summary">
-                        <div class="pdv-total-row">
-                            <span>Total:</span>
-                            <span id="cartTotal">R$ 0,00</span>
-                        </div>
                         <button class="btn-finalize" onclick="finalizarVenda()">Finalizar Venda</button>
                     </div>
                 </div>
@@ -251,52 +444,55 @@
     </main>
 </div>
 
-<!-- Script Simples de PDV para interatividade do carrinho -->
 <script>
     let carrinho = [];
 
-    function adicionarAoCarrinho(nome, preco) {
-        let itemExistente = carrinho.find(item => item.name === nome);
+    // Função que lê os dados de forma segura via atributos data-*
+    function clicarCardProduto(element) {
+        const codigo = element.getAttribute('data-codigo');
+        const nome = element.getAttribute('data-nome');
+        const preco = parseFloat(element.getAttribute('data-preco'));
+
+        adicionarAoCarrinho(codigo, nome, preco);
+    }
+
+    function adicionarAoCarrinho(codigo, nome, preco) {
+        let itemExistente = carrinho.find(item => item.code === codigo);
         if (itemExistente) {
             itemExistente.quantidade++;
         } else {
-            carrinho.push({ name: nome, price: preco, quantidade: 1 });
+            carrinho.push({ code: codigo, name: nome, price: preco, quantidade: 1 });
         }
         atualizarCarrinho();
     }
 
     function atualizarCarrinho() {
         const container = document.getElementById('cartItemsContainer');
-        const totalSpan = document.getElementById('cartTotal');
 
         if (carrinho.length === 0) {
-            container.innerHTML = '<div style="color: #888; text-align: center; margin-top: 40px; font-size: 14px;">Nenhum item adicionado ainda.</div>';
-            totalSpan.innerText = 'R$ 0,00';
+            container.innerHTML = '<div style="color: #888; text-align: center; margin-top: 40px; font-size: 0.9rem;">Nenhum item adicionado ainda.</div>';
             return;
         }
 
         container.innerHTML = '';
-        let total = 0;
 
         carrinho.forEach((item, index) => {
+            // Operador de multiplicação corrigido (*)
             let subtotal = item.price * item.quantidade;
-            total += subtotal;
 
             container.innerHTML += `
                 <div class="pdv-cart-item">
                     <div>
                         <strong>${item.name}</strong><br>
-                        <small>${item.quantidade}x R$ ${item.price.toFixed(2).replace('.', ',')}</small>
+                        <small style="color: #7a5238;">${item.quantidade}x R$ ${item.price.toFixed(2).replace('.', ',')}</small>
                     </div>
-                    <div style="display: flex; align-items: center; gap: 8px;">
-                        <span>R$ ${subtotal.toFixed(2).replace('.', ',')}</span>
-                        <button onclick="removerItem(${index})" style="background:none; border:none; color:red; cursor:pointer;">❌</button>
+                    <div style="display: flex; align-items: center; gap: 12px;">
+                        <span style="font-weight: bold; color: #492e1b;">R$ ${subtotal.toFixed(2).replace('.', ',')}</span>
+                        <button onclick="removerItem(${index})" style="background:none; border:none; color:#c62828; cursor:pointer; font-size: 1rem;" title="Remover">❌</button>
                     </div>
                 </div>
             `;
         });
-
-        totalSpan.innerText = `R$ ${total.toFixed(2).replace('.', ',')}`;
     }
 
     function removerItem(index) {
@@ -304,14 +500,43 @@
         atualizarCarrinho();
     }
 
+    function novaVenda() {
+        carrinho = [];
+        atualizarCarrinho();
+    }
+
+    // Função de finalização integrada com o @PostMapping do VendaController
     function finalizarVenda() {
         if (carrinho.length === 0) {
             alert('Adicione itens ao carrinho antes de finalizar a venda.');
             return;
         }
-        alert('Venda finalizada com sucesso!');
-        carrinho = [];
-        atualizarCarrinho();
+
+        // Mapeia o carrinho para o formato esperado pelo ItemDto (codProduto e quantidade)
+        const itensParaEnviar = carrinho.map(item => ({
+            codProduto: parseInt(item.code),
+            quantidade: item.quantidade
+        }));
+
+        fetch('/recanto/pdv', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(itensParaEnviar)
+        }).then(response => {
+            if (response.ok) {
+                alert('Venda finalizada com sucesso! Estoque atualizado.');
+                carrinho = [];
+                atualizarCarrinho();
+                window.location.reload(); // Recarrega para refletir as mudanças
+            } else {
+                alert('Erro ao finalizar a venda no servidor.');
+            }
+        }).catch(error => {
+            console.error('Erro:', error);
+            alert('Erro de conexão ao tentar finalizar a venda.');
+        });
     }
 </script>
 

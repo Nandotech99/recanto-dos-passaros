@@ -1,9 +1,15 @@
 package com.example.RecantoDosPassaros.Pck_Main.Pck_DTO;
 
-public record ItemDto(Integer codItem,
-                      Integer codVenda,
-                      Integer codProd,
-                      String name,
-                      Double preco,
-                      Integer qtd) {
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+
+@Getter
+@Setter
+@AllArgsConstructor
+@NoArgsConstructor
+public class ItemDto {
+    private int codProduto;
+    private int quantidade;
 }
