@@ -122,13 +122,7 @@ public class VendaProcedure {
                     }
                 });
     }
-
-    /*
-    Método chamado pelo VendaService.getVenda()
-
-     */
-    // Método get() usando JdbcTemplate direto na procedure
-    public List<Venda> get() {
+   public List<Venda> get() {
         String sql = "CALL exibir_venda(?)";
 
         return jdbcTemplate.query(sql, new RowMapper<Venda>() {
