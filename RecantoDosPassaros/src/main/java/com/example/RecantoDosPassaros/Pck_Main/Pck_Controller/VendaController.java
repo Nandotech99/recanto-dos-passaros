@@ -37,7 +37,6 @@ public class VendaController {
         }
     }
 
-    // Recebe a finalização da venda diretamente do carrinho no PDV via POST (/recanto/pdv)
     @PostMapping
     public String finalizarVendaPdv(@RequestBody List<ItemDto> itensCarrinho) {
         try {
@@ -45,10 +44,8 @@ public class VendaController {
                 return "redirect:/recanto/pdv";
             }
 
-            // 1. Abre a venda no banco e obtém o ID gerado (via procedure abrir_venda)
             int idVendaGerado = vendaService.postVenda();
 
-            // 2. Adiciona cada item do carrinho na venda (dispara add_item_venda e baixa o estoque)
             for (ItemDto dto : itensCarrinho) {
                 Item item = new Item();
                 item.setCod_vendaFK(idVendaGerado);
@@ -65,14 +62,12 @@ public class VendaController {
         }
     }
 
-    // Abre uma nova venda (caso queira chamar via botão isolado)
     @PostMapping("/abrir")
     @ResponseBody
     public int abrirVenda() {
         return vendaService.postVenda();
     }
 
-    // Adiciona um item de forma isolada se necessário
     @PostMapping("/item")
     public String adicionarItem(
             @RequestParam("codVenda") int codVenda,
@@ -89,13 +84,11 @@ public class VendaController {
         return "redirect:/recanto/pdv";
     }
 
-    // Exibe a tela de listagem e verificação de vendas
     @GetMapping("/verificar")
     public String verificarVendas(Model model) {
         try {
             List<Venda> vendas = vendaService.getVenda();
 
-            // Proteção caso venha nulo do banco
             if (vendas == null) {
                 vendas = new java.util.ArrayList<>();
             }
@@ -117,7 +110,7 @@ public class VendaController {
             return "verificar-vendas";
         } catch (Exception e) {
             System.err.println("ERRO DETALHADO EM /verificar: " + e.getMessage());
-            e.printStackTrace(); // Imprime o erro completo no console
+            e.printStackTrace(); 
             throw e;
         }
     }
