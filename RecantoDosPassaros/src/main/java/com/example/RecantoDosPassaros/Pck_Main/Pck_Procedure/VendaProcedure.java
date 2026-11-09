@@ -21,8 +21,8 @@ import java.util.Map;
 public class VendaProcedure {
 
     private final DAO oConectar = new DAO();
-    private static final String login = "nando";
-    private static final String senha = "12";
+    private static final String login = "root";
+    private static final String senha = "P@$$w0rd";
 
     public ArrayList<Venda> get2() {
         ArrayList<Venda> lista = new ArrayList<>();
@@ -136,5 +136,22 @@ public class VendaProcedure {
                 return venda;
             }
         }, new Object[]{null}); // Passa null para o parâmetro p_cod_venda
+    }
+    // Método para buscar os itens de uma venda específica via procedure exibir_item
+    public List<Item> getItensVenda(int codVenda) {
+        String sql = "CALL exibir_item(?)";
+
+        return jdbcTemplate.query(sql, new RowMapper<Item>() {
+            @Override
+            public Item mapRow(ResultSet rs, int rowNum) throws SQLException {
+                Item item = new Item();
+                item.setCod_item(rs.getInt("ITEM"));
+                item.setCod_produtoFK(rs.getInt("COD_PROD"));
+                item.setNome(rs.getString("PRODUTO")); // Certifique-se de que a model Item possui o atributo nome, ou ajuste conforme sua model
+                item.setPreco(rs.getDouble("PRECO"));
+                item.setQuantidadeFK(rs.getInt("QUANTIDADE"));
+                return item;
+            }
+        }, codVenda);
     }
 }

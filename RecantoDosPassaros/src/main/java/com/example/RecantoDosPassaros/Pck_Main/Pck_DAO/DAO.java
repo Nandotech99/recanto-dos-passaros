@@ -8,8 +8,8 @@ public class DAO {
     private Connection conn;
 
     private static final String URL = "jdbc:mysql://localhost:3306/cafeteria_bd?useSSL=false&serverTimezone=UTC";// trocar a porta
-    private static final String login = "nando";
-    private static final String senha ="12";
+    private static final String login = "root";
+    private static final String senha ="P@$$w0rd";
 
     public DAO()
     {

@@ -20,7 +20,17 @@ public class VendaController {
 
     private final VendaService vendaService;
     private final ProdutoService produtoService;
-
+    // Retorna os itens de uma venda específica para exibir na janela modal
+    @GetMapping("/itens/{codVenda}")
+    @ResponseBody
+    public List<Item> getItensDaVenda(@PathVariable("codVenda") int codVenda) {
+        try {
+            return vendaService.getItensVenda(codVenda);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return new java.util.ArrayList<>();
+        }
+    }
     // Exibe a tela de PDV
     @GetMapping
     public String getVendas(Model model) {
@@ -44,8 +54,15 @@ public class VendaController {
                 return "redirect:/recanto/pdv";
             }
 
+            // 1. Abre a venda e captura o ID gerado
             int idVendaGerado = vendaService.postVenda();
 
+            // Validação de segurança para garantir que o ID é válido antes de inserir os itens
+            if (idVendaGerado <= 0) {
+                throw new RuntimeException("Erro crítico: Não foi possível gerar o código da venda.");
+            }
+
+            // 2. Insere os itens vinculados ao ID gerado
             for (ItemDto dto : itensCarrinho) {
                 Item item = new Item();
                 item.setCod_vendaFK(idVendaGerado);

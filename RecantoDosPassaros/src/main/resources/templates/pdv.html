@@ -319,6 +319,25 @@
             gap: 12px;
         }
 
+        /* Estilo para a caixa do Valor Total */
+        .cart-total-box {
+            background: #ffffff;
+            border: 1px solid var(--border-color);
+            border-radius: 6px;
+            padding: 10px 14px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-size: 1rem;
+            font-weight: bold;
+            color: var(--primary-color);
+        }
+
+        .cart-total-value {
+            color: #2e7d32;
+            font-size: 1.15rem;
+        }
+
         .btn-finalize {
             background-color: #1e7e34;
             color: white;
@@ -395,7 +414,7 @@
                 <div class="pdv-catalog">
                     <div class="pdv-search-bar">
                         <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
-                        <input type="text" id="searchProduct" placeholder="Buscar produto cadastrado..." />
+                        <input type="text" id="searchProduct" placeholder="Buscar produto por nome ou código..." />
                     </div>
 
                     <div class="pdv-products-grid">
@@ -434,6 +453,12 @@
                     </div>
 
                     <div class="pdv-cart-summary">
+                        <!-- Caixa do Total da Compra adicionada exatamente na área solicitada -->
+                        <div class="cart-total-box">
+                            <span>Total:</span>
+                            <span class="cart-total-value" id="cartTotalValue">R$ 0,00</span>
+                        </div>
+
                         <button class="btn-finalize" onclick="finalizarVenda()">Finalizar Venda</button>
                     </div>
                 </div>
@@ -447,7 +472,6 @@
 <script>
     let carrinho = [];
 
-    // Função que lê os dados de forma segura via atributos data-*
     function clicarCardProduto(element) {
         const codigo = element.getAttribute('data-codigo');
         const nome = element.getAttribute('data-nome');
@@ -468,17 +492,20 @@
 
     function atualizarCarrinho() {
         const container = document.getElementById('cartItemsContainer');
+        const totalValueEl = document.getElementById('cartTotalValue');
 
         if (carrinho.length === 0) {
             container.innerHTML = '<div style="color: #888; text-align: center; margin-top: 40px; font-size: 0.9rem;">Nenhum item adicionado ainda.</div>';
+            totalValueEl.innerText = 'R$ 0,00';
             return;
         }
 
         container.innerHTML = '';
+        let valorTotalGeral = 0;
 
         carrinho.forEach((item, index) => {
-            // Operador de multiplicação corrigido (*)
             let subtotal = item.price * item.quantidade;
+            valorTotalGeral += subtotal;
 
             container.innerHTML += `
                 <div class="pdv-cart-item">
@@ -493,6 +520,8 @@
                 </div>
             `;
         });
+
+        totalValueEl.innerText = `R$ ${valorTotalGeral.toFixed(2).replace('.', ',')}`;
     }
 
     function removerItem(index) {
@@ -505,14 +534,57 @@
         atualizarCarrinho();
     }
 
-    // Função de finalização integrada com o @PostMapping do VendaController
+    // Lógica combinada de Filtragem em tempo real + Tecla Enter para inserir no carrinho
+    const inputBusca = document.getElementById('searchProduct');
+
+    inputBusca.addEventListener('input', function(e) {
+        const termoBusca = e.target.value.toLowerCase().trim();
+        const cardsProdutos = document.querySelectorAll('.pdv-product-card');
+
+        cardsProdutos.forEach(card => {
+            const codigo = card.getAttribute('data-codigo').toLowerCase();
+            const nome = card.getAttribute('data-nome').toLowerCase();
+
+            if (codigo.includes(termoBusca) || nome.includes(termoBusca)) {
+                card.style.display = 'flex';
+            } else {
+                card.style.display = 'none';
+            }
+        });
+    });
+
+    // Pressionar ENTER adiciona o primeiro produto visível correspondente ao carrinho
+    inputBusca.addEventListener('keydown', function(e) {
+        if (e.key === 'Enter') {
+            e.preventDefault(); // Evita comportamento padrão de submit se estiver em formulário
+
+            // Busca o primeiro card que esteja visível na tela
+            const cardsVisiveles = Array.from(document.querySelectorAll('.pdv-product-card'))
+                .filter(card => card.style.display !== 'none');
+
+            if (cardsVisiveles.length > 0) {
+                const cardAlvo = cardsVisiveles[0]; // Pega o primeiro resultado da busca
+                const codigo = cardAlvo.getAttribute('data-codigo');
+                const nome = cardAlvo.getAttribute('data-nome');
+                const preco = parseFloat(cardAlvo.getAttribute('data-preco'));
+
+                adicionarAoCarrinho(codigo, nome, preco);
+
+                // Limpa a busca e restaura a exibição de todos os produtos
+                inputBusca.value = '';
+                document.querySelectorAll('.pdv-product-card').forEach(card => {
+                    card.style.display = 'flex';
+                });
+            }
+        }
+    });
+
     function finalizarVenda() {
         if (carrinho.length === 0) {
             alert('Adicione itens ao carrinho antes de finalizar a venda.');
             return;
         }
 
-        // Mapeia o carrinho para o formato esperado pelo ItemDto (codProduto e quantidade)
         const itensParaEnviar = carrinho.map(item => ({
             codProduto: parseInt(item.code),
             quantidade: item.quantidade
@@ -529,7 +601,7 @@
                 alert('Venda finalizada com sucesso! Estoque atualizado.');
                 carrinho = [];
                 atualizarCarrinho();
-                window.location.reload(); // Recarrega para refletir as mudanças
+                window.location.reload();
             } else {
                 alert('Erro ao finalizar a venda no servidor.');
             }

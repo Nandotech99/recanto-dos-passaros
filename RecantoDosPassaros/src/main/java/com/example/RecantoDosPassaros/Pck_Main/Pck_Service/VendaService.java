@@ -28,4 +28,8 @@ public class VendaService {
         return vendaProcedure.get();
     }
 
+    // Retorna a lista de itens de uma venda específica para o Modal
+    public List<Item> getItensVenda(int codVenda) {
+        return vendaProcedure.getItensVenda(codVenda);
+    }
 }

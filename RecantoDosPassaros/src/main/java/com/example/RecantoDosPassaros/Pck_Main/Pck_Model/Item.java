@@ -11,6 +11,8 @@ import lombok.Setter;
 @Getter
 public class Item {
     //TABELA - ITEM
+    private String nome;
+    private double preco;
     private Integer cod_item;
     private Integer cod_vendaFK;
     private Integer cod_produtoFK;
