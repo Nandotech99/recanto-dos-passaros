@@ -164,6 +164,18 @@ END //
 DELIMITER ;
 
 DELIMITER //
+CREATE PROCEDURE exibir_item(IN p_cod_venda INT)
+BEGIN
+    SELECT i.cod_item AS ITEM,
+           i.cod_produto AS COD_PROD,
+           i.nome AS PRODUTO,
+           i.preco AS PRECO,
+           i.quantidade AS QUANTIDADE
+    FROM item i
+    WHERE i.cod_venda = p_cod_venda;
+END //
+DELIMITER ;
+DELIMITER //
 CREATE PROCEDURE ins_produto(
     IN p_nome VARCHAR(50),
     IN p_preco DECIMAL(10,2),
