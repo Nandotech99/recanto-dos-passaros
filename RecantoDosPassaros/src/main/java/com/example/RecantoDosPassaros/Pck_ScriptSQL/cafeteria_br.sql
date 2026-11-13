@@ -228,3 +228,11 @@ BEGIN
     DELETE FROM produto WHERE id = p_cod;
 END //
 DELIMITER ;
+DELIMITER //
+CREATE PROCEDURE fechar_caixa_diario(IN p_data DATE, OUT p_total_dia DECIMAL(10,2))
+BEGIN
+    SELECT COALESCE(SUM(valortotal), 0) INTO p_total_dia
+    FROM venda
+    WHERE DATE(data_venda) = p_data AND status = 'PAGO';
+END //
+DELIMITER ;
