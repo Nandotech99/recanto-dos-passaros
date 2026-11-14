@@ -36,7 +36,6 @@
             height: 100%;
         }
 
-        /* Sidebar (Menu Lateral) */
         .sidebar {
             width: 260px;
             background-color: var(--bg-sidebar);
@@ -105,7 +104,6 @@
             font-weight: bold;
         }
 
-        /* Área de Conteúdo Principal */
         .main-content {
             flex: 1;
             display: flex;
@@ -139,7 +137,6 @@
             padding: 10px 40px 40px 40px;
         }
 
-        /* Cabeçalho da Seção */
         .section-header-bar {
             display: flex;
             justify-content: space-between;
@@ -162,7 +159,6 @@
             margin-bottom: 25px;
         }
 
-        /* Botão Novo Produto */
         .btn-primary-action {
             background-color: var(--primary-color);
             color: #ffffff;
@@ -180,7 +176,6 @@
             background-color: #432917;
         }
 
-        /* Card de Total de Produtos */
         .top-kpi-container {
             display: flex;
             justify-content: flex-end;
@@ -213,7 +208,6 @@
             color: var(--primary-color);
         }
 
-        /* Container da Tabela e Filtros */
         .table-wrapper-card {
             background-color: #f8ebe4;
             border: 3px solid var(--border-color);
@@ -252,7 +246,6 @@
             color: var(--primary-color);
         }
 
-        /* Tabela de Dados Centralizada e com Linhas Verticais Mais Escuras */
         .data-table {
             width: 100%;
             border-collapse: collapse;
@@ -292,7 +285,6 @@
             border-right: none;
         }
 
-        /* Larguras e centralização das colunas */
         .data-table th:nth-child(1), .data-table td:nth-child(1) { width: 12%; }
         .data-table th:nth-child(2), .data-table td:nth-child(2) { width: 32%; }
         .data-table th:nth-child(3), .data-table td:nth-child(3) { width: 20%; }
@@ -337,7 +329,6 @@
             transform: scale(1.15);
         }
 
-        /* Modal Styles */
         #toggle-modal:checked ~ .modal-overlay,
         body:has(#toggle-modal:checked) #productModal {
             display: flex !important;
@@ -452,13 +443,9 @@
 </head>
 <body class="app-body">
 
-<!-- Checkbox oculta para controlar o Modal via Puro CSS -->
 <input type="checkbox" id="toggle-modal" style="display: none;">
 
-<!-- Container Principal do Painel -->
 <div class="app-layout">
-
-    <!-- Sidebar (Menu Lateral com Ícones) -->
     <aside class="sidebar">
         <div class="sidebar-brand">
             <img th:src="@{/Pck_img/Recanto-logo.jpg}" alt="Logo Recanto dos Pássaros" class="sidebar-logo">
@@ -470,36 +457,29 @@
                 <ul class="nav-list">
                     <li><a th:href="@{/recanto/produtos}" class="nav-item active">📦 Produtos</a></li>
                     <li><a th:href="@{/recanto/estoque}" class="nav-item">📋 Estoque</a></li>
-                    <li><a href="#" class="nav-item">🏢 Fornecedor</a></li>
                 </ul>
             </div>
 
             <div class="nav-section">
                 <span class="nav-section-title">Venda</span>
                 <ul class="nav-list">
-                    <li><a href="#" class="nav-item">🏷️ Ponto de Venda</a></li>
-                    <li><a href="#" class="nav-item">💰 Fechamento de Caixa</a></li>
-                    <li><a href="#" class="nav-item">🛍️ Verificar Vendas</a></li>
+                    <li><a th:href="@{/recanto/pdv}" class="nav-item">🏷️ Ponto de Venda</a></li>
+                    <li><a th:href="@{/recanto/caixa}" class="nav-item">💰 Fechamento de Caixa</a></li>
+                    <li><a th:href="@{/recanto/pdv/verificar}" class="nav-item">🛍️ Verificar Vendas</a></li>
                 </ul>
             </div>
         </nav>
     </aside>
 
-    <!-- Área de Conteúdo Principal -->
     <main class="main-content">
-
-        <!-- Barra Superior (Topbar) -->
         <header class="topbar">
-            <a href="#" class="btn-inicio">
+            <a th:href="@{/recanto/pdv}" class="btn-inicio">
                 <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path><polyline points="9 22 9 12 15 12 15 22"></polyline></svg>
                 Início
             </a>
         </header>
 
-        <!-- Conteúdo da Página -->
         <div class="content-body">
-
-            <!-- Cabeçalho da Seção -->
             <div class="section-header-bar">
                 <div class="title-with-help">
                     <h1>Produtos <span style="font-size: 1.8rem;">📦</span></h1>
@@ -511,22 +491,19 @@
                 </div>
             </div>
 
-            <p class="section-description">Aqui você pode gerenciar os seus produtos, podendo cadastrar, pesquisar, filtrar, editar e remover itens e os respetivos preços e categorias </p>
+            <p class="section-description">Gerencie os produtos do estabelecimento, definindo preços, categorias e itens associados.</p>
 
-            <!-- Card de Total de Produtos alinhado à direita -->
             <div class="top-kpi-container">
                 <div class="kpi-box">
                    <span class="kpi-box-label">
-                       <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M16.5 9.4l-9-5.19M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"></path><polyline points="3.27 6.96 12 12.01 20.73 6.96"></polyline><line x1="12" y1="22.08" x2="12" y2="12"></line></svg>                       TOTAL DE PRODUTOS:
+                       <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M16.5 9.4l-9-5.19M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"></path><polyline points="3.27 6.96 12 12.01 20.73 6.96"></polyline><line x1="12" y1="22.08" x2="12" y2="12"></line></svg>
+                       TOTAL DE PRODUTOS:
                    </span>
                     <span class="kpi-box-value" th:text="${totalProdutos}">5</span>
                 </div>
             </div>
 
-            <!-- Wrapper da Tabela e Filtros -->
             <div class="table-wrapper-card">
-
-                <!-- Barra de Pesquisa e Filtros -->
                 <div class="filter-bar">
                     <div class="search-box">
                         <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
@@ -547,74 +524,53 @@
                     </div>
                 </div>
 
-                <!-- Tabela de Produtos -->
                 <div class="table-container">
                     <table class="data-table">
                         <thead>
                         <tr>
                             <th>CÓDIGO</th>
-                            <th>
-                                <div style="display: inline-flex; align-items: center; justify-content: center; gap: 6px;">
-                                    PRODUTO
-                                </div>
-                            </th>
+                            <th>PRODUTO</th>
                             <th>PREÇO</th>
                             <th>CATEGORIA</th>
                             <th>AÇÕES</th>
                         </tr>
                         </thead>
                         <tbody id="productTableBody">
-
-                        <!-- Estado Vazio caso não haja produtos -->
                         <tr th:if="${#lists.isEmpty(produtos)}">
                             <td colspan="5" style="padding: 30px; text-align: center;">
                                 <p style="font-weight: 600; color: var(--primary-color);">Nenhum produto cadastrado.</p>
                             </td>
                         </tr>
 
-                        <!-- Loop dinâmico iterando sobre a lista de produtos -->
                         <tr th:each="p : ${produtos}">
-                            <!-- 1. CÓDIGO -->
                             <td><span th:text="${p.codigo}">01</span></td>
-
-                            <!-- 2. PRODUTO (Nome) -->
                             <td><span th:text="${p.nome}">Pão de queijo</span></td>
-
-                            <!-- 3. PREÇO -->
                             <td>
-                                <span th:id="'preco-texto-' + ${p.codigo}" th:text="${p.preco}">25,00</span>
-                                <form th:id="'preco-form-' + ${p.codigo}" th:action="@{/recanto/produtos/atualizar-preco/{id}(id=${p.codigo})}" method="post" class="inline-form" style="display: none;">
-                                    <input type="number" step="0.01" name="preco" th:value="${p.preco}" class="inline-input" required />
+                                <!-- Altere de 2 casas fixas para o formato desejado, ou exiba diretamente se preferir -->
+                                <span th:id="'preco-texto-' + ${p.codigo}" th:text="${'R$ ' + p.preco}">R$ 25.00</span>                                <form th:id="'preco-form-' + ${p.codigo}" th:action="@{/recanto/produtos/atualizar-preco/{id}(id=${p.codigo})}" method="post" class="inline-form" style="display: none;">
+                                    <input type="number" step="0.01" min="0" name="preco" th:value="${p.preco}" class="inline-input" required />
                                     <button type="submit" class="btn-icon-action" title="Salvar Alteração">💾</button>
                                 </form>
                             </td>
-
-                            <!-- 4. CATEGORIA -->
                             <td><span th:text="${p.categoria != null ? p.categoria : 'OUTROS'}">DOCE</span></td>
-
-                            <!-- 5. AÇÕES -->
                             <td>
                                 <div style="display: flex; gap: 8px; justify-content: center; align-items: center;">
                                     <button type="button" class="btn-icon-action" th:onclick="'habilitarEdicao(' + ${p.codigo} + ')'" title="Editar Preço">✏️</button>
-                                    <form th:action="@{/recanto/produtos/deletar}" method="post" style="display:inline;">
+                                    <form th:action="@{/recanto/produtos/deletar}" method="post" style="display:inline;" onsubmit="return confirm('Tem certeza de que deseja eliminar este produto?');">
                                         <input type="hidden" name="id" th:value="${p.codigo}" />
                                         <button type="submit" class="btn-icon-action" title="Excluir">🗑️</button>
                                     </form>
                                 </div>
                             </td>
                         </tr>
-
                         </tbody>
                     </table>
                 </div>
-
             </div>
-
         </div>
     </main>
 </div>
 
-<!-- Modal de Cadastro / Novo Item -->
 <div id="productModal" class="modal-overlay">
     <div class="modal-card">
         <div class="modal-header">
@@ -642,19 +598,19 @@
 
             <div class="form-row">
                 <div class="input-group">
-                    <label for="modalPrice">Preço(R$)*</label>
-                    <input type="number" step="0.01" id="modalPrice" name="preco" required placeholder="0,00">
+                    <label for="modalPrice">Preço (R$) *</label>
+                    <input type="number" step="0.01" min="0" id="modalPrice" name="preco" required placeholder="0,00">
                 </div>
                 <div class="input-group">
                     <label for="modalStock">Quantidade em Estoque</label>
-                    <input type="number" id="modalStock" name="quantidade" value="0" placeholder="0">
+                    <input type="number" min="0" id="modalStock" name="quantidade" value="0" placeholder="0">
                 </div>
             </div>
 
             <div class="form-row">
                 <div class="input-group" style="flex: 1;">
                     <label for="modalMinStock">Quantidade Mínima</label>
-                    <input type="number" id="modalMinStock" name="quantidadeMinima" value="0" placeholder="0">
+                    <input type="number" min="0" id="modalMinStock" name="quantidadeMinima" value="0" placeholder="0">
                 </div>
             </div>
 
@@ -666,7 +622,6 @@
     </div>
 </div>
 
-<!-- Script para alternar edição de preço -->
 <script>
     function habilitarEdicao(codigo) {
         var spanTexto = document.getElementById('preco-texto-' + codigo);
@@ -680,27 +635,18 @@
             formEdicao.style.display = 'none';
         }
     }
-</script>
 
-<!-- Script de Busca e Filtro por Categoria -->
-<script>
     function filtrarTabela() {
         var inputBusca = document.getElementById('inputBusca');
         var filtroTexto = inputBusca.value.toLowerCase();
-
         var selectCategoria = document.getElementById('filtroCategoria');
         var filtroCategoria = selectCategoria.value.toUpperCase();
-
         var tabela = document.getElementById('productTableBody');
         var linhas = tabela.getElementsByTagName('tr');
 
         for (var i = 0; i < linhas.length; i++) {
             var linha = linhas[i];
-
-            // Ignora a linha de estado vazio
-            if (linha.getElementsByTagName('td').length <= 1) {
-                continue;
-            }
+            if (linha.getElementsByTagName('td').length <= 1) continue;
 
             var colunaCodigo = linha.getElementsByTagName('td')[0];
             var colunaNome = linha.getElementsByTagName('td')[1];
@@ -711,10 +657,7 @@
                 var textoNome = colunaNome.textContent || colunaNome.innerText;
                 var textoCategoria = colunaCategoria.textContent || colunaCategoria.innerText.trim().toUpperCase();
 
-                // Valida se o texto bate com a busca (código ou nome)
                 var atendeBusca = textoCodigo.toLowerCase().indexOf(filtroTexto) > -1 || textoNome.toLowerCase().indexOf(filtroTexto) > -1;
-
-                // Valida se a categoria bate com o select (ou se está vazio/todas)
                 var atendeCategoria = filtroCategoria === "" || textoCategoria === filtroCategoria;
 
                 if (atendeBusca && atendeCategoria) {
@@ -726,6 +669,5 @@
         }
     }
 </script>
-
 </body>
 </html>

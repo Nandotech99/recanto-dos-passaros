@@ -10,6 +10,8 @@ import lombok.Setter;
 @AllArgsConstructor
 @NoArgsConstructor
 public class ItemDto {
-    private int codProduto;
-    private int quantidade;
+    private Integer codProduto; // Mudou de int para Integer
+    private Integer quantidade; // Mudou de int para Integer
+    private Double precoUnitario;  // Mudou de double para Double
+    private String nomeProduto;
 }

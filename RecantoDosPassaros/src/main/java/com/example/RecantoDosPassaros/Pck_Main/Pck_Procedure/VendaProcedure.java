@@ -1,11 +1,12 @@
 package com.example.RecantoDosPassaros.Pck_Main.Pck_Procedure;
 
 import com.example.RecantoDosPassaros.Pck_Main.Pck_DAO.DAO;
+import com.example.RecantoDosPassaros.Pck_Main.Pck_DTO.ItemDto;
 import com.example.RecantoDosPassaros.Pck_Main.Pck_Model.Item;
 import com.example.RecantoDosPassaros.Pck_Main.Pck_Model.Venda;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
-import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
+import org.springframework.jdbc.core.SqlParameterValue;
 import org.springframework.jdbc.core.simple.SimpleJdbcCall;
 import org.springframework.stereotype.Repository;
 
@@ -15,7 +16,6 @@ import java.sql.SQLException;
 import java.sql.Types;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 
 @Repository
 public class VendaProcedure {
@@ -123,13 +123,12 @@ public class VendaProcedure {
                 });
     }
 
-    /*
-    Método chamado pelo VendaService.getVenda()
-
-     */
     // Método get() usando JdbcTemplate direto na procedure
     public List<Venda> get() {
         String sql = "CALL exibir_venda(?)";
+
+        // Informa explicitamente que o parâmetro nulo é do tipo Inteiro (INTEGER)
+        SqlParameterValue paramNulo = new SqlParameterValue(Types.INTEGER, null);
 
         return jdbcTemplate.query(sql, new RowMapper<Venda>() {
             @Override
@@ -141,6 +140,28 @@ public class VendaProcedure {
                 venda.setStatus(rs.getString("STATUS"));
                 return venda;
             }
-        }, new Object[]{null}); // Passa null para o parâmetro p_cod_venda
+        }, paramNulo);
+    }
+
+    // Método para buscar os itens de uma venda específica
+    public List<ItemDto> getItensPorVenda(int codVenda) {
+        String sql = "CALL exibir_itens_venda(?)";
+
+        return jdbcTemplate.query(sql, new RowMapper<ItemDto>() {
+            @Override
+            public ItemDto mapRow(ResultSet rs, int rowNum) throws SQLException {
+                ItemDto item = new ItemDto();
+                item.setNomeProduto(rs.getString("NOME_PRODUTO"));
+                item.setQuantidade(rs.getInt("QUANTIDADE"));
+                item.setPrecoUnitario(rs.getDouble("PRECO_UNITARIO"));
+                return item;
+            }
+        }, new Object[]{codVenda});
+    }
+
+    // Novo método para alterar o status da venda (PAGO / PENDENTE)
+    public void atualizarStatus(int codVenda, String novoStatus) {
+        String sql = "CALL alterar_status_venda(?, ?)";
+        jdbcTemplate.update(sql, codVenda, novoStatus);
     }
 }

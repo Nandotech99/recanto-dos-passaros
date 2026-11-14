@@ -117,8 +117,34 @@ public class VendaController {
             return "verificar-vendas";
         } catch (Exception e) {
             System.err.println("ERRO DETALHADO EM /verificar: " + e.getMessage());
-            e.printStackTrace(); // Imprime o erro completo no console
+            e.printStackTrace();
             throw e;
         }
+    }
+
+    // Endpoint para retornar os itens de uma venda em formato JSON para o modal
+    @GetMapping("/{id}/itens")
+    @ResponseBody
+    public List<ItemDto> listarItensDaVenda(@PathVariable("id") int idVenda) {
+        try {
+            return vendaService.getItensPorVenda(idVenda);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return new java.util.ArrayList<>();
+        }
+    }
+
+    // Endpoint para alterar o status da venda (PAGO / PENDENTE)
+    @PostMapping("/{id}/status")
+    public String alterarStatusVenda(
+            @PathVariable("id") int idVenda,
+            @RequestParam("status") String novoStatus
+    ) {
+        try {
+            vendaService.alterarStatusVenda(idVenda, novoStatus);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return "redirect:/recanto/pdv/verificar";
     }
 }

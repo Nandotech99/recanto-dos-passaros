@@ -236,7 +236,7 @@
             color: var(--primary-color);
         }
 
-        /* Tabela de Estoque - Estilo Fiel à Referência */
+        /* Tabela de Estoque */
         .table-container {
             width: 100%;
             overflow-x: auto;
@@ -282,14 +282,12 @@
             border-right: none;
         }
 
-        /* Larguras proporcionais das 5 colunas */
         .data-table th:nth-child(1), .data-table td:nth-child(1) { width: 28%; }
         .data-table th:nth-child(2), .data-table td:nth-child(2) { width: 18%; }
         .data-table th:nth-child(3), .data-table td:nth-child(3) { width: 20%; }
         .data-table th:nth-child(4), .data-table td:nth-child(4) { width: 20%; }
         .data-table th:nth-child(5), .data-table td:nth-child(5) { width: 14%; }
 
-        /* Linhas intercaladas (efeito zebrado) */
         .data-table tbody tr:nth-child(odd) {
             background-color: #fdf3e9;
         }
@@ -331,10 +329,7 @@
 </head>
 <body class="app-body">
 
-<!-- Container Principal do Painel -->
 <div class="app-layout">
-
-    <!-- Sidebar (Menu Lateral) -->
     <aside class="sidebar">
         <div class="sidebar-brand">
             <img th:src="@{/Pck_img/Recanto-logo.jpg}" alt="Logo Recanto dos Pássaros" class="sidebar-logo">
@@ -346,45 +341,37 @@
                 <ul class="nav-list">
                     <li><a th:href="@{/recanto/produtos}" class="nav-item">📦 Produtos</a></li>
                     <li><a th:href="@{/recanto/estoque}" class="nav-item active">📋 Estoque</a></li>
-                    <li><a href="#" class="nav-item">🏢 Fornecedor</a></li>
                 </ul>
             </div>
 
             <div class="nav-section">
                 <span class="nav-section-title">Venda</span>
                 <ul class="nav-list">
-                    <li><a href="#" class="nav-item">🏷️ Ponto de Venda</a></li>
-                    <li><a href="#" class="nav-item">💰 Fechamento de Caixa</a></li>
-                    <li><a href="#" class="nav-item">🛍️ Verificar Vendas</a></li>
+                    <li><a th:href="@{/recanto/pdv}" class="nav-item">🏷️ Ponto de Venda</a></li>
+                    <li><a th:href="@{/recanto/caixa}" class="nav-item">💰 Fechamento de Caixa</a></li>
+                    <li><a th:href="@{/recanto/pdv/verificar}" class="nav-item">🛍️ Verificar Vendas</a></li>
                 </ul>
             </div>
         </nav>
     </aside>
 
-    <!-- Área de Conteúdo Principal -->
     <main class="main-content">
-
-        <!-- Barra Superior (Topbar) -->
         <header class="topbar">
-            <a href="#" class="btn-inicio">
+            <a th:href="@{/recanto/pdv}" class="btn-inicio">
                 <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path><polyline points="9 22 9 12 15 12 15 22"></polyline></svg>
                 Início
             </a>
         </header>
 
-        <!-- Conteúdo da Página -->
         <div class="content-body">
-
-            <!-- Cabeçalho da Seção -->
             <div class="section-header-bar">
                 <div class="title-with-help">
                     <h1>Estoque <span style="font-size: 1.8rem;">📋</span></h1>
                 </div>
             </div>
 
-            <p class="section-description">Aqui você pode gerenciar seu estoque e quais produtos você ainda tem nele e também o valor em estoque de cada produto</p>
+            <p class="section-description">Gerencie o stock disponível e monitore o valor total correspondente na base de dados.</p>
 
-            <!-- Card de Valor Total em Estoque alinhado à direita -->
             <div class="top-kpi-container">
                 <div class="kpi-box">
                    <span class="kpi-box-label">
@@ -394,10 +381,7 @@
                 </div>
             </div>
 
-            <!-- Wrapper da Tabela e Filtros -->
             <div class="table-wrapper-card">
-
-                <!-- Barra de Pesquisa e Filtros -->
                 <div class="filter-bar">
                     <div class="search-box">
                         <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
@@ -407,16 +391,13 @@
                     <div class="filter-dropdown">
                         <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="4" y1="21" x2="4" y2="14"></line><line x1="4" y1="10" x2="4" y2="3"></line><line x1="12" y1="21" x2="12" y2="12"></line><line x1="12" y1="8" x2="12" y2="3"></line><line x1="20" y1="21" x2="20" y2="16"></line><line x1="20" y1="12" x2="20" y2="3"></line><line x1="1" y1="14" x2="7" y2="14"></line><line x1="9" y1="8" x2="15" y2="8"></line><line x1="17" y1="16" x2="23" y2="16"></line></svg>
                         <span style="font-size: 0.85rem; font-weight: 600;">Filtrar</span>
-                        <!-- Adicionado onchange para disparar a função de filtro ao mudar a seleção -->
                         <select id="filtroSelecao" onchange="filtrarTabela()" style="border: none; outline: none; background: transparent; font-size: 0.85rem;">
                             <option value="">Todos</option>
                             <option value="baixo">Estoque Baixo</option>
                         </select>
                     </div>
-
                 </div>
 
-                <!-- Tabela de Estoque -->
                 <div class="table-container">
                     <table class="data-table">
                         <thead>
@@ -429,60 +410,43 @@
                         </tr>
                         </thead>
                         <tbody id="stockTableBody">
-
-                        <!-- Estado vazio se não houver produtos -->
                         <tr th:if="${#lists.isEmpty(produtos)}">
                             <td colspan="5" style="padding: 30px; text-align: center;">
-                                <p style="font-weight: 600; color: var(--primary-color);">Nenhum produto cadastrado no estoque.❌</p>
+                                <p style="font-weight: 600; color: var(--primary-color);">Nenhum produto cadastrado no estoque. ❌</p>
                             </td>
                         </tr>
 
-                        <!-- Loop dos produtos (Atributos data-qtd e data-min criados para auxiliar o script) -->
                         <tr th:each="p : ${produtos}"
                             th:data-qtd="${p.quantidade}"
                             th:data-min="${p.quantidade_min != null ? p.quantidade_min : p.quantidadeMinima}">
-
-                            <!-- 1. PRODUTO -->
                             <td th:text="${p.nome}">Pão de queijo</td>
-
-                            <!-- 2. QUANTIDADE -->
                             <td>
                                 <span th:id="'qtd-texto-' + ${p.codigo}" th:text="${p.quantidade}">10</span>
                                 <form th:id="'qtd-form-' + ${p.codigo}" th:action="@{/recanto/estoque/atualizar/{id}(id=${p.codigo})}" method="post" class="inline-form" style="display: none;">
-                                    <input type="number" name="quantidade" th:value="${p.quantidade}" class="inline-input" required />
+                                    <input type="number" name="quantidade" th:value="${p.quantidade}" min="0" class="inline-input" required />
                                     <button type="submit" class="btn-icon-action" title="Salvar">💾</button>
                                 </form>
                             </td>
-
-                            <!-- 3. QUANTIDADE MÍNIMA -->
                             <td th:text="${p.quantidade_min != null ? p.quantidade_min : p.quantidadeMinima}">5</td>
-
-                            <!-- 4. VALOR ESTOQUE -->
                             <td th:text="${'R$ ' + #numbers.formatDecimal(p.preco * p.quantidade, 1, 'COMMA', 2, 'POINT')}">R$ 34,00</td>
-
-                            <!-- 5. AÇÕES -->
                             <td>
                                 <div style="display: flex; gap: 10px; justify-content: center; align-items: center;">
                                     <button type="button" class="btn-icon-action" th:onclick="'habilitarEdicaoEstoque(' + ${p.codigo} + ')'" title="Editar">✏️</button>
-                                    <form th:action="@{/recanto/estoque/deletar}" method="post" style="display:inline;">
+                                    <form th:action="@{/recanto/estoque/deletar}" method="post" style="display:inline;" onsubmit="return confirm('Deseja realmente remover este item do estoque?');">
                                         <input type="hidden" name="id" th:value="${p.codigo}" />
                                         <button type="submit" class="btn-icon-action" title="Excluir">🗑️</button>
                                     </form>
                                 </div>
                             </td>
                         </tr>
-
                         </tbody>
                     </table>
                 </div>
-
             </div>
-
         </div>
     </main>
 </div>
 
-<!-- Script para alternar edição de quantidade -->
 <script>
     function habilitarEdicaoEstoque(codigo) {
         var spanTexto = document.getElementById('qtd-texto-' + codigo);
@@ -496,17 +460,12 @@
             formEdicao.style.display = 'none';
         }
     }
-</script>
 
-<!-- Script de Busca e Filtro de Estoque Baixo Combinados -->
-<script>
     function filtrarTabela() {
         var inputBusca = document.getElementById('inputBusca');
         var filtroTexto = inputBusca.value.toLowerCase();
-
         var selectSelecao = document.getElementById('filtroSelecao');
-        var criterioSelecao = selectSelecao.value; // "" ou "baixo"
-
+        var criterioSelecao = selectSelecao.value;
         var tabela = document.getElementById('stockTableBody');
         var linhas = tabela.getElementsByTagName('tr');
 
@@ -517,20 +476,16 @@
             var colunaNome = linha.getElementsByTagName('td')[0];
             if (colunaNome) {
                 var textoNome = colunaNome.textContent || colunaNome.innerText;
-
-                // Valida o texto da busca por nome
                 var atendeBusca = textoNome.toLowerCase().indexOf(filtroTexto) > -1;
 
-                // Valida o filtro de Estoque Baixo (Quantidade menor ou igual à Quantidade Mínima)
                 var qtd = parseInt(linha.getAttribute('data-qtd')) || 0;
                 var min = parseInt(linha.getAttribute('data-min')) || 0;
                 var atendeEstoqueBaixo = true;
 
                 if (criterioSelecao === "baixo") {
-                    atendeEstoqueBaixo = (qtd < min); // Altere para (qtd <= min) se considerar igual também como baixo
+                    atendeEstoqueBaixo = (qtd < min);
                 }
 
-                // Exibe a linha apenas se atender à busca por texto e ao filtro selecionado
                 if (atendeBusca && atendeEstoqueBaixo) {
                     linha.style.display = "";
                 } else {
@@ -540,6 +495,5 @@
         }
     }
 </script>
-
 </body>
 </html>

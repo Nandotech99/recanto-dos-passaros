@@ -34,7 +34,6 @@
             height: 100%;
         }
 
-        /* Sidebar (Menu Lateral) */
         .sidebar {
             width: 260px;
             background-color: var(--bg-sidebar);
@@ -103,7 +102,6 @@
             font-weight: bold;
         }
 
-        /* Área de Conteúdo Principal */
         .main-content {
             flex: 1;
             display: flex;
@@ -149,7 +147,6 @@
             padding: 10px 40px 40px 40px;
         }
 
-        /* Cabeçalho da Seção */
         .section-header-container {
             display: flex;
             justify-content: space-between;
@@ -172,7 +169,6 @@
             margin-top: 4px;
         }
 
-        /* Cartões de Indicadores (KPIs) */
         .kpi-cards-container {
             display: flex;
             gap: 20px;
@@ -210,7 +206,6 @@
             color: #c62828;
         }
 
-        /* Container Principal da Tabela / Filtros */
         .table-container-card {
             background: #f7ebd9;
             border: 2px solid var(--border-color);
@@ -269,44 +264,50 @@
             cursor: pointer;
         }
 
-        /* Tabela Estilizada */
         .custom-table {
             width: 100%;
             border-collapse: collapse;
-            background: #ffffff;
+            background: #5b3a21;
             border-radius: 8px;
             overflow: hidden;
-            border: 1px solid var(--border-color);
+            border: 4px solid var(--border-color);
         }
 
         .custom-table th {
             background-color: var(--primary-color);
             color: #ffffff;
             text-align: center;
-            padding: 12px 16px;
+            padding: 14px 16px;
             font-size: 0.9rem;
-            font-weight: 600;
+            font-weight: 700;
             letter-spacing: 0.5px;
+            border-right: 3px solid var(--border-color);
+        }
+
+        .custom-table th:last-child {
+            border-right: none;
         }
 
         .custom-table td {
-            padding: 12px 16px;
+            padding: 14px 16px;
             text-align: center;
             font-size: 0.95rem;
+            font-weight: bold;
+            color: var(--primary-color);
+            border-right: 3px solid var(--border-color);
             border-bottom: 1px solid #ebd0b9;
         }
 
-        /* Efeito Zebrado Alternado idêntico à imagem */
+        .custom-table td:last-child {
+            border-right: none;
+        }
+
         .custom-table tbody tr:nth-child(even) {
-            background-color: #e3d2c3;
+            background-color: #c6bbb2;
         }
 
         .custom-table tbody tr:nth-child(odd) {
-            background-color: #ffffff;
-        }
-
-        .custom-table tbody tr:hover {
-            background-color: #f5dcc4;
+            background-color: #fdf3e9;
         }
 
         .status-pago {
@@ -317,6 +318,22 @@
         .status-pendente {
             color: #c62828;
             font-weight: bold;
+        }
+
+        .btn-status-toggle {
+            background: none;
+            border: none;
+            cursor: pointer;
+            font-size: 0.95rem;
+            font-weight: bold;
+            text-decoration: underline;
+            padding: 4px 8px;
+            border-radius: 4px;
+            transition: background 0.2s;
+        }
+
+        .btn-status-toggle:hover {
+            background-color: rgba(0,0,0,0.05);
         }
 
         .btn-icon-action {
@@ -331,13 +348,57 @@
         .btn-icon-action:hover {
             transform: scale(1.15);
         }
+
+        .modal-overlay {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5);
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+        }
+
+        .modal-card {
+            background-color: #fcf2e8;
+            border: 2px solid var(--border-color);
+            border-radius: 12px;
+            width: 100%;
+            max-width: 600px;
+            padding: 25px;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.15);
+        }
+
+        .modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+            border-bottom: 1px solid var(--border-color);
+            padding-bottom: 10px;
+        }
+
+        .modal-header h2 {
+            font-size: 1.4rem;
+            color: var(--primary-color);
+        }
+
+        .close-modal-btn {
+            cursor: pointer;
+            font-size: 1.5rem;
+            color: var(--primary-color);
+            font-weight: bold;
+            background: none;
+            border: none;
+        }
     </style>
 </head>
 <body class="app-body">
 
 <div class="app-layout">
-
-    <!-- Sidebar / Menu Lateral -->
     <aside class="sidebar">
         <div class="sidebar-brand">
             <img th:src="@{/Pck_img/Recanto-logo.jpg}" src="/Pck_img/Recanto-logo.jpg" alt="Logo Recanto dos Pássaros" class="sidebar-logo">
@@ -349,7 +410,6 @@
                 <ul class="nav-list">
                     <li><a th:href="@{/recanto/produtos}" class="nav-item">📦 Produtos</a></li>
                     <li><a th:href="@{/recanto/estoque}" class="nav-item">📋 Estoque</a></li>
-                    <li><a href="#" class="nav-item">🏢 Fornecedor</a></li>
                 </ul>
             </div>
 
@@ -357,16 +417,14 @@
                 <span class="nav-section-title">Venda</span>
                 <ul class="nav-list">
                     <li><a th:href="@{/recanto/pdv}" class="nav-item">🏷️ Ponto de Venda</a></li>
-                    <li><a href="#" class="nav-item">💰 Fechamento de Caixa</a></li>
-                    <li><a th:href="@{/recanto/vendas}" class="nav-item active">🛍️ Verificar Vendas</a></li>
+                    <li><a th:href="@{/recanto/caixa}" class="nav-item">💰 Fechamento de Caixa</a></li>
+                    <li><a th:href="@{/recanto/pdv/verificar}" class="nav-item active">🛍️ Verificar Vendas</a></li>
                 </ul>
             </div>
         </nav>
     </aside>
 
-    <!-- Área de Conteúdo Principal -->
     <main class="main-content">
-
         <header class="topbar">
             <a th:href="@{/recanto/pdv}" class="btn-inicio">
                 <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path><polyline points="9 22 9 12 15 12 15 22"></polyline></svg>
@@ -379,12 +437,10 @@
         </header>
 
         <div class="content-body">
-
-            <!-- Cabeçalho e Cards de Indicadores -->
             <div class="section-header-container">
                 <div class="title-with-icon">
                     <h1>Verificar Vendas 🛍️</h1>
-                    <p class="section-description">Acompanhe as vendas feitas ao longo do dia</p>
+                    <p class="section-description">Acompanhe as vendas efetuadas e altere os estados de pagamento instantaneamente.</p>
                 </div>
 
                 <div class="kpi-cards-container">
@@ -392,7 +448,7 @@
                         <span class="kpi-icon">💲</span>
                         <div class="kpi-content">
                             <span>Total de vendas pagas:</span>
-                            <strong th:text="${totalVendasPagas != null ? 'R$ ' + #numbers.formatDecimal(totalVendasPagas, 1, 'COMMA', 2, 'POINT') : 'R$ 20,90'}">R$ 20,90</strong>
+                            <strong th:text="${totalVendasPagas != null ? 'R$ ' + #numbers.formatDecimal(totalVendasPagas, 1, 'COMMA', 2, 'POINT') : 'R$ 0,00'}">R$ 0,00</strong>
                         </div>
                     </div>
 
@@ -400,18 +456,17 @@
                         <span class="kpi-icon">⚠️</span>
                         <div class="kpi-content">
                             <span>Vendas pendentes:</span>
-                            <strong th:text="${totalVendasPendentes != null ? 'R$ ' + #numbers.formatDecimal(totalVendasPendentes, 1, 'COMMA', 2, 'POINT') : 'R$ 9,90'}">R$ 9,90</strong>
+                            <strong th:text="${totalVendasPendentes != null ? 'R$ ' + #numbers.formatDecimal(totalVendasPendentes, 1, 'COMMA', 2, 'POINT') : 'R$ 0,00'}">R$ 0,00</strong>
                         </div>
                     </div>
                 </div>
             </div>
 
-            <!-- Tabela e Filtros -->
             <div class="table-container-card">
                 <div class="filter-bar">
                     <div class="search-box">
                         <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
-                        <input type="text" id="searchVendas" placeholder="Pesquisar venda por código ou data..." />
+                        <input type="text" id="searchVendas" placeholder="Pesquisar venda por código (ex: 1)..." />
                     </div>
 
                     <div class="filter-dropdown">
@@ -436,44 +491,119 @@
                     </tr>
                     </thead>
                     <tbody>
-                    <!-- Exemplo dinâmico Thymeleaf com base na lista do Controller -->
                     <tr th:if="${vendas != null}" th:each="v : ${vendas}">
-                        <td th:text="${'#' + v.cod_venda}">#01</td>                        <td th:text="${v.data_venda}">25/10/2026</td>
-                        <td th:text="${'R$ ' + #numbers.formatDecimal(v.valor_total, 1, 'COMMA', 2, 'POINT')}">R$ 20,90</td>
+                        <td th:text="${'#' + v.cod_venda}">#01</td>
+                        <td th:text="${v.data_venda}">25/10/2026</td>
+                        <td th:text="${'R$ ' + #numbers.formatDecimal(v.valor_total, 1, 'COMMA', 2, 'POINT')}">R$ 0,00</td>
                         <td>
-                            <button class="btn-icon-action" title="Ver Itens">📋</button>
+                            <button type="button" class="btn-icon-action" th:onclick="'abrirModalItens(' + ${v.cod_venda} + ')'" title="Ver Itens">📋</button>
                         </td>
                         <td>
-                            <span th:class="${v.status == 'PAGO' ? 'status-pago' : 'status-pendente'}" th:text="${v.status}">PAGO</span>
+                            <form th:action="@{/recanto/pdv/{id}/status(id=${v.cod_venda})}" method="post" style="display: inline;">
+                                <input type="hidden" name="status" th:value="${v.status == 'PAGO' ? 'PENDENTE' : 'PAGO'}" />
+                                <button type="submit"
+                                        th:class="${v.status == 'PAGO' ? 'status-pago btn-status-toggle' : 'status-pendente btn-status-toggle'}"
+                                        th:text="${v.status}"
+                                        title="Clique para alternar o status da venda">
+                                    PAGO
+                                </button>
+                            </form>
                         </td>
                     </tr>
-
-                    <!-- Linhas estáticas de demonstração conforme a imagem de referência -->
-                    <tr th:if="${vendas == null || #lists.isEmpty(vendas)}">
-                        <td>01</td>
-                        <td>25/10/2026</td>
-                        <td>R$ 20,90</td>
-                        <td><button class="btn-icon-action" title="Ver Itens">📋</button></td>
-                        <td><span class="status-pago">PAGO</span></td>
-                    </tr>
-                    <tr th:if="${vendas == null || #lists.isEmpty(vendas)}">
-                        <td>02</td>
-                        <td>25/10/2026</td>
-                        <td>R$ 9,90</td>
-                        <td><button class="btn-icon-action" title="Ver Itens">📋</button></td>
-                        <td><span class="status-pendente">PENDENTE</span></td>
-                    </tr>
-                    <tr><td>&nbsp;</td><td></td><td></td><td></td><td></td></tr>
-                    <tr><td>&nbsp;</td><td></td><td></td><td></td><td></td></tr>
-                    <tr><td>&nbsp;</td><td></td><td></td><td></td><td></td></tr>
-                    <tr><td>&nbsp;</td><td></td><td></td><td></td><td></td></tr>
                     </tbody>
                 </table>
             </div>
-
         </div>
     </main>
 </div>
 
+<div id="modalItensVenda" class="modal-overlay">
+    <div class="modal-card">
+        <div class="modal-header">
+            <h2 id="modalTituloVenda">Itens da Venda</h2>
+            <button type="button" class="close-modal-btn" onclick="fecharModalItens()">&times;</button>
+        </div>
+
+        <div class="table-container">
+            <table class="custom-table">
+                <thead>
+                <tr>
+                    <th>PRODUTO</th>
+                    <th>QUANTIDADE</th>
+                    <th>PREÇO UNITÁRIO</th>
+                    <th>SUBTOTAL</th>
+                </tr>
+                </thead>
+                <tbody id="tabelaItensCorpo">
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+<script>
+    function abrirModalItens(codVenda) {
+        document.getElementById('modalTituloVenda').innerText = 'Itens da Venda #' + codVenda;
+        const corpoTabela = document.getElementById('tabelaItensCorpo');
+        corpoTabela.innerHTML = '<tr><td colspan="4" style="text-align: center; padding: 20px;">A carregar itens... 🔄</td></tr>';
+
+        document.getElementById('modalItensVenda').style.display = 'flex';
+
+        fetch('/recanto/pdv/' + codVenda + '/itens')
+            .then(response => response.json())
+            .then(itens => {
+                corpoTabela.innerHTML = '';
+                if (!itens || itens.length === 0) {
+                    corpoTabela.innerHTML = '<tr><td colspan="4" style="text-align: center; padding: 20px;">Nenhum item encontrado para esta venda.</td></tr>';
+                    return;
+                }
+
+                itens.forEach(item => {
+                    let subtotal = item.quantidade * item.precoUnitario;
+
+                    corpoTabela.innerHTML += `
+                        <tr>
+                            <td>${item.nomeProduto}</td>
+                            <td>${item.quantidade}</td>
+                            <td>R$ ${item.precoUnitario.toFixed(2).replace('.', ',')}</td>
+                            <td>R$ ${subtotal.toFixed(2).replace('.', ',')}</td>
+                        </tr>
+                    `;
+                });
+            })
+            .catch(error => {
+                console.error('Erro ao carregar itens:', error);
+                corpoTabela.innerHTML = '<tr><td colspan="4" style="text-align: center; padding: 20px; color: #c62828;">Erro ao carregar os itens da venda. Verifique a ligação.</td></tr>';
+            });
+    }
+
+    function fecharModalItens() {
+        document.getElementById('modalItensVenda').style.display = 'none';
+    }
+
+    function filtrarVendas() {
+        const termoBusca = document.getElementById('searchVendas').value.toLowerCase().trim();
+        const statusFiltro = document.getElementById('filtroStatus').value.toUpperCase().trim();
+        const linhas = document.querySelectorAll('.custom-table tbody tr');
+
+        linhas.forEach(linha => {
+            const codigo = linha.cells[0] ? linha.cells[0].innerText.toLowerCase() : '';
+            const statusElemento = linha.cells[4] ? linha.cells[4].querySelector('button, span') : null;
+            const status = statusElemento ? statusElemento.innerText.toUpperCase().trim() : '';
+
+            const matchBusca = termoBusca === '' || codigo.includes(termoBusca);
+            const matchStatus = statusFiltro === '' || status === statusFiltro;
+
+            if (matchBusca && matchStatus) {
+                linha.style.display = '';
+            } else {
+                linha.style.display = 'none';
+            }
+        });
+    }
+
+    document.getElementById('searchVendas').addEventListener('input', filtrarVendas);
+    document.getElementById('filtroStatus').addEventListener('change', filtrarVendas);
+</script>
 </body>
 </html>

@@ -180,7 +180,7 @@
         /* Grid do PDV */
         .pdv-layout-grid {
             display: grid;
-            grid-template-columns: 1fr 360px;
+            grid-template-columns: 1fr 380px;
             gap: 25px;
             align-items: start;
         }
@@ -193,9 +193,9 @@
 
         .pdv-search-bar {
             background-color: #ffffff;
-            border: 1px solid var(--border-color);
+            border: 2px solid var(--border-color);
             border-radius: 8px;
-            padding: 10px 15px;
+            padding: 12px 15px;
             display: flex;
             align-items: center;
             gap: 10px;
@@ -205,14 +205,15 @@
             border: none;
             outline: none;
             width: 100%;
-            font-size: 0.95rem;
+            font-size: 1.05rem;
+            font-weight: 600;
             background: transparent;
             color: var(--primary-color);
         }
 
         .pdv-products-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(190px, 1fr));
+            grid-template-columns: repeat(auto-fill, minmax(185px, 1fr));
             gap: 15px;
         }
 
@@ -288,6 +289,9 @@
             border-bottom: 1px solid var(--border-color);
             padding-bottom: 8px;
             color: var(--primary-color);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
         }
 
         .pdv-cart-items {
@@ -311,12 +315,42 @@
             font-size: 0.9rem;
         }
 
+        .btn-qty {
+            background: var(--bg-sidebar);
+            border: 1px solid var(--border-color);
+            border-radius: 4px;
+            width: 24px;
+            height: 24px;
+            font-weight: bold;
+            cursor: pointer;
+            color: var(--primary-color);
+        }
+
         .pdv-cart-summary {
             border-top: 1px solid var(--border-color);
             padding-top: 12px;
             display: flex;
             flex-direction: column;
             gap: 12px;
+        }
+
+        /* Área de Total */
+        .cart-total-container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background: #ffffff;
+            border: 1px solid var(--border-color);
+            border-radius: 6px;
+            padding: 10px 14px;
+            font-size: 1.1rem;
+            font-weight: bold;
+            color: var(--primary-color);
+        }
+
+        .cart-total-value {
+            color: #2e7d32;
+            font-size: 1.25rem;
         }
 
         .btn-finalize {
@@ -345,15 +379,12 @@
     <aside class="sidebar">
         <div class="sidebar-brand">
             <img th:src="@{/Pck_img/Recanto-logo.jpg}" src="/Pck_img/Recanto-logo.jpg" alt="Logo Recanto dos Pássaros" class="sidebar-logo">
-        </div>
-
         <nav class="sidebar-nav">
             <div class="nav-section">
                 <span class="nav-section-title">Cadastro</span>
                 <ul class="nav-list">
                     <li><a th:href="@{/recanto/produtos}" class="nav-item">📦 Produtos</a></li>
                     <li><a th:href="@{/recanto/estoque}" class="nav-item">📋 Estoque</a></li>
-                    <li><a href="#" class="nav-item">🏢 Fornecedor</a></li>
                 </ul>
             </div>
 
@@ -361,7 +392,7 @@
                 <span class="nav-section-title">Venda</span>
                 <ul class="nav-list">
                     <li><a th:href="@{/recanto/pdv}" class="nav-item active">🏷️ Ponto de Venda</a></li>
-                    <li><a href="#" class="nav-item">💰 Fechamento de Caixa</a></li>
+                    <li><a th:href="@{/recanto/caixa}" class="nav-item">💰 Fechamento de Caixa</a></li>
                     <li><a th:href="@{/recanto/pdv/verificar}" class="nav-item">🛍️ Verificar Vendas</a></li>
                 </ul>
             </div>
@@ -372,7 +403,7 @@
     <main class="main-content">
 
         <header class="topbar">
-            <a href="#" class="btn-inicio">
+            <a th:href="@{/recanto/pdv}" class="btn-inicio">
                 <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path><polyline points="9 22 9 12 15 12 15 22"></polyline></svg>
                 Início
             </a>
@@ -384,28 +415,26 @@
                 <div class="title-with-help">
                     <h1>Ponto de Venda <span style="font-size: 1.5rem;">🏷️</span></h1>
                 </div>
-                <button class="btn-primary-action" onclick="novaVenda()">+ Nova venda</button>
+                <button type="button" class="btn-primary-action" onclick="novaVenda()">+ Nova venda</button>
             </div>
 
-            <p class="section-description">Realize vendas rápidas selecionando os produtos cadastrados no banco de dados</p>
+            <p class="section-description">Digite o código ou nome e aperte <strong>Enter</strong>. Aperte <strong>Enter duas vezes</strong> com o campo vazio para fechar a venda rapidamente.</p>
 
             <div class="pdv-layout-grid">
 
-                <!-- Catálogo Dinâmico de Produtos (Banco de Dados) -->
+                <!-- Catálogo Dinâmico de Produtos -->
                 <div class="pdv-catalog">
                     <div class="pdv-search-bar">
-                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
-                        <input type="text" id="searchProduct" placeholder="Buscar produto cadastrado..." />
+                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
+                        <input type="text" id="searchProduct" autofocus autocomplete="off" placeholder="Digite o código ou nome do produto e aperte Enter..." />
                     </div>
 
                     <div class="pdv-products-grid">
 
-                        <!-- Mensagem caso não haja produtos cadastrados -->
                         <div th:if="${#lists.isEmpty(produtos)}" style="grid-column: 1 / -1; text-align: center; padding: 40px; color: #7a5238;">
                             <strong>Nenhum produto cadastrado no banco de dados.</strong>
                         </div>
 
-                        <!-- Loop seguro utilizando data-* do Thymeleaf -->
                         <div class="pdv-product-card"
                              th:each="p : ${produtos}"
                              th:data-codigo="${p.codigo}"
@@ -415,7 +444,7 @@
                             <div class="pdv-product-info">
                                 <span class="pdv-product-code" th:text="'#' + ${p.codigo}">#01</span>
                                 <div class="pdv-product-title" th:text="${p.nome}">Nome do Produto</div>
-                                <span class="pdv-product-category" th:text="${p.categoria}">CATEGORIA</span>
+                                <span class="pdv-product-category" th:text="${p.categoria != null ? p.categoria : 'GERAL'}">CATEGORIA</span>
                                 <div class="pdv-product-price" th:text="${'R$ ' + #numbers.formatDecimal(p.preco, 1, 'COMMA', 2, 'POINT')}">R$ 0,00</div>
                             </div>
                         </div>
@@ -425,7 +454,10 @@
 
                 <!-- Carrinho de Compras -->
                 <div class="pdv-cart-panel">
-                    <div class="pdv-cart-header">Carrinho de Compras</div>
+                    <div class="pdv-cart-header">
+                        <span>Carrinho de Compras</span>
+                        <span id="cartItemCount" style="font-size: 0.85rem; background: var(--primary-color); color: #fff; padding: 2px 8px; border-radius: 12px;">0 itens</span>
+                    </div>
 
                     <div class="pdv-cart-items" id="cartItemsContainer">
                         <div style="color: #888; text-align: center; margin-top: 40px; font-size: 0.9rem;">
@@ -434,7 +466,12 @@
                     </div>
 
                     <div class="pdv-cart-summary">
-                        <button class="btn-finalize" onclick="finalizarVenda()">Finalizar Venda</button>
+                        <div class="cart-total-container">
+                            <span>Total:</span>
+                            <span id="cartTotal" class="cart-total-value">R$ 0,00</span>
+                        </div>
+
+                        <button type="button" class="btn-finalize" onclick="finalizarVenda()">Finalizar Venda</button>
                     </div>
                 </div>
 
@@ -446,14 +483,99 @@
 
 <script>
     let carrinho = [];
+    const inputBusca = document.getElementById('searchProduct');
+    let ultimoEnterVazio = 0; // Armazena o tempo do último Enter em campo vazio
 
-    // Função que lê os dados de forma segura via atributos data-*
+    window.onload = function() {
+        inputBusca.focus();
+    };
+
+    function filtrarCardsPDV() {
+        const termo = inputBusca.value.trim().toLowerCase();
+        const cards = document.querySelectorAll('.pdv-product-card');
+
+        cards.forEach(card => {
+            const codigo = card.getAttribute('data-codigo');
+            const nome = card.getAttribute('data-nome').toLowerCase();
+
+            if (termo === '' || codigo.includes(termo) || nome.includes(termo)) {
+                card.style.display = '';
+            } else {
+                card.style.display = 'none';
+            }
+        });
+    }
+
+    inputBusca.addEventListener('input', filtrarCardsPDV);
+
+    // Evento para lidar com o Enter e o Duplo Enter no teclado numérico
+    inputBusca.addEventListener('keydown', function(event) {
+        if (event.key === 'Enter') {
+            event.preventDefault();
+            const termo = inputBusca.value.trim();
+
+            // Se o campo estiver vazio, verifica se houve um Enter duplo rápido (< 700ms)
+            if (!termo) {
+                const agora = new Date().getTime();
+                if (agora - ultimoEnterVazio < 700) {
+                    finalizarVenda();
+                    ultimoEnterVazio = 0;
+                } else {
+                    ultimoEnterVazio = agora;
+                }
+                return;
+            }
+
+            // Reseta o contador se digitou algo
+            ultimoEnterVazio = 0;
+
+            const cards = document.querySelectorAll('.pdv-product-card');
+            let produtoEncontrado = null;
+
+            // 1. Busca exata por código numérico
+            cards.forEach(card => {
+                const codigo = card.getAttribute('data-codigo');
+                if (codigo === termo) {
+                    produtoEncontrado = {
+                        codigo: codigo,
+                        nome: card.getAttribute('data-nome'),
+                        preco: parseFloat(card.getAttribute('data-preco'))
+                    };
+                }
+            });
+
+            // 2. Busca por nome caso não ache por código
+            if (!produtoEncontrado) {
+                cards.forEach(card => {
+                    const nome = card.getAttribute('data-nome').toLowerCase();
+                    if (nome.includes(termo.toLowerCase()) && !produtoEncontrado) {
+                        produtoEncontrado = {
+                            codigo: card.getAttribute('data-codigo'),
+                            nome: card.getAttribute('data-nome'),
+                            preco: parseFloat(card.getAttribute('data-preco'))
+                        };
+                    }
+                });
+            }
+
+            if (produtoEncontrado) {
+                adicionarAoCarrinho(produtoEncontrado.codigo, produtoEncontrado.nome, produtoEncontrado.preco);
+                inputBusca.value = '';
+                filtrarCardsPDV();
+            } else {
+                alert('Produto não encontrado para o código ou nome: "' + termo + '"');
+                inputBusca.select();
+            }
+        }
+    });
+
     function clicarCardProduto(element) {
         const codigo = element.getAttribute('data-codigo');
         const nome = element.getAttribute('data-nome');
         const preco = parseFloat(element.getAttribute('data-preco'));
 
         adicionarAoCarrinho(codigo, nome, preco);
+        inputBusca.focus();
     }
 
     function adicionarAoCarrinho(codigo, nome, preco) {
@@ -466,19 +588,41 @@
         atualizarCarrinho();
     }
 
+    function alterarQuantidade(index, delta) {
+        carrinho[index].quantidade += delta;
+        if (carrinho[index].quantidade <= 0) {
+            carrinho.splice(index, 1);
+        }
+        atualizarCarrinho();
+        inputBusca.focus();
+    }
+
+    function removerItem(index) {
+        carrinho.splice(index, 1);
+        atualizarCarrinho();
+        inputBusca.focus();
+    }
+
     function atualizarCarrinho() {
         const container = document.getElementById('cartItemsContainer');
+        const totalElement = document.getElementById('cartTotal');
+        const countElement = document.getElementById('cartItemCount');
 
         if (carrinho.length === 0) {
             container.innerHTML = '<div style="color: #888; text-align: center; margin-top: 40px; font-size: 0.9rem;">Nenhum item adicionado ainda.</div>';
+            totalElement.innerText = 'R$ 0,00';
+            countElement.innerText = '0 itens';
             return;
         }
 
         container.innerHTML = '';
+        let somaTotal = 0;
+        let totalUnidades = 0;
 
         carrinho.forEach((item, index) => {
-            // Operador de multiplicação corrigido (*)
             let subtotal = item.price * item.quantidade;
+            somaTotal += subtotal;
+            totalUnidades += item.quantidade;
 
             container.innerHTML += `
                 <div class="pdv-cart-item">
@@ -486,33 +630,38 @@
                         <strong>${item.name}</strong><br>
                         <small style="color: #7a5238;">${item.quantidade}x R$ ${item.price.toFixed(2).replace('.', ',')}</small>
                     </div>
-                    <div style="display: flex; align-items: center; gap: 12px;">
-                        <span style="font-weight: bold; color: #492e1b;">R$ ${subtotal.toFixed(2).replace('.', ',')}</span>
-                        <button onclick="removerItem(${index})" style="background:none; border:none; color:#c62828; cursor:pointer; font-size: 1rem;" title="Remover">❌</button>
+                    <div style="display: flex; align-items: center; gap: 8px;">
+                        <button type="button" class="btn-qty" onclick="alterarQuantidade(${index}, -1)" title="Diminuir">-</button>
+                        <button type="button" class="btn-qty" onclick="alterarQuantidade(${index}, 1)" title="Aumentar">+</button>
+                        <span style="font-weight: bold; color: #492e1b; min-width: 65px; text-align: right;">R$ ${subtotal.toFixed(2).replace('.', ',')}</span>
+                        <button type="button" onclick="removerItem(${index})" style="background:none; border:none; color:#c62828; cursor:pointer; font-size: 1rem;" title="Remover">❌</button>
                     </div>
                 </div>
             `;
         });
-    }
 
-    function removerItem(index) {
-        carrinho.splice(index, 1);
-        atualizarCarrinho();
+        totalElement.innerText = 'R$ ' + somaTotal.toFixed(2).replace('.', ',');
+        countElement.innerText = totalUnidades + (totalUnidades === 1 ? ' item' : ' itens');
     }
 
     function novaVenda() {
+        if (carrinho.length > 0 && !confirm('Deseja limpar o carrinho atual e iniciar uma nova venda?')) {
+            return;
+        }
         carrinho = [];
+        inputBusca.value = '';
+        filtrarCardsPDV();
         atualizarCarrinho();
+        inputBusca.focus();
     }
 
-    // Função de finalização integrada com o @PostMapping do VendaController
     function finalizarVenda() {
         if (carrinho.length === 0) {
             alert('Adicione itens ao carrinho antes de finalizar a venda.');
+            inputBusca.focus();
             return;
         }
 
-        // Mapeia o carrinho para o formato esperado pelo ItemDto (codProduto e quantidade)
         const itensParaEnviar = carrinho.map(item => ({
             codProduto: parseInt(item.code),
             quantidade: item.quantidade
@@ -529,7 +678,7 @@
                 alert('Venda finalizada com sucesso! Estoque atualizado.');
                 carrinho = [];
                 atualizarCarrinho();
-                window.location.reload(); // Recarrega para refletir as mudanças
+                window.location.reload();
             } else {
                 alert('Erro ao finalizar a venda no servidor.');
             }

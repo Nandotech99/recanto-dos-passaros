@@ -38,7 +38,12 @@ CREATE TABLE item (
                       FOREIGN KEY (cod_venda) REFERENCES venda (cod_venda),
                       FOREIGN KEY (cod_produto) REFERENCES produto (id)
 );
-
+CREATE TABLE fechamentocaixa (
+                                 id INT AUTO_INCREMENT PRIMARY KEY,
+                                 data DATE NOT NULL,
+                                 entrada DECIMAL(10, 2) NOT NULL DEFAULT 0.00,
+                                 status VARCHAR(20) NOT NULL DEFAULT 'PENDENTE'
+);
 ---
 -- 2. FUNÇÕES E PROCEDIMENTOS DE LÓGICA
 ---
@@ -86,6 +91,42 @@ UPDATE venda
 SET valortotal = valortotal + d_subtotal
 WHERE cod_venda = p_cod_venda;
 END //
+DELIMITER ;
+    DELIMITER $$
+
+DELIMITER //
+CREATE PROCEDURE exibir_fechamento_caixa(IN p_id INT)
+BEGIN
+    IF p_id IS NULL THEN
+SELECT id AS CODIGO,
+       DATE_FORMAT(data, '%d/%m/%Y') AS DATA,
+       entrada AS ENTRADA,
+       status AS STATUS
+FROM fechamentocaixa
+ORDER BY data DESC;
+ELSE
+SELECT id AS CODIGO,
+       DATE_FORMAT(data, '%d/%m/%Y') AS DATA,
+       entrada AS ENTRADA,
+       status AS STATUS
+FROM fechamentocaixa
+WHERE id = p_id;
+END IF;
+END //
+DELIMITER //
+
+-- Procedure para registrar um novo fechamento de caixa
+CREATE PROCEDURE registrar_fechamento_caixa(
+    IN p_data DATE,
+    IN p_entrada DECIMAL(10, 2),
+    IN p_status VARCHAR(20)
+)
+BEGIN
+INSERT INTO fechamentocaixa (data, entrada, status)
+VALUES (p_data, p_entrada, p_status);
+END //
+
+
 DELIMITER ;
 
 ---

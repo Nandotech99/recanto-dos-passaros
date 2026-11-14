@@ -1,5 +1,6 @@
 package com.example.RecantoDosPassaros.Pck_Main.Pck_Service;
 
+import com.example.RecantoDosPassaros.Pck_Main.Pck_DTO.ItemDto;
 import com.example.RecantoDosPassaros.Pck_Main.Pck_Model.Item;
 import com.example.RecantoDosPassaros.Pck_Main.Pck_Model.Venda;
 import com.example.RecantoDosPassaros.Pck_Main.Pck_Procedure.VendaProcedure;
@@ -28,4 +29,13 @@ public class VendaService {
         return vendaProcedure.get();
     }
 
+    // Retorna a lista de itens de uma venda específica
+    public List<ItemDto> getItensPorVenda(int codVenda) {
+        return vendaProcedure.getItensPorVenda(codVenda);
+    }
+
+    // Altera o status da venda (PAGO ou PENDENTE)
+    public void alterarStatusVenda(int codVenda, String novoStatus) {
+        vendaProcedure.atualizarStatus(codVenda, novoStatus);
+    }
 }
