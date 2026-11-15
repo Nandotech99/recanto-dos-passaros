@@ -383,7 +383,7 @@
 
         <nav class="sidebar-nav">
             <div class="nav-section">
-                <span class="nav-section-title">Cadastro</span>
+                <span class="nav-section-title">Gerenciamento</span>
                 <ul class="nav-list">
                     <li><a th:href="@{/recanto/produtos}" class="nav-item">📦 Produtos</a></li>
                     <li><a th:href="@{/recanto/estoque}" class="nav-item">📋 Estoque</a></li>
@@ -407,7 +407,8 @@
         <header class="topbar">
             <a th:href="@{/recanto/pdv}" class="btn-inicio">
                 <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path><polyline points="9 22 9 12 15 12 15 22"></polyline></svg>
-                Início
+                Ponto de Venda
+
             </a>
         </header>
 
@@ -417,7 +418,6 @@
                 <div class="title-with-help">
                     <h1>Ponto de Venda <span style="font-size: 1.5rem;">🏷️</span></h1>
                 </div>
-                <button type="button" class="btn-primary-action" onclick="novaVenda()">+ Nova venda</button>
             </div>
 
             <p class="section-description">Digite o código ou nome e aperte <strong>Enter</strong>. Aperte <strong>Enter duas vezes</strong> com o campo vazio para fechar a venda rapidamente.</p>

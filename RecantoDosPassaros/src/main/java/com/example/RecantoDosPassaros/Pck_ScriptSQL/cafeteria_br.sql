@@ -1,4 +1,4 @@
----
+﻿---
 -- 1. ESTRUTURA DE TABELAS
 ---
 
