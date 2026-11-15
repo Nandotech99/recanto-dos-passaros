@@ -378,7 +378,9 @@
     <!-- Sidebar -->
     <aside class="sidebar">
         <div class="sidebar-brand">
-            <img th:src="@{/Pck_img/Recanto-logo.jpg}" src="/Pck_img/Recanto-logo.jpg" alt="Logo Recanto dos Pássaros" class="sidebar-logo">
+            <img th:src="@{/Pck_img/Recanto-logo.jpg}" alt="Logo Recanto dos Pássaros" class="sidebar-logo">
+        </div>
+
         <nav class="sidebar-nav">
             <div class="nav-section">
                 <span class="nav-section-title">Cadastro</span>
@@ -662,9 +664,10 @@
             return;
         }
 
+        // Mapeia as propriedades para corresponder exatamente ao ItemDto (codProduto, quantidade)
         const itensParaEnviar = carrinho.map(item => ({
             codProduto: parseInt(item.code),
-            quantidade: item.quantidade
+            quantidade: parseInt(item.quantidade)
         }));
 
         fetch('/recanto/pdv', {

@@ -14,8 +14,8 @@ public class ProdutoProcedure {
 
     CallableStatement oCall;
     DAO oConectar = new DAO();
-    private static final String login = "root";
-    private static final String senha = "P@$$w0rd";
+    private static final String login = "nando";
+    private static final String senha = "12";
 
     public void inserir(Produto produto) {
         try {
@@ -112,6 +112,25 @@ public class ProdutoProcedure {
             oCall.setInt(1, id);
             oCall.setDouble(2, produto.getPreco());
             oCall.execute();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } finally {
+            oConectar.desconectar();
+        }
+    }
+    public void darBaixaEstoque(int id, int quantidadeVendida) {
+        try {
+            // Se optar por uma procedure de decremento, ou use a lógica abaixo buscando o produto atual:
+            Produto produto = getById(id);
+            if (produto != null) {
+                int novaQuantidade = produto.getQuantidade() - quantidadeVendida;
+                if (novaQuantidade < 0) novaQuantidade = 0;
+
+                oCall = oConectar.getConexao(login, senha).prepareCall("CALL upt_quantidade(?,?)");
+                oCall.setInt(1, id);
+                oCall.setInt(2, novaQuantidade);
+                oCall.execute();
+            }
         } catch (SQLException e) {
             e.printStackTrace();
         } finally {

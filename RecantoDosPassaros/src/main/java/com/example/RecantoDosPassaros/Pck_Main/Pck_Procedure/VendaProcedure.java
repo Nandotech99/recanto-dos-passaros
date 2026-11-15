@@ -64,7 +64,7 @@ public class VendaProcedure {
             oCall.setInt(2, item.getCod_produtoFK());
             oCall.setInt(3, item.getQuantidadeFK());
 
-            oCall.execute();
+                     oCall.execute();
         } catch (SQLException e) {
             e.printStackTrace();
         } finally {
