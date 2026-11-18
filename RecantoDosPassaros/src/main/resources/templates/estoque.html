@@ -1,9 +1,14 @@
 <!DOCTYPE html>
 <html lang="pt-BR" xmlns:th="http://www.thymeleaf.org">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Recanto dos Pássaros - Estoque</title>
+
+    <link rel="stylesheet"
+        href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0&icon_names=close" />
+
     <style>
         :root {
             --bg-sidebar: #f5dcc4;
@@ -100,7 +105,8 @@
             transition: background 0.2s;
         }
 
-        .nav-item:hover, .nav-item.active {
+        .nav-item:hover,
+        .nav-item.active {
             background-color: #ebd0b9;
             font-weight: bold;
         }
@@ -212,7 +218,8 @@
             flex-wrap: wrap;
         }
 
-        .search-box, .filter-dropdown {
+        .search-box,
+        .filter-dropdown {
             background-color: #ffffff;
             border: 1px solid var(--border-color);
             border-radius: 6px;
@@ -227,7 +234,8 @@
             min-width: 280px;
         }
 
-        .search-box input, .filter-dropdown select {
+        .search-box input,
+        .filter-dropdown select {
             border: none;
             outline: none;
             background: transparent;
@@ -282,11 +290,30 @@
             border-right: none;
         }
 
-        .data-table th:nth-child(1), .data-table td:nth-child(1) { width: 28%; }
-        .data-table th:nth-child(2), .data-table td:nth-child(2) { width: 18%; }
-        .data-table th:nth-child(3), .data-table td:nth-child(3) { width: 20%; }
-        .data-table th:nth-child(4), .data-table td:nth-child(4) { width: 20%; }
-        .data-table th:nth-child(5), .data-table td:nth-child(5) { width: 14%; }
+        .data-table th:nth-child(1),
+        .data-table td:nth-child(1) {
+            width: 28%;
+        }
+
+        .data-table th:nth-child(2),
+        .data-table td:nth-child(2) {
+            width: 18%;
+        }
+
+        .data-table th:nth-child(3),
+        .data-table td:nth-child(3) {
+            width: 20%;
+        }
+
+        .data-table th:nth-child(4),
+        .data-table td:nth-child(4) {
+            width: 20%;
+        }
+
+        .data-table th:nth-child(5),
+        .data-table td:nth-child(5) {
+            width: 14%;
+        }
 
         .data-table tbody tr:nth-child(odd) {
             background-color: #fdf3e9;
@@ -327,173 +354,181 @@
         }
     </style>
 </head>
+
 <body class="app-body">
 
-<div class="app-layout">
-    <aside class="sidebar">
-        <div class="sidebar-brand">
-            <img th:src="@{/Pck_img/Recanto-logo.jpg}" alt="Logo Recanto dos Pássaros" class="sidebar-logo">
-        </div>
-
-        <nav class="sidebar-nav">
-            <div class="nav-section">
-                <span class="nav-section-title">Gerenciamento</span>
-                <ul class="nav-list">
-                    <li><a th:href="@{/recanto/produtos}" class="nav-item">📦 Produtos</a></li>
-                    <li><a th:href="@{/recanto/estoque}" class="nav-item active">📋 Estoque</a></li>
-                </ul>
+    <div class="app-layout">
+        <aside class="sidebar">
+            <div class="sidebar-brand">
+                <img th:src="@{/Pck_img/Recanto-logo.jpg}" alt="Logo Recanto dos Pássaros" class="sidebar-logo">
             </div>
 
-            <div class="nav-section">
-                <span class="nav-section-title">Venda</span>
-                <ul class="nav-list">
-                    <li><a th:href="@{/recanto/pdv}" class="nav-item">🏷️ Ponto de Venda</a></li>
-                    <li><a th:href="@{/recanto/caixa}" class="nav-item">💰 Fechamento de Caixa</a></li>
-                    <li><a th:href="@{/recanto/pdv/verificar}" class="nav-item">🛍️ Verificar Vendas</a></li>
-                </ul>
-            </div>
-        </nav>
-    </aside>
-
-    <main class="main-content">
-        <header class="topbar">
-            <a th:href="@{/recanto/pdv}" class="btn-inicio">
-                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path><polyline points="9 22 9 12 15 12 15 22"></polyline></svg>
-                Ponto de Venda
-            </a>
-        </header>
-
-        <div class="content-body">
-            <div class="section-header-bar">
-                <div class="title-with-help">
-                    <h1>Estoque <span style="font-size: 1.8rem;">📋</span></h1>
+            <nav class="sidebar-nav">
+                <div class="nav-section">
+                    <span class="nav-section-title">Gerenciamento</span>
+                    <ul class="nav-list">
+                        <li><a th:href="@{/recanto/produtos}" class="nav-item">Produtos</a></li>
+                        <li><a th:href="@{/recanto/estoque}" class="nav-item active">Estoque</a></li>
+                    </ul>
                 </div>
-            </div>
 
-            <p class="section-description">Gerencie o stock disponível e monitore o valor total correspondente na base de dados.</p>
-
-            <div class="top-kpi-container">
-                <div class="kpi-box">
-                   <span class="kpi-box-label">
-                       <span style="color: #2e7d32; font-size: 1.1rem;">💲</span> Valor total em estoque:
-                   </span>
-                    <span class="kpi-box-value" th:text="${'R$ ' + #numbers.formatDecimal(valorTotalEstoque, 1, 'COMMA', 2, 'POINT')}">R$ 0,00</span>
+                <div class="nav-section">
+                    <span class="nav-section-title">Venda</span>
+                    <ul class="nav-list">
+                        <li><a th:href="@{/recanto/pdv}" class="nav-item">Ponto de Venda</a></li>
+                        <li><a th:href="@{/recanto/caixa}" class="nav-item">Fechamento de Caixa</a></li>
+                        <li><a th:href="@{/recanto/pdv/verificar}" class="nav-item">Verificar Vendas</a></li>
+                    </ul>
                 </div>
-            </div>
+            </nav>
+        </aside>
 
-            <div class="table-wrapper-card">
-                <div class="filter-bar">
-                    <div class="search-box">
-                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
-                        <input type="text" id="inputBusca" onkeyup="filtrarTabela()" placeholder="Buscar: Insira código ou nome do produto...">
-                    </div>
+        <main class="main-content">
+            <header class="topbar">
+                <a th:href="@{/recanto/pdv}" class="btn-inicio">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path>
+                        <polyline points="9 22 9 12 15 12 15 22"></polyline>
+                    </svg>
+                    Ponto de Venda
+                </a>
+            </header>
 
-                    <div class="filter-dropdown">
-                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="4" y1="21" x2="4" y2="14"></line><line x1="4" y1="10" x2="4" y2="3"></line><line x1="12" y1="21" x2="12" y2="12"></line><line x1="12" y1="8" x2="12" y2="3"></line><line x1="20" y1="21" x2="20" y2="16"></line><line x1="20" y1="12" x2="20" y2="3"></line><line x1="1" y1="14" x2="7" y2="14"></line><line x1="9" y1="8" x2="15" y2="8"></line><line x1="17" y1="16" x2="23" y2="16"></line></svg>
-                        <span style="font-size: 0.85rem; font-weight: 600;">Filtrar</span>
-                        <select id="filtroSelecao" onchange="filtrarTabela()" style="border: none; outline: none; background: transparent; font-size: 0.85rem;">
-                            <option value="">Todos</option>
-                            <option value="baixo">Estoque Baixo</option>
-                        </select>
+            <div class="content-body">
+                <div class="section-header-bar">
+                    <div class="title-with-help">
+                        <h1>Estoque</h1>
                     </div>
                 </div>
 
-                <div class="table-container">
-                    <table class="data-table">
-                        <thead>
-                        <tr>
-                            <th>PRODUTO</th>
-                            <th>QUANTIDADE</th>
-                            <th>QUANTIDADE MÍNIMA</th>
-                            <th>VALOR ESTOQUE</th>
-                            <th>AÇÕES</th>
-                        </tr>
-                        </thead>
-                        <tbody id="stockTableBody">
-                        <tr th:if="${#lists.isEmpty(produtos)}">
-                            <td colspan="5" style="padding: 30px; text-align: center;">
-                                <p style="font-weight: 600; color: var(--primary-color);">Nenhum produto cadastrado no estoque. ❌</p>
-                            </td>
-                        </tr>
+                <p class="section-description">Gerencie o stock disponível e monitore o valor total correspondente na
+                    base de dados.</p>
 
-                        <tr th:each="p : ${produtos}"
-                            th:data-qtd="${p.quantidade}"
-                            th:data-min="${p.quantidade_min != null ? p.quantidade_min : p.quantidadeMinima}">
-                            <td th:text="${p.nome}">Pão de queijo</td>
-                            <td>
-                                <span th:id="'qtd-texto-' + ${p.codigo}" th:text="${p.quantidade}">10</span>
-                                <form th:id="'qtd-form-' + ${p.codigo}" th:action="@{/recanto/estoque/atualizar/{id}(id=${p.codigo})}" method="post" class="inline-form" style="display: none;">
-                                    <input type="number" name="quantidade" th:value="${p.quantidade}" min="0" class="inline-input" required />
-                                    <button type="submit" class="btn-icon-action" title="Salvar">💾</button>
-                                </form>
-                            </td>
-                            <td th:text="${p.quantidade_min != null ? p.quantidade_min : p.quantidadeMinima}">5</td>
-                            <td th:text="${'R$ ' + #numbers.formatDecimal(p.preco * p.quantidade, 1, 'COMMA', 2, 'POINT')}">R$ 34,00</td>
-                            <td>
-                                <div style="display: flex; gap: 10px; justify-content: center; align-items: center;">
-                                    <button type="button" class="btn-icon-action" th:onclick="'habilitarEdicaoEstoque(' + ${p.codigo} + ')'" title="Editar">✏️</button>
-                                    <form th:action="@{/recanto/estoque/deletar}" method="post" style="display:inline;" onsubmit="return confirm('Deseja realmente remover este item do estoque?');">
-                                        <input type="hidden" name="id" th:value="${p.codigo}" />
-                                        <button type="submit" class="btn-icon-action" title="Excluir">🗑️</button>
-                                    </form>
-                                </div>
-                            </td>
-                        </tr>
-                        </tbody>
-                    </table>
+                <div class="top-kpi-container">
+                    <div class="kpi-box">
+                        <span class="kpi-box-label">
+                            <span style="color: #2e7d32; font-size: 1.1rem;">💲</span> Valor total em estoque:
+                        </span>
+                        <span class="kpi-box-value"
+                            th:text="${'R$ ' + #numbers.formatDecimal(valorTotalEstoque, 1, 'COMMA', 2, 'POINT')}">R$
+                            0,00</span>
+                    </div>
+                </div>
+
+                <div class="table-wrapper-card">
+                    <div class="filter-bar">
+                        <div class="search-box">
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                stroke-width="2">
+                                <circle cx="11" cy="11" r="8"></circle>
+                                <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+                            </svg>
+                            <input type="text" id="inputBusca" onkeyup="filtrarTabela()"
+                                placeholder="Buscar: Insira código ou nome do produto...">
+                        </div>
+
+                        <div class="filter-dropdown">
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                stroke-width="2">
+                                <line x1="4" y1="21" x2="4" y2="14"></line>
+                                <line x1="4" y1="10" x2="4" y2="3"></line>
+                                <line x1="12" y1="21" x2="12" y2="12"></line>
+                                <line x1="12" y1="8" x2="12" y2="3"></line>
+                                <line x1="20" y1="21" x2="20" y2="16"></line>
+                                <line x1="20" y1="12" x2="20" y2="3"></line>
+                                <line x1="1" y1="14" x2="7" y2="14"></line>
+                                <line x1="9" y1="8" x2="15" y2="8"></line>
+                                <line x1="17" y1="16" x2="23" y2="16"></line>
+                            </svg>
+                            <span style="font-size: 0.85rem; font-weight: 600;">Filtrar</span>
+                            <select id="filtroSelecao" onchange="filtrarTabela()"
+                                style="border: none; outline: none; background: transparent; font-size: 0.85rem;">
+                                <option value="">Todos</option>
+                                <option value="baixo">Estoque Baixo</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="table-container">
+                        <table class="data-table">
+                            <thead>
+                                <tr>
+                                    <th>PRODUTO</th>
+                                    <th>QUANTIDADE</th>
+                                    <th>QUANTIDADE MÍNIMA</th>
+                                    <th>VALOR ESTOQUE</th>
+                                    <th>AÇÕES</th>
+                                </tr>
+                            </thead>
+                            <tbody id="stockTableBody">
+                                <tr th:if="${#lists.isEmpty(produtos)}">
+                                    <td colspan="5" style="padding: 30px; text-align: center;">
+                                        <p style="font-weight: 600; color: var(--primary-color);">Nenhum produto
+                                            cadastrado no estoque.</p>
+                                    </td>
+                                </tr>
+
+                                <tr th:each="p : ${produtos}" th:data-qtd="${p.quantidade}"
+                                    th:data-min="${p.quantidade_min != null ? p.quantidade_min : p.quantidadeMinima}">
+                                        </div>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
                 </div>
             </div>
-        </div>
-    </main>
-</div>
+        </main>
+    </div>
 
-<script>
-    function habilitarEdicaoEstoque(codigo) {
-        var spanTexto = document.getElementById('qtd-texto-' + codigo);
-        var formEdicao = document.getElementById('qtd-form-' + codigo);
+    <script>
+        function habilitarEdicaoEstoque(codigo) {
+            var spanTexto = document.getElementById('qtd-texto-' + codigo);
+            var formEdicao = document.getElementById('qtd-form-' + codigo);
 
-        if (spanTexto.style.display !== 'none') {
-            spanTexto.style.display = 'none';
-            formEdicao.style.display = 'inline-flex';
-        } else {
-            spanTexto.style.display = 'inline';
-            formEdicao.style.display = 'none';
+            if (spanTexto.style.display !== 'none') {
+                spanTexto.style.display = 'none';
+                formEdicao.style.display = 'inline-flex';
+            } else {
+                spanTexto.style.display = 'inline';
+                formEdicao.style.display = 'none';
+            }
         }
-    }
 
-    function filtrarTabela() {
-        var inputBusca = document.getElementById('inputBusca');
-        var filtroTexto = inputBusca.value.toLowerCase();
-        var selectSelecao = document.getElementById('filtroSelecao');
-        var criterioSelecao = selectSelecao.value;
-        var tabela = document.getElementById('stockTableBody');
-        var linhas = tabela.getElementsByTagName('tr');
+        function filtrarTabela() {
+            var inputBusca = document.getElementById('inputBusca');
+            var filtroTexto = inputBusca.value.toLowerCase();
+            var selectSelecao = document.getElementById('filtroSelecao');
+            var criterioSelecao = selectSelecao.value;
+            var tabela = document.getElementById('stockTableBody');
+            var linhas = tabela.getElementsByTagName('tr');
 
-        for (var i = 0; i < linhas.length; i++) {
-            var linha = linhas[i];
-            if (linha.getElementsByTagName('td').length <= 1) continue;
+            for (var i = 0; i < linhas.length; i++) {
+                var linha = linhas[i];
+                if (linha.getElementsByTagName('td').length <= 1) continue;
 
-            var colunaNome = linha.getElementsByTagName('td')[0];
-            if (colunaNome) {
-                var textoNome = colunaNome.textContent || colunaNome.innerText;
-                var atendeBusca = textoNome.toLowerCase().indexOf(filtroTexto) > -1;
+                var colunaNome = linha.getElementsByTagName('td')[0];
+                if (colunaNome) {
+                    var textoNome = colunaNome.textContent || colunaNome.innerText;
+                    var atendeBusca = textoNome.toLowerCase().indexOf(filtroTexto) > -1;
 
-                var qtd = parseInt(linha.getAttribute('data-qtd')) || 0;
-                var min = parseInt(linha.getAttribute('data-min')) || 0;
-                var atendeEstoqueBaixo = true;
+                    var qtd = parseInt(linha.getAttribute('data-qtd')) || 0;
+                    var min = parseInt(linha.getAttribute('data-min')) || 0;
+                    var atendeEstoqueBaixo = true;
 
-                if (criterioSelecao === "baixo") {
-                    atendeEstoqueBaixo = (qtd < min);
-                }
+                    if (criterioSelecao === "baixo") {
+                        atendeEstoqueBaixo = (qtd < min);
+                    }
 
-                if (atendeBusca && atendeEstoqueBaixo) {
-                    linha.style.display = "";
-                } else {
-                    linha.style.display = "none";
+                    if (atendeBusca && atendeEstoqueBaixo) {
+                        linha.style.display = "";
+                    } else {
+                        linha.style.display = "none";
+                    }
                 }
             }
         }
-    }
-</script>
+    </script>
 </body>
+
 </html>
