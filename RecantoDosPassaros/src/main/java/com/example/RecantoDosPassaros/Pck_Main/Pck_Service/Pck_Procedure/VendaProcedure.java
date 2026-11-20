@@ -21,8 +21,8 @@ import java.util.List;
 public class VendaProcedure {
 
     private final DAO oConectar = new DAO();
-    private static final String login = "nando";
-    private static final String senha = "12";
+    private static final String login = "root";
+    private static final String senha = "admin";
 
     public ArrayList<Venda> get2() {
         ArrayList<Venda> lista = new ArrayList<>();

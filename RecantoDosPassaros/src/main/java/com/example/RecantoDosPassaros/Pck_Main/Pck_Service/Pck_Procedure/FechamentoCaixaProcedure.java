@@ -19,8 +19,8 @@ import java.util.List;
 public class FechamentoCaixaProcedure {
 
     private final DAO oConectar = new DAO();
-    private static final String login = "nando";
-    private static final String senha = "12";
+    private static final String login = "root";
+    private static final String senha = "admin";
 
     private final JdbcTemplate jdbcTemplate;
     private final SimpleJdbcCall callExibirFechamento;
