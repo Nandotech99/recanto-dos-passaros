@@ -1,26 +1,22 @@
-
 <!DOCTYPE html>
 <html lang="pt-BR" xmlns:th="http://www.thymeleaf.org">
-
+    
 <head>
+
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Fechamento de Caixa | Recanto dos Pássaros</title>
+    <title>Verificar Vendas | Recanto dos Pássaros</title>
 
     <link rel="icon" type="image/jpeg" th:href="@{/pck_img/recanto-logotipo.png}" href="pck_img/recanto-logotipo.png">
     <link rel="stylesheet" th:href="@{/style.css}" href="style.css">
-
+    
 </head>
-
 <body class="app-body">
 
 <div class="app-layout">
-
-    <!-- Sidebar / Menu Lateral -->
     <aside class="sidebar">
         <div class="sidebar-brand">
-            <img th:src="@{/pck_img/recanto-simbolo.jpg}" src="/pck_img/recanto-simbolo.jpg"
-                alt="Logo Recanto dos Pássaros" class="sidebar-logo">
+            <img th:src="@{/pck_img/recanto-simbolo.jpg}" src="/pck_img/recanto-simbolo.jpg" alt="Logo Recanto dos Pássaros" class="sidebar-logo">
         </div>
 
         <nav class="sidebar-nav">
@@ -36,159 +32,214 @@
                 <span class="nav-section-title">Venda</span>
                 <ul class="nav-list">
                     <li><a th:href="@{/recanto/pdv}" class="nav-item">Ponto de Venda</a></li>
-                    <li><a th:href="@{/recanto/caixa}" class="nav-item active">Fechamento de Caixa</a></li>
-                    <li><a th:href="@{/recanto/pdv/verificar}" class="nav-item">Verificar Vendas</a></li>
+                    <li><a th:href="@{/recanto/caixa}" class="nav-item">Fechamento de Caixa</a></li>
+                    <li><a th:href="@{/recanto/pdv/verificar}" class="nav-item active">Verificar Vendas</a></li>
                 </ul>
             </div>
         </nav>
     </aside>
 
-    <!-- Área de Conteúdo Principal -->
     <main class="main-content">
-
         <header class="topbar">
             <a th:href="@{/recanto/pdv}" class="btn-inicio">
-                <svg width="16" height="16" viewBox="0 0 24 24" fill="none"
-                    stroke="currentColor" stroke-width="2">
-                    <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path>
-                    <polyline points="9 22 9 12 15 12 15 22"></polyline>
-                </svg>
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path><polyline points="9 22 9 12 15 12 15 22"></polyline></svg>
                 Início
             </a>
+
         </header>
 
         <div class="content-body">
-
-            <!-- Cabeçalho e Botão Fechar Caixa -->
             <div class="section-header-container">
                 <div class="title-with-icon">
-                    <h1>Fechamento de caixa</h1>
+                    <h1>Verificar Vendas</h1>
+                    <p class="section-description">Acompanhe as vendas efetuadas e altere os estados de pagamento instantaneamente.</p>
                 </div>
 
-                <!-- Formulário que envia o POST para o FechamentoCaixaController -->
-                <form th:action="@{/recanto/caixa/fechar-dia}" method="post">
-                    <button type="submit" class="btn-primary-action">Fechar Caixa</button>
-                </form>
-            </div>
+                <div class="kpi-cards-container">
+                    <div class="kpi-card">
+                        <span class="kpi-icon">
+                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none"
+                            stroke="#757575" stroke-width="2" stroke-linecap="round"
+                            stroke-linejoin="round" aria-hidden="true">
+                            <line x1="12" y1="2" x2="12" y2="22"></line>
+                            <path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"></path>
+                            </svg>
+                        </span>
+                        <div class="kpi-content">
+                            <span>Total de vendas pagas:</span>
+                            <strong th:text="${totalVendasPagas != null ? 'R$ ' + #numbers.formatDecimal(totalVendasPagas, 1, 'COMMA', 2, 'POINT') : 'R$ 0,00'}">R$ 0,00</strong>
+                        </div>
+                    </div>
 
-            <p class="section-description">
-                Gestão diária do fechamento de caixa, contabilizando todas as venda registradas
-            </p>
-
-            <!-- Cards de Indicadores (KPIs) -->
-            <div class="kpi-cards-container">
-
-                <div class="kpi-card">
-                    <span class="kpi-icon">
-                        <!-- Ícone de valor em dinheiro -->
-                        <svg xmlns="http://www.w3.org/2000/svg"
-                            width="20"
-                            height="20"
-                            viewBox="0 -960 960 960"
-                            fill="#757575">
-                            <path d="M440-200v-40q-75-9-115.5-53T284-400h72q4 45 33.5 68t78.5 23q45 0 71-20t26-52q0-30-24-48t-87-37q-73-22-110.5-58T306-615q0-57 38-93t96-44v-48h80v48q62 9 96 48t38 89h-72q-4-37-29-57t-67-20q-40 0-63 18t-23 48q0 27 23 44t84 37q78 25 112.5 61t34.5 91q0 59-39 97t-102 46v48h-80Z"/>
+                    <div class="kpi-card pending">
+                        <span class="kpi-icon">
+                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none"
+                            stroke="#757575" stroke-width="2" stroke-linecap="round"
+                            stroke-linejoin="round" aria-hidden="true">
+                            <path d="M10.3 3.9 2.5 17.4A2 2 0 0 0 4.2 20h15.6a2 2 0 0 0 1.7-2.6L13.7 3.9a2 2 0 0 0-3.4 0Z"></path>
+                            <line x1="12" y1="9" x2="12" y2="13"></line>
+                            <line x1="12" y1="17" x2="12.01" y2="17"></line>
                         </svg>
                     </span>
-
-                    <div class="kpi-content">
-                        <span>Total de entrada:</span>
-                        <strong th:text="${totalEntrada != null ? 'R$ ' + #numbers.formatDecimal(totalEntrada, 1, 'COMMA', 2, 'POINT') : ''}"></strong>
+                        <div class="kpi-content">
+                            <span>Vendas pendentes:</span>
+                            <strong th:text="${totalVendasPendentes != null ? 'R$ ' + #numbers.formatDecimal(totalVendasPendentes, 1, 'COMMA', 2, 'POINT') : 'R$ 0,00'}">R$ 0,00</strong>
+                        </div>
                     </div>
                 </div>
-
-                <div class="kpi-card pending">
-                    <span class="kpi-icon">
-                        <!-- Ícone de alerta -->
-                        <svg xmlns="http://www.w3.org/2000/svg"
-                            width="20"
-                            height="20"
-                            viewBox="0 -960 960 960"
-                            fill="#757575">
-                            <path d="M480-280q17 0 28.5-11.5T520-320q0-17-11.5-28.5T480-360q-17 0-28.5 11.5T440-320q0 17 11.5 28.5T480-280Zm-40-160h80v-240h-80v240Zm40 360q-83 0-156-31.5T197-197q-54-54-85.5-127T80-480q0-83 31.5-156T197-763q54-54 127-85.5T480-880q83 0 156 31.5T763-763q54 54 85.5 127T880-480q0 83-31.5 156T763-197q-54 54-127 85.5T480-80Zm0-80q134 0 227-93t93-227q0-134-93-227t-227-93q-134 0-227 93t-93 227q0 134 93 227t227 93Zm0-320Z"/>
-                        </svg>
-                    </span>
-
-                    <div class="kpi-content">
-                        <span>Pendentes:</span>
-                        <strong th:text="${totalPendentes != null ? 'R$ ' + #numbers.formatDecimal(totalPendentes, 1, 'COMMA', 2, 'POINT') : ''}"></strong>
-                    </div>
-                </div>
-
             </div>
 
-            <!-- Tabela e Filtros -->
             <div class="table-container-card">
-
                 <div class="filter-bar">
-
                     <div class="search-box">
-                        <svg width="16" height="16" viewBox="0 0 24 24"
-                            fill="none" stroke="currentColor" stroke-width="2">
-                            <circle cx="11" cy="11" r="8"></circle>
-                            <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
-                        </svg>
-
-                        <input type="text" id="searchCaixa"
-                            placeholder="Buscar: Insira a data do fechamento..." />
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
+                        <input type="text" id="searchVendas" placeholder="Pesquisar venda por código (Ex: 01)..." />
                     </div>
 
                     <div class="filter-dropdown">
-                        <svg width="16" height="16" viewBox="0 0 24 24"
-                            fill="none" stroke="currentColor" stroke-width="2">
-                            <polygon points="22 3 2 3 10 12.46 10 19 14 21 14 12.46 22 3"></polygon>
-                        </svg>
-
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="22 3 2 3 10 12.46 10 19 14 21 14 12.46 22 3"></polygon></svg>
                         <span>Filtro</span>
-
                         <select id="filtroStatus">
                             <option value="">Todas</option>
-                            <option value="FECHADO">Fechado</option>
+                            <option value="PAGO">Pago</option>
                             <option value="PENDENTE">Pendente</option>
                         </select>
                     </div>
-
                 </div>
 
                 <table class="custom-table">
                     <thead>
-                        <tr>
-                            <th>DATA</th>
-                            <th>ENTRADA</th>
-                            <th>STATUS</th>
-                        </tr>
+                    <tr>
+                        <th>CÓDIGO</th>
+                        <th>DATA</th>
+                        <th>VALOR TOTAL</th>
+                        <th>VER ITENS</th>
+                        <th>STATUS</th>
+                    </tr>
                     </thead>
-
                     <tbody>
-
-                        <!-- Loop dinâmico do Thymeleaf -->
-                        <tr th:if="${fechamentos != null}" th:each="f : ${fechamentos}">
-                            <td th:text="${f.data}"></td>
-
-                            <td th:text="${'R$ ' + #numbers.formatDecimal(f.entrada, 1, 'COMMA', 2, 'POINT')}"></td>
-
-                            <td>
-                                <span th:class="${f.status == 'FECHADO' ? 'status-fechado' : 'status-pendente'}"
-                                    th:text="${f.status}">
-                                </span>
-                            </td>
-                        </tr>
-
-                        <!-- Linhas em branco para manter a estrutura visual -->
-                        <tr><td>&nbsp;</td><td></td><td></td></tr>
-                        <tr><td>&nbsp;</td><td></td><td></td></tr>
-                        <tr><td>&nbsp;</td><td></td><td></td></tr>
-                        <tr><td>&nbsp;</td><td></td><td></td></tr>
-                        <tr><td>&nbsp;</td><td></td><td></td></tr>
-                        <tr><td>&nbsp;</td><td></td><td></td></tr>
-
+                    <tr th:if="${vendas != null}" th:each="v : ${vendas}">
+                        <td th:text="${'#' + v.cod_venda}">#01</td>
+                        <td th:text="${v.data_venda}">25/10/2026</td>
+                        <td th:text="${'R$ ' + #numbers.formatDecimal(v.valor_total, 1, 'COMMA', 2, 'POINT')}">R$ 0,00</td>
+                        <td>
+                            <button type="button" class="btn-icon-action" th:onclick="'abrirModalItens(' + ${v.cod_venda} + ')'" title="Ver Itens" aria-label="Ver itens da venda">
+                                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                                    <line x1="8" y1="6" x2="21" y2="6"></line>
+                                    <line x1="8" y1="12" x2="21" y2="12"></line>
+                                    <line x1="8" y1="18" x2="21" y2="18"></line>
+                                    <line x1="3" y1="6" x2="3.01" y2="6"></line>
+                                    <line x1="3" y1="12" x2="3.01" y2="12"></line>
+                                    <line x1="3" y1="18" x2="3.01" y2="18"></line>
+                                </svg>
+                            </button>
+                        </td>
+                        <td>
+                            <form th:action="@{/recanto/pdv/{id}/status(id=${v.cod_venda})}" method="post" style="display: inline;">
+                                <input type="hidden" name="status" th:value="${v.status == 'PAGO' ? 'PENDENTE' : 'PAGO'}" />
+                                <button type="submit"
+                                        th:class="${v.status == 'PAGO' ? 'status-pago btn-status-toggle' : 'status-pendente btn-status-toggle'}"
+                                        th:text="${v.status}"
+                                        title="Clique para alternar o status da venda">
+                                    PAGO
+                                </button>
+                            </form>
+                        </td>
+                    </tr>
                     </tbody>
                 </table>
-
             </div>
-
         </div>
     </main>
 </div>
 
+<div id="modalItensVenda" class="modal-overlay">
+    <div class="modal-card">
+        <div class="modal-header">
+            <h2 id="modalTituloVenda">Itens da Venda</h2>
+            <button type="button" class="close-modal-btn" onclick="fecharModalItens()">&times;</button>
+        </div>
+
+        <div class="table-container">
+            <table class="custom-table">
+                <thead>
+                <tr>
+                    <th>PRODUTO</th>
+                    <th>QUANTIDADE</th>
+                    <th>PREÇO UNITÁRIO</th>
+                    <th>SUBTOTAL</th>
+                </tr>
+                </thead>
+                <tbody id="tabelaItensCorpo">
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+<script>
+    function abrirModalItens(codVenda) {
+        document.getElementById('modalTituloVenda').innerText = 'Itens da Venda #' + codVenda;
+        const corpoTabela = document.getElementById('tabelaItensCorpo');
+        corpoTabela.innerHTML = '<tr><td colspan="4" style="text-align: center; padding: 20px;">Carregando itens...</td></tr>';
+
+        document.getElementById('modalItensVenda').style.display = 'flex';
+
+        fetch('/recanto/pdv/' + codVenda + '/itens')
+            .then(response => response.json())
+            .then(itens => {
+                corpoTabela.innerHTML = '';
+                if (!itens || itens.length === 0) {
+                    corpoTabela.innerHTML = '<tr><td colspan="4" style="text-align: center; padding: 20px;">Nenhum item encontrado para esta venda.</td></tr>';
+                    return;
+                }
+
+                itens.forEach(item => {
+                    let subtotal = item.quantidade * item.precoUnitario;
+
+                    corpoTabela.innerHTML += `
+                        <tr>
+                            <td>${item.nomeProduto}</td>
+                            <td>${item.quantidade}</td>
+                            <td>R$ ${item.precoUnitario.toFixed(2).replace('.', ',')}</td>
+                            <td>R$ ${subtotal.toFixed(2).replace('.', ',')}</td>
+                        </tr>
+                    `;
+                });
+            })
+            .catch(error => {
+                console.error('Erro ao carregar itens:', error);
+                corpoTabela.innerHTML = '<tr><td colspan="4" style="text-align: center; padding: 20px; color: #c62828;">Erro ao carregar os itens da venda. Verifique a conexão.</td></tr>';
+            });
+    }
+
+    function fecharModalItens() {
+        document.getElementById('modalItensVenda').style.display = 'none';
+    }
+
+    function filtrarVendas() {
+        const termoBusca = document.getElementById('searchVendas').value.toLowerCase().trim();
+        const statusFiltro = document.getElementById('filtroStatus').value.toUpperCase().trim();
+        const linhas = document.querySelectorAll('.custom-table tbody tr');
+
+        linhas.forEach(linha => {
+            const codigo = linha.cells[0] ? linha.cells[0].innerText.toLowerCase() : '';
+            const statusElemento = linha.cells[4] ? linha.cells[4].querySelector('button, span') : null;
+            const status = statusElemento ? statusElemento.innerText.toUpperCase().trim() : '';
+
+            const matchBusca = termoBusca === '' || codigo.includes(termoBusca);
+            const matchStatus = statusFiltro === '' || status === statusFiltro;
+
+            if (matchBusca && matchStatus) {
+                linha.style.display = '';
+            } else {
+                linha.style.display = 'none';
+            }
+        });
+    }
+
+    document.getElementById('searchVendas').addEventListener('input', filtrarVendas);
+    document.getElementById('filtroStatus').addEventListener('change', filtrarVendas);
+</script>
 </body>
 </html>

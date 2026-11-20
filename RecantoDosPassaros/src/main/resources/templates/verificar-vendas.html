@@ -123,7 +123,14 @@
                         <td th:text="${v.data_venda}">25/10/2026</td>
                         <td th:text="${'R$ ' + #numbers.formatDecimal(v.valor_total, 1, 'COMMA', 2, 'POINT')}">R$ 0,00</td>
                         <td>
-                            <button type="button" class="btn-icon-action" th:onclick="'abrirModalItens(' + ${v.cod_venda} + ')'" title="Ver Itens">📋</button>
+                            <button type="button" class="btn-icon-action" th:onclick="'abrirModalItens(' + ${v.cod_venda} + ')'" title="Ver Itens" aria-label="Ver Itens">
+                                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                                    <path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2"></path>
+                                    <rect x="8" y="2" width="8" height="4" rx="1" ry="1"></rect>
+                                    <line x1="8" y1="11" x2="16" y2="11"></line>
+                                    <line x1="8" y1="15" x2="16" y2="15"></line>
+                                </svg>
+                            </button>
                         </td>
                         <td>
                             <form th:action="@{/recanto/pdv/{id}/status(id=${v.cod_venda})}" method="post" style="display: inline;">

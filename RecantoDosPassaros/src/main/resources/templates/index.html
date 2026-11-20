@@ -63,9 +63,9 @@
                     </div>
                 </div>
 
-                <p class="section-description">
-                    Busque por código ou nome e aperte <strong>Enter</strong> para adicionar; com o campo vazio, aperte
-                    <strong>Enter duas vezes</strong> para finalizar a venda.
+                <p class="section-description" style="line-height: 1.4;">
+                    Digite código ou nome e pressione <strong>enter</strong> para adicionar.<br>
+                    Com o campo vazio, pressione <strong>enter</strong> duas vezes para finalizar.
                 </p>
 
                 <div class="pdv-layout-grid">
@@ -89,7 +89,7 @@
                             <!-- Mensagem exibida quando não existem produtos cadastrados -->
                             <div th:if="${#lists.isEmpty(produtos)}"
                                 style="grid-column: 1 / -1; text-align: center; padding: 40px; color: #492e1b;">
-                                <strong>Nenhum produto cadastrado no banco de dados.</strong>
+                                <strong>Nenhum produto cadastrado.</strong>
                             </div>
 
                             <!-- Exibição somente dos produtos cadastrados -->
@@ -147,7 +147,7 @@
                             </div>
 
                             <button type="button" class="btn-finalize" onclick="finalizarVenda()">
-                                Finalizar Venda
+                                Finalizar venda
                             </button>
 
                         </div>
@@ -340,9 +340,14 @@
                             R$ ${subtotal.toFixed(2).replace('.', ',')}
                         </span>
 
-                        <button type="button" onclick="removerItem(${index})"
-                            style="background:none; border:none; color:#7c4a2a; cursor:pointer; font-size: 1rem;"
-                            title="Remover">❌</button>
+                        <button type="button" class="btn-remove" onclick="removerItem(${index})"
+                            title="Remover" aria-label="Remover item">
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                                <line x1="18" y1="6" x2="6" y2="18"></line>
+                                <line x1="6" y1="6" x2="18" y2="18"></line>
+                            </svg>
+                        </button>
                     </div>
                 </div>
             `;
