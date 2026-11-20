@@ -22,17 +22,17 @@
             <div class="nav-section">
                 <span class="nav-section-title">Gerenciamento</span>
                 <ul class="nav-list">
-                    <li><a th:href="@{/recanto/produtos}" class="nav-item">📦 Produtos</a></li>
-                    <li><a th:href="@{/recanto/estoque}" class="nav-item">📋 Estoque</a></li>
+                    <li><a th:href="@{/recanto/produtos}" class="nav-item">Produtos</a></li>
+                    <li><a th:href="@{/recanto/estoque}" class="nav-item">Estoque</a></li>
                 </ul>
             </div>
 
             <div class="nav-section">
                 <span class="nav-section-title">Venda</span>
                 <ul class="nav-list">
-                    <li><a th:href="@{/recanto/pdv}" class="nav-item">🏷️ Ponto de Venda</a></li>
-                    <li><a th:href="@{/recanto/caixa}" class="nav-item active">💰 Fechamento de Caixa</a></li>
-                    <li><a th:href="@{/recanto/pdv/verificar}" class="nav-item">🛍️ Verificar Vendas</a></li>
+                    <li><a th:href="@{/recanto/pdv}" class="nav-item">Ponto de Venda</a></li>
+                    <li><a th:href="@{/recanto/caixa}" class="nav-item active">Fechamento de Caixa</a></li>
+                    <li><a th:href="@{/recanto/pdv/verificar}" class="nav-item">Verificar Vendas</a></li>
                 </ul>
             </div>
         </nav>
@@ -54,7 +54,7 @@
             <!-- Cabeçalho e Botão Fechar Caixa -->
             <div class="section-header-container">
                 <div class="title-with-icon">
-                    <h1>Fechamento de caixa <span style="font-size: 1.5rem;">💰</span></h1>
+                    <h1>Fechamento de caixa</h1>
                 </div>
                 <!-- Formulário que envia o POST para o FechamentoCaixaController -->
                 <form th:action="@{/recanto/caixa/fechar-dia}" method="post">
