@@ -15,7 +15,7 @@ import java.util.List;
 
 @AllArgsConstructor
 @Controller
-@RequestMapping("/recanto/pdv")
+@RequestMapping("/recanto/index")
 public class VendaController {
 
     private final VendaService vendaService;
@@ -30,19 +30,19 @@ public class VendaController {
 
             model.addAttribute("vendas", vendas);
             model.addAttribute("produtos", produtos);
-            return "pdv";
+            return "index";
         } catch (Exception e) {
             e.printStackTrace();
             throw e;
         }
     }
 
-    // Recebe a finalização da venda diretamente do carrinho no PDV via POST (/recanto/pdv)
+    // Recebe a finalização da venda diretamente do carrinho no PDV via POST (/recanto/index)
     @PostMapping
     public String finalizarVendaPdv(@RequestBody List<ItemDto> itensCarrinho) {
         try {
             if (itensCarrinho == null || itensCarrinho.isEmpty()) {
-                return "redirect:/recanto/pdv";
+                return "redirect:/recanto/index";
             }
 
             // 1. Abre a venda no banco e obtém o ID gerado (via procedure abrir_venda)
@@ -58,7 +58,7 @@ public class VendaController {
                 vendaService.postItemVenda(item);
             }
 
-            return "redirect:/recanto/pdv";
+            return "redirect:/recanto/index";
         } catch (Exception e) {
             e.printStackTrace();
             throw e;
@@ -86,7 +86,7 @@ public class VendaController {
 
         vendaService.postItemVenda(item);
 
-        return "redirect:/recanto/pdv";
+        return "redirect:/recanto/index";
     }
 
     // Exibe a tela de listagem e verificação de vendas
@@ -145,6 +145,6 @@ public class VendaController {
         } catch (Exception e) {
             e.printStackTrace();
         }
-        return "redirect:/recanto/pdv/verificar";
+        return "redirect:/recanto/index/verificar";
     }
 }

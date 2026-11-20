@@ -20,7 +20,7 @@ public class FechamentoCaixaController {
     private FechamentoCaixaService fechamentoCaixaService;
 
     // Rota para exibir a página de Fechamento de Caixa com os dados e KPIs
-    @GetMapping("/caixa")
+    @GetMapping("/fechamento-caixa")
     public String exibirFechamentoCaixa(Model model) {
         List<FechamentoCaixa> fechamentos = fechamentoCaixaService.listarFechamentos();
         double totalEntrada = fechamentoCaixaService.calcularTotalEntrada();
@@ -37,7 +37,7 @@ public class FechamentoCaixaController {
 
     // Rota para salvar um novo fechamento de caixa via formulário (POST)
     // Rota para salvar um novo fechamento de caixa via formulário (POST)
-    @PostMapping("/caixa/salvar")
+    @PostMapping("/fechamento-caixa/salvar")
     public String salvarFechamento(@ModelAttribute FechamentoCaixa fechamentoCaixa) {
         // Define o status padrão como pendente caso venha vazio ou nulo
         if (fechamentoCaixa.getStatus() == null || fechamentoCaixa.getStatus().isEmpty()) {
@@ -47,7 +47,7 @@ public class FechamentoCaixaController {
         fechamentoCaixaService.salvarFechamento(fechamentoCaixa);
 
         // Redireciona de volta para a página de caixa após salvar
-        return "redirect:/recanto/caixa";
+        return "redirect:/recanto/fechamento-caixa";
     }
     // Rota para executar o fechamento de caixa ao clicar no botão
     @PostMapping("/caixa/fechar-dia")
@@ -57,6 +57,6 @@ public class FechamentoCaixaController {
         } catch (Exception e) {
             e.printStackTrace();
         }
-        return "redirect:/recanto/caixa";
+        return "redirect:/recanto/fechamento-caixa";
     }
 }

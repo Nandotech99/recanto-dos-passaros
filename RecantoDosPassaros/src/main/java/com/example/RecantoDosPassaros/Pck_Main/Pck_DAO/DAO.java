@@ -7,7 +7,7 @@ public class DAO {
     private String connStr;
     private Connection conn;
 
-    private static final String URL = "jdbc:mysql://localhost:3306/cafeteria_bd?useSSL=false&serverTimezone=UTC";// trocar a porta
+    private static final String URL = "jdbc:mysql://localhost:3306/cafeteria_bd?useSSL=false&allowPublicKeyRetrieval=true&serverTimezone=UTC"; // trocar a porta
     private static final String login = "root";
     private static final String senha = "admin";
 
@@ -15,7 +15,7 @@ public class DAO {
     {
         this.sDriver="com.mysql.cj.jdbc.Driver";
         this.sServidor="localhost";
-        this.connStr="jdbc:mysql://localhost:3306/cafeteria_bd?useSSL=false&serverTimezone=UTC";
+        this.connStr="jdbc:mysql://localhost:3306/cafeteria_bd?useSSL=false&allowPublicKeyRetrieval=true&serverTimezone=UTC";
 
     }
     public Connection getConexao(String login,String senha)throws SQLException{
