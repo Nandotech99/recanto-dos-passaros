@@ -405,11 +405,11 @@ body.app-body {
 
 .kpi-content strong {
     font-size: 1.1rem;
-    color: #2e7d32;
+    color: var(--primary-color);
 }
 
 .kpi-card.pending strong {
-    color: #c62828;
+    color: var(--accent-brown);
 }
 
 .table-container-card {
@@ -681,13 +681,13 @@ body.app-body {
 }
 
 .cart-total-value {
-    color: #2e7d32;
+    color: var(--primary-color);
     font-size: 1.25rem;
 }
 
 .btn-finalize {
-    background-color: #1e7e34;
-    color: white;
+    background-color: var(--primary-color);
+    color: #ffffff;
     border: none;
     padding: 12px;
     border-radius: 6px;
@@ -699,7 +699,7 @@ body.app-body {
 }
 
 .btn-finalize:hover {
-    background-color: #155724;
+    background-color: #342012;
 }
 
 #toggle-modal:checked ~ .modal-overlay,
@@ -827,12 +827,12 @@ body:has(#toggle-modal:checked) #productModal {
 }
 
 .status-pago {
-    color: #1e7e34;
+    color: var(--accent-brown);
     font-weight: bold;
 }
 
 .status-pendente {
-    color: #c62828;
+    color: var(--accent-brown);
     font-weight: bold;
 }
 
