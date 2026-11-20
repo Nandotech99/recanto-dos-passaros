@@ -109,28 +109,6 @@
                                 <p style="font-weight: 600; color: var(--primary-color);">Nenhum produto cadastrado.</p>
                             </td>
                         </tr>
-
-                        <tr th:each="p : ${produtos}">
-                            <td><span th:text="${p.codigo}">01</span></td>
-                            <td><span th:text="${p.nome}">Pão de queijo</span></td>
-                            <td>
-                                <!-- Altere de 2 casas fixas para o formato desejado, ou exiba diretamente se preferir -->
-                                <span th:id="'preco-texto-' + ${p.codigo}" th:text="${'R$ ' + p.preco}">R$ 25.00</span>                                <form th:id="'preco-form-' + ${p.codigo}" th:action="@{/recanto/produtos/atualizar-preco/{id}(id=${p.codigo})}" method="post" class="inline-form" style="display: none;">
-                                    <input type="number" step="0.01" min="0" name="preco" th:value="${p.preco}" class="inline-input" required />
-                                    <button type="submit" class="btn-icon-action" title="Salvar Alteração">💾</button>
-                                </form>
-                            </td>
-                            <td><span th:text="${p.categoria != null ? p.categoria : 'OUTROS'}">DOCE</span></td>
-                            <td>
-                                <div style="display: flex; gap: 8px; justify-content: center; align-items: center;">
-                                    <button type="button" class="btn-icon-action" th:onclick="'habilitarEdicao(' + ${p.codigo} + ')'" title="Editar Preço">✏️</button>
-                                    <form th:action="@{/recanto/produtos/deletar}" method="post" style="display:inline;" onsubmit="return confirm('Tem certeza de que deseja eliminar este produto?');">
-                                        <input type="hidden" name="id" th:value="${p.codigo}" />
-                                        <button type="submit" class="btn-icon-action" title="Excluir">🗑️</button>
-                                    </form>
-                                </div>
-                            </td>
-                        </tr>
                         </tbody>
                     </table>
                 </div>
