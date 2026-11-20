@@ -2,7 +2,7 @@
 <html lang="pt-BR" xmlns:th="http://www.thymeleaf.org">
 
 <head>
-    
+
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Início | Recanto dos Pássaros</title>
@@ -14,312 +14,315 @@
 
 <body class="app-body">
 
-<div class="app-layout">
+    <div class="app-layout">
 
-    <!-- Sidebar -->
-    <aside class="sidebar">
-        <div class="sidebar-brand">
-            <img th:src="@{/pck_img/recanto-simbolo.jpg}" alt="Logo Recanto dos Pássaros" class="sidebar-logo">
-        </div>
-
-        <nav class="sidebar-nav">
-            <div class="nav-section">
-                <span class="nav-section-title">Gerenciamento</span>
-                <ul class="nav-list">
-                    <li><a th:href="@{/recanto/produtos}" class="nav-item">Produtos</a></li>
-                    <li><a th:href="@{/recanto/estoque}" class="nav-item">Estoque</a></li>
-                </ul>
+        <!-- Sidebar -->
+        <aside class="sidebar">
+            <div class="sidebar-brand">
+                <img th:src="@{/pck_img/recanto-simbolo.jpg}" alt="Logo Recanto dos Pássaros" class="sidebar-logo">
             </div>
 
-            <div class="nav-section">
-                <span class="nav-section-title">Venda</span>
-                <ul class="nav-list">
-                    <li><a th:href="@{/recanto/pdv}" class="nav-item active">Ponto de Venda</a></li>
-                    <li><a th:href="@{/recanto/caixa}" class="nav-item">Fechamento de Caixa</a></li>
-                    <li><a th:href="@{/recanto/pdv/verificar}" class="nav-item">Verificar Vendas</a></li>
-                </ul>
-            </div>
-        </nav>
-    </aside>
-
-    <!-- Área Principal -->
-    <main class="main-content">
-
-        <header class="topbar">
-            <a th:href="@{/recanto/pdv}" class="btn-inicio">
-                <svg width="16" height="16" viewBox="0 0 24 24" fill="none"
-                    stroke="currentColor" stroke-width="2">
-                    <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path>
-                    <polyline points="9 22 9 12 15 12 15 22"></polyline>
-                </svg>
-                Início
-            </a>
-        </header>
-
-        <div class="content-body">
-
-            <div class="section-header-bar">
-                <div class="title-with-help">
-                    <h1>Ponto de Venda</h1>
+            <nav class="sidebar-nav">
+                <div class="nav-section">
+                    <span class="nav-section-title">Gerenciamento</span>
+                    <ul class="nav-list">
+                        <li><a th:href="@{/recanto/produtos}" class="nav-item">Produtos</a></li>
+                        <li><a th:href="@{/recanto/estoque}" class="nav-item">Estoque</a></li>
+                    </ul>
                 </div>
-            </div>
 
-            <p class="section-description">
-                Digite o código ou nome e aperte <strong>Enter</strong>.
-                Aperte <strong>Enter duas vezes</strong> com o campo vazio para fechar a venda rapidamente.
-            </p>
+                <div class="nav-section">
+                    <span class="nav-section-title">Venda</span>
+                    <ul class="nav-list">
+                        <li><a th:href="@{/recanto/pdv}" class="nav-item active">Ponto de Venda</a></li>
+                        <li><a th:href="@{/recanto/caixa}" class="nav-item">Fechamento de Caixa</a></li>
+                        <li><a th:href="@{/recanto/pdv/verificar}" class="nav-item">Verificar Vendas</a></li>
+                    </ul>
+                </div>
+            </nav>
+        </aside>
 
-            <div class="pdv-layout-grid">
+        <!-- Área Principal -->
+        <main class="main-content">
 
-                <!-- Catálogo Dinâmico de Produtos -->
-                <div class="pdv-catalog">
+            <header class="topbar">
+                <a th:href="@{/recanto/pdv}" class="btn-inicio">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path>
+                        <polyline points="9 22 9 12 15 12 15 22"></polyline>
+                    </svg>
+                    Início
+                </a>
+            </header>
 
-                    <div class="pdv-search-bar">
-                        <svg width="18" height="18" viewBox="0 0 24 24"
-                            fill="none" stroke="currentColor" stroke-width="2">
-                            <circle cx="11" cy="11" r="8"></circle>
-                            <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
-                        </svg>
+            <div class="content-body">
 
-                        <input type="text" id="searchProduct" autofocus autocomplete="off"
-                            placeholder="Digite o código ou nome do produto e aperte Enter..." />
+                <div class="section-header-bar">
+                    <div class="title-with-help">
+                        <h1>Ponto de Venda</h1>
                     </div>
+                </div>
 
-                    <div class="pdv-products-grid">
+                <p class="section-description">
+                    Busque por código ou nome e aperte <strong>Enter</strong> para adicionar; com o campo vazio, aperte
+                    <strong>Enter duas vezes</strong> para finalizar a venda.
+                </p>
 
-                        <!-- Mensagem exibida quando não existem produtos cadastrados -->
-                        <div th:if="${#lists.isEmpty(produtos)}"
-                            style="grid-column: 1 / -1; text-align: center; padding: 40px; color: #492e1b;">
-                            <strong>Nenhum produto cadastrado no banco de dados.</strong>
+                <div class="pdv-layout-grid">
+
+                    <!-- Catálogo Dinâmico de Produtos -->
+                    <div class="pdv-catalog">
+
+                        <div class="pdv-search-bar">
+                            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                stroke-width="2">
+                                <circle cx="11" cy="11" r="8"></circle>
+                                <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+                            </svg>
+
+                            <input type="text" id="searchProduct" autofocus autocomplete="off"
+                                placeholder="Digite o código ou nome do produto e aperte Enter..." />
                         </div>
 
-                        <!-- Exibição somente dos produtos cadastrados -->
-                        <div class="pdv-product-card"
-                            th:each="p : ${produtos}"
-                            th:data-codigo="${p.codigo}"
-                            th:data-nome="${p.nome}"
-                            th:data-preco="${p.preco}"
-                            onclick="clicarCardProduto(this)">
+                        <div class="pdv-products-grid">
 
-                            <div class="pdv-product-info">
-                                <span class="pdv-product-code" th:text="'#' + ${p.codigo}"></span>
+                            <!-- Mensagem exibida quando não existem produtos cadastrados -->
+                            <div th:if="${#lists.isEmpty(produtos)}"
+                                style="grid-column: 1 / -1; text-align: center; padding: 40px; color: #492e1b;">
+                                <strong>Nenhum produto cadastrado no banco de dados.</strong>
+                            </div>
 
-                                <div class="pdv-product-title" th:text="${p.nome}"></div>
+                            <!-- Exibição somente dos produtos cadastrados -->
+                            <div class="pdv-product-card" th:each="p : ${produtos}" th:data-codigo="${p.codigo}"
+                                th:data-nome="${p.nome}" th:data-preco="${p.preco}" onclick="clicarCardProduto(this)">
 
-                                <span class="pdv-product-category"
-                                    th:text="${p.categoria != null ? p.categoria : 'GERAL'}"></span>
+                                <div class="pdv-product-info">
+                                    <span class="pdv-product-code" th:text="'#' + ${p.codigo}"></span>
 
-                                <div class="pdv-product-price"
-                                    th:text="${'R$ ' + #numbers.formatDecimal(p.preco, 1, 'COMMA', 2, 'POINT')}">
+                                    <div class="pdv-product-title" th:text="${p.nome}"></div>
+
+                                    <span class="pdv-product-category"
+                                        th:text="${p.categoria != null ? p.categoria : 'GERAL'}"></span>
+
+                                    <div class="pdv-product-price"
+                                        th:text="${'R$ ' + #numbers.formatDecimal(p.preco, 1, 'COMMA', 2, 'POINT')}">
+                                    </div>
                                 </div>
+                            </div>
+
+                        </div>
+                    </div>
+
+                    <!-- Carrinho de Compras -->
+                    <div class="pdv-cart-panel">
+
+                        <div class="pdv-cart-header">
+                            <span style="display: inline-flex; align-items: center; gap: 8px;">
+                                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                    stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                                    <circle cx="9" cy="21" r="1"></circle>
+                                    <circle cx="20" cy="21" r="1"></circle>
+                                    <path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"></path>
+                                </svg>
+                                <span>Carrinho de Compras</span>
+                            </span>
+
+                            <span id="cartItemCount"
+                                style="font-size: 0.85rem; background: var(--primary-color); color: #fff; padding: 2px 8px; border-radius: 12px;">
+                                0 itens
+                            </span>
+                        </div>
+
+                        <div class="pdv-cart-items" id="cartItemsContainer">
+                            <div style="color: #888; text-align: center; margin-top: 40px; font-size: 0.9rem;">
+                                Nenhum item adicionado.
                             </div>
                         </div>
 
-                    </div>
-                </div>
+                        <div class="pdv-cart-summary">
 
-                <!-- Carrinho de Compras -->
-                <div class="pdv-cart-panel">
+                            <div class="cart-total-container">
+                                <span>Total:</span>
+                                <span id="cartTotal" class="cart-total-value">R$ 0,00</span>
+                            </div>
 
-                    <div class="pdv-cart-header">
-                        <span>Carrinho de Compras</span>
+                            <button type="button" class="btn-finalize" onclick="finalizarVenda()">
+                                Finalizar Venda
+                            </button>
 
-                        <span id="cartItemCount"
-                            style="font-size: 0.85rem; background: var(--primary-color); color: #fff; padding: 2px 8px; border-radius: 12px;">
-                            0 itens
-                        </span>
-                    </div>
-
-                    <div class="pdv-cart-items" id="cartItemsContainer">
-                        <div style="color: #888; text-align: center; margin-top: 40px; font-size: 0.9rem;">
-                            Nenhum item adicionado ainda.
                         </div>
                     </div>
 
-                    <div class="pdv-cart-summary">
-
-                        <div class="cart-total-container">
-                            <span>Total:</span>
-                            <span id="cartTotal" class="cart-total-value">R$ 0,00</span>
-                        </div>
-
-                        <button type="button" class="btn-finalize" onclick="finalizarVenda()">
-                            Finalizar Venda
-                        </button>
-
-                    </div>
                 </div>
 
             </div>
+        </main>
+    </div>
 
-        </div>
-    </main>
-</div>
+    <script>
+        let carrinho = [];
+        const inputBusca = document.getElementById('searchProduct');
+        let ultimoEnterVazio = 0;
 
-<script>
-    let carrinho = [];
-    const inputBusca = document.getElementById('searchProduct');
-    let ultimoEnterVazio = 0;
+        window.onload = function () {
+            inputBusca.focus();
+        };
 
-    window.onload = function() {
-        inputBusca.focus();
-    };
-
-    function filtrarCardsPDV() {
-        const termo = inputBusca.value.trim().toLowerCase();
-        const cards = document.querySelectorAll('.pdv-product-card');
-
-        cards.forEach(card => {
-            const codigo = card.getAttribute('data-codigo');
-            const nome = card.getAttribute('data-nome').toLowerCase();
-
-            if (termo === '' || codigo.includes(termo) || nome.includes(termo)) {
-                card.style.display = '';
-            } else {
-                card.style.display = 'none';
-            }
-        });
-    }
-
-    inputBusca.addEventListener('input', filtrarCardsPDV);
-
-    // Evento para lidar com o Enter e o Duplo Enter no teclado numérico
-    inputBusca.addEventListener('keydown', function(event) {
-        if (event.key === 'Enter') {
-            event.preventDefault();
-            const termo = inputBusca.value.trim();
-
-            // Verifica se houve um Enter duplo rápido com o campo vazio
-            if (!termo) {
-                const agora = new Date().getTime();
-
-                if (agora - ultimoEnterVazio < 700) {
-                    finalizarVenda();
-                    ultimoEnterVazio = 0;
-                } else {
-                    ultimoEnterVazio = agora;
-                }
-
-                return;
-            }
-
-            ultimoEnterVazio = 0;
-
+        function filtrarCardsPDV() {
+            const termo = inputBusca.value.trim().toLowerCase();
             const cards = document.querySelectorAll('.pdv-product-card');
-            let produtoEncontrado = null;
 
-            // Busca exata por código numérico
             cards.forEach(card => {
                 const codigo = card.getAttribute('data-codigo');
+                const nome = card.getAttribute('data-nome').toLowerCase();
 
-                if (codigo === termo) {
-                    produtoEncontrado = {
-                        codigo: codigo,
-                        nome: card.getAttribute('data-nome'),
-                        preco: parseFloat(card.getAttribute('data-preco'))
-                    };
+                if (termo === '' || codigo.includes(termo) || nome.includes(termo)) {
+                    card.style.display = '';
+                } else {
+                    card.style.display = 'none';
                 }
             });
+        }
 
-            // Busca por nome caso não encontre pelo código
-            if (!produtoEncontrado) {
+        inputBusca.addEventListener('input', filtrarCardsPDV);
+
+        // Evento para lidar com o Enter e o Duplo Enter no teclado numérico
+        inputBusca.addEventListener('keydown', function (event) {
+            if (event.key === 'Enter') {
+                event.preventDefault();
+                const termo = inputBusca.value.trim();
+
+                // Verifica se houve um Enter duplo rápido com o campo vazio
+                if (!termo) {
+                    const agora = new Date().getTime();
+
+                    if (agora - ultimoEnterVazio < 700) {
+                        finalizarVenda();
+                        ultimoEnterVazio = 0;
+                    } else {
+                        ultimoEnterVazio = agora;
+                    }
+
+                    return;
+                }
+
+                ultimoEnterVazio = 0;
+
+                const cards = document.querySelectorAll('.pdv-product-card');
+                let produtoEncontrado = null;
+
+                // Busca exata por código numérico
                 cards.forEach(card => {
-                    const nome = card.getAttribute('data-nome').toLowerCase();
+                    const codigo = card.getAttribute('data-codigo');
 
-                    if (nome.includes(termo.toLowerCase()) && !produtoEncontrado) {
+                    if (codigo === termo) {
                         produtoEncontrado = {
-                            codigo: card.getAttribute('data-codigo'),
+                            codigo: codigo,
                             nome: card.getAttribute('data-nome'),
                             preco: parseFloat(card.getAttribute('data-preco'))
                         };
                     }
                 });
+
+                // Busca por nome caso não encontre pelo código
+                if (!produtoEncontrado) {
+                    cards.forEach(card => {
+                        const nome = card.getAttribute('data-nome').toLowerCase();
+
+                        if (nome.includes(termo.toLowerCase()) && !produtoEncontrado) {
+                            produtoEncontrado = {
+                                codigo: card.getAttribute('data-codigo'),
+                                nome: card.getAttribute('data-nome'),
+                                preco: parseFloat(card.getAttribute('data-preco'))
+                            };
+                        }
+                    });
+                }
+
+                if (produtoEncontrado) {
+                    adicionarAoCarrinho(
+                        produtoEncontrado.codigo,
+                        produtoEncontrado.nome,
+                        produtoEncontrado.preco
+                    );
+
+                    inputBusca.value = '';
+                    filtrarCardsPDV();
+
+                } else {
+                    alert('Produto não encontrado para o código ou nome: "' + termo + '"');
+                    inputBusca.select();
+                }
             }
+        });
 
-            if (produtoEncontrado) {
-                adicionarAoCarrinho(
-                    produtoEncontrado.codigo,
-                    produtoEncontrado.nome,
-                    produtoEncontrado.preco
-                );
+        function clicarCardProduto(element) {
+            const codigo = element.getAttribute('data-codigo');
+            const nome = element.getAttribute('data-nome');
+            const preco = parseFloat(element.getAttribute('data-preco'));
 
-                inputBusca.value = '';
-                filtrarCardsPDV();
+            adicionarAoCarrinho(codigo, nome, preco);
+            inputBusca.focus();
+        }
 
+        function adicionarAoCarrinho(codigo, nome, preco) {
+            let itemExistente = carrinho.find(item => item.code === codigo);
+
+            if (itemExistente) {
+                itemExistente.quantidade++;
             } else {
-                alert('Produto não encontrado para o código ou nome: "' + termo + '"');
-                inputBusca.select();
+                carrinho.push({
+                    code: codigo,
+                    name: nome,
+                    price: preco,
+                    quantidade: 1
+                });
             }
-        }
-    });
 
-    function clicarCardProduto(element) {
-        const codigo = element.getAttribute('data-codigo');
-        const nome = element.getAttribute('data-nome');
-        const preco = parseFloat(element.getAttribute('data-preco'));
-
-        adicionarAoCarrinho(codigo, nome, preco);
-        inputBusca.focus();
-    }
-
-    function adicionarAoCarrinho(codigo, nome, preco) {
-        let itemExistente = carrinho.find(item => item.code === codigo);
-
-        if (itemExistente) {
-            itemExistente.quantidade++;
-        } else {
-            carrinho.push({
-                code: codigo,
-                name: nome,
-                price: preco,
-                quantidade: 1
-            });
+            atualizarCarrinho();
         }
 
-        atualizarCarrinho();
-    }
+        function alterarQuantidade(index, delta) {
+            carrinho[index].quantidade += delta;
 
-    function alterarQuantidade(index, delta) {
-        carrinho[index].quantidade += delta;
+            if (carrinho[index].quantidade <= 0) {
+                carrinho.splice(index, 1);
+            }
 
-        if (carrinho[index].quantidade <= 0) {
+            atualizarCarrinho();
+            inputBusca.focus();
+        }
+
+        function removerItem(index) {
             carrinho.splice(index, 1);
+            atualizarCarrinho();
+            inputBusca.focus();
         }
 
-        atualizarCarrinho();
-        inputBusca.focus();
-    }
+        function atualizarCarrinho() {
+            const container = document.getElementById('cartItemsContainer');
+            const totalElement = document.getElementById('cartTotal');
+            const countElement = document.getElementById('cartItemCount');
 
-    function removerItem(index) {
-        carrinho.splice(index, 1);
-        atualizarCarrinho();
-        inputBusca.focus();
-    }
+            if (carrinho.length === 0) {
+                container.innerHTML = '<div style="color: #888; text-align: center; margin-top: 40px; font-size: 0.9rem;">Nenhum item adicionado ainda.</div>';
+                totalElement.innerText = 'R$ 0,00';
+                countElement.innerText = '0 itens';
+                return;
+            }
 
-    function atualizarCarrinho() {
-        const container = document.getElementById('cartItemsContainer');
-        const totalElement = document.getElementById('cartTotal');
-        const countElement = document.getElementById('cartItemCount');
+            container.innerHTML = '';
 
-        if (carrinho.length === 0) {
-            container.innerHTML = '<div style="color: #888; text-align: center; margin-top: 40px; font-size: 0.9rem;">Nenhum item adicionado ainda.</div>';
-            totalElement.innerText = 'R$ 0,00';
-            countElement.innerText = '0 itens';
-            return;
-        }
+            let somaTotal = 0;
+            let totalUnidades = 0;
 
-        container.innerHTML = '';
+            carrinho.forEach((item, index) => {
+                let subtotal = item.price * item.quantidade;
 
-        let somaTotal = 0;
-        let totalUnidades = 0;
+                somaTotal += subtotal;
+                totalUnidades += item.quantidade;
 
-        carrinho.forEach((item, index) => {
-            let subtotal = item.price * item.quantidade;
-
-            somaTotal += subtotal;
-            totalUnidades += item.quantidade;
-
-            container.innerHTML += `
+                container.innerHTML += `
                 <div class="pdv-cart-item">
                     <div>
                         <strong>${item.name}</strong><br>
@@ -343,58 +346,59 @@
                     </div>
                 </div>
             `;
-        });
+            });
 
-        totalElement.innerText = 'R$ ' + somaTotal.toFixed(2).replace('.', ',');
-        countElement.innerText = totalUnidades + (totalUnidades === 1 ? ' item' : ' itens');
-    }
-
-    function novaVenda() {
-        if (carrinho.length > 0 && !confirm('Deseja limpar o carrinho atual e iniciar uma nova venda?')) {
-            return;
+            totalElement.innerText = 'R$ ' + somaTotal.toFixed(2).replace('.', ',');
+            countElement.innerText = totalUnidades + (totalUnidades === 1 ? ' item' : ' itens');
         }
 
-        carrinho = [];
-        inputBusca.value = '';
-        filtrarCardsPDV();
-        atualizarCarrinho();
-        inputBusca.focus();
-    }
-
-    function finalizarVenda() {
-        if (carrinho.length === 0) {
-            alert('Adicione itens ao carrinho antes de finalizar a venda.');
-            inputBusca.focus();
-            return;
-        }
-
-        // Mapeia as propriedades para corresponder ao ItemDto
-        const itensParaEnviar = carrinho.map(item => ({
-            codProduto: parseInt(item.code),
-            quantidade: parseInt(item.quantidade)
-        }));
-
-        fetch('/recanto/pdv', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify(itensParaEnviar)
-        }).then(response => {
-            if (response.ok) {
-                alert('Venda finalizada com sucesso! Estoque atualizado.');
-                carrinho = [];
-                atualizarCarrinho();
-                window.location.reload();
-            } else {
-                alert('Erro ao finalizar a venda no servidor.');
+        function novaVenda() {
+            if (carrinho.length > 0 && !confirm('Deseja limpar o carrinho atual e iniciar uma nova venda?')) {
+                return;
             }
-        }).catch(error => {
-            console.error('Erro:', error);
-            alert('Erro de conexão ao tentar finalizar a venda.');
-        });
-    }
-</script>
+
+            carrinho = [];
+            inputBusca.value = '';
+            filtrarCardsPDV();
+            atualizarCarrinho();
+            inputBusca.focus();
+        }
+
+        function finalizarVenda() {
+            if (carrinho.length === 0) {
+                alert('Adicione itens ao carrinho antes de finalizar a venda.');
+                inputBusca.focus();
+                return;
+            }
+
+            // Mapeia as propriedades para corresponder ao ItemDto
+            const itensParaEnviar = carrinho.map(item => ({
+                codProduto: parseInt(item.code),
+                quantidade: parseInt(item.quantidade)
+            }));
+
+            fetch('/recanto/pdv', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(itensParaEnviar)
+            }).then(response => {
+                if (response.ok) {
+                    alert('Venda finalizada com sucesso! Estoque atualizado.');
+                    carrinho = [];
+                    atualizarCarrinho();
+                    window.location.reload();
+                } else {
+                    alert('Erro ao finalizar a venda no servidor.');
+                }
+            }).catch(error => {
+                console.error('Erro:', error);
+                alert('Erro de conexão ao tentar finalizar a venda.');
+            });
+        }
+    </script>
 
 </body>
+
 </html>
