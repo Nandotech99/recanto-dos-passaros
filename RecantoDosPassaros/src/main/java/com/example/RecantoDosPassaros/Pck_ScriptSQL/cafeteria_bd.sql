@@ -117,35 +117,54 @@ WHERE id = p_id;
 END IF;
 END //
 
+DELIMITER //
+
 CREATE PROCEDURE registrar_fechamento_caixa(
     IN p_data DATE,
     IN p_entrada DECIMAL(10, 2),
     IN p_status VARCHAR(20)
 )
 BEGIN
-INSERT INTO fechamentocaixa (data, entrada, status)
-VALUES (p_data, p_entrada, p_status);
+    INSERT INTO fechamentocaixa (data, entrada, status)
+    VALUES (p_data, p_entrada, p_status);
 END //
+
+DELIMITER ;
+
+DELIMITER //
 
 CREATE PROCEDURE realizar_fechamento_caixa()
 BEGIN
     DECLARE v_total DECIMAL(10,2);
     DECLARE v_data DATE;
+
     SET v_data = CURDATE();
 
-SELECT COALESCE(SUM(valortotal), 0) INTO v_total
-FROM venda
-WHERE DATE(data_venda) = v_data AND status = 'PAGO';
+    SELECT COALESCE(SUM(valortotal), 0) INTO v_total
+    FROM venda
+    WHERE DATE(data_venda) = v_data
+      AND status = 'PAGO';
 
-IF NOT EXISTS (SELECT 1 FROM fechamentocaixa WHERE data = v_data) THEN
+    IF NOT EXISTS (
+        SELECT 1
+        FROM fechamentocaixa
+        WHERE data = v_data
+    ) THEN
+
         INSERT INTO fechamentocaixa (data, entrada, status)
         VALUES (v_data, v_total, 'CONCLUÍDO');
-ELSE
-UPDATE fechamentocaixa
-SET entrada = v_total, status = 'CONCLUÍDO'
-WHERE data = v_data;
-END IF;
+
+    ELSE
+
+        UPDATE fechamentocaixa
+        SET entrada = v_total,
+            status = 'CONCLUÍDO'
+        WHERE data = v_data;
+
+    END IF;
+
 END //
+
 DELIMITER ;
 
 ---
@@ -179,7 +198,7 @@ WHERE cod_venda = p_cod_venda OR p_cod_venda IS NULL;
 END //
 DELIMITER ;
 
--- Procedure utilizada em VendaProcedure.java (getItensPorVenda)
+-- utilizada em VendaProcedure.java (getItensPorVenda)
 DELIMITER //
 CREATE PROCEDURE exibir_itens_venda(IN p_cod_venda INT)
 BEGIN
@@ -193,7 +212,7 @@ WHERE i.cod_venda = p_cod_venda;
 END //
 DELIMITER ;
 
--- Procedure utilizada em VendaProcedure.java (atualizarStatus)
+-- utilizada em VendaProcedure.java (atualizarStatus)
 DELIMITER //
 CREATE PROCEDURE alterar_status_venda(IN p_cod_venda INT, IN p_novo_status VARCHAR(20))
 BEGIN
