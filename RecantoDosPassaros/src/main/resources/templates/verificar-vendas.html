@@ -54,7 +54,14 @@
 
                 <div class="kpi-cards-container">
                     <div class="kpi-card">
-                        <span class="kpi-icon">💲</span>
+                        <span class="kpi-icon">
+                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none"
+                            stroke="#757575" stroke-width="2" stroke-linecap="round"
+                            stroke-linejoin="round" aria-hidden="true">
+                            <line x1="12" y1="2" x2="12" y2="22"></line>
+                            <path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"></path>
+                            </svg>
+                        </span>
                         <div class="kpi-content">
                             <span>Total de vendas pagas:</span>
                             <strong th:text="${totalVendasPagas != null ? 'R$ ' + #numbers.formatDecimal(totalVendasPagas, 1, 'COMMA', 2, 'POINT') : 'R$ 0,00'}">R$ 0,00</strong>
@@ -62,7 +69,15 @@
                     </div>
 
                     <div class="kpi-card pending">
-                        <span class="kpi-icon">⚠️</span>
+                        <span class="kpi-icon">
+                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none"
+                            stroke="#757575" stroke-width="2" stroke-linecap="round"
+                            stroke-linejoin="round" aria-hidden="true">
+                            <path d="M10.3 3.9 2.5 17.4A2 2 0 0 0 4.2 20h15.6a2 2 0 0 0 1.7-2.6L13.7 3.9a2 2 0 0 0-3.4 0Z"></path>
+                            <line x1="12" y1="9" x2="12" y2="13"></line>
+                            <line x1="12" y1="17" x2="12.01" y2="17"></line>
+                        </svg>
+                    </span>
                         <div class="kpi-content">
                             <span>Vendas pendentes:</span>
                             <strong th:text="${totalVendasPendentes != null ? 'R$ ' + #numbers.formatDecimal(totalVendasPendentes, 1, 'COMMA', 2, 'POINT') : 'R$ 0,00'}">R$ 0,00</strong>
@@ -75,7 +90,7 @@
                 <div class="filter-bar">
                     <div class="search-box">
                         <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
-                        <input type="text" id="searchVendas" placeholder="Pesquisar venda por código (ex: 1)..." />
+                        <input type="text" id="searchVendas" placeholder="Pesquisar venda por código (Ex: 01)..." />
                     </div>
 
                     <div class="filter-dropdown">
