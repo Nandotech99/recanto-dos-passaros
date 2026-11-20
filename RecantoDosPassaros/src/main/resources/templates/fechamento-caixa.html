@@ -1,13 +1,16 @@
+
 <!DOCTYPE html>
 <html lang="pt-BR" xmlns:th="http://www.thymeleaf.org">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Fechamento de Caixa | Recanto dos Pássaros</title>
 
     <link rel="stylesheet" th:href="@{/style.css}" href="style.css">
-    
+
 </head>
+
 <body class="app-body">
 
 <div class="app-layout">
@@ -15,7 +18,8 @@
     <!-- Sidebar / Menu Lateral -->
     <aside class="sidebar">
         <div class="sidebar-brand">
-            <img th:src="@{/Pck_img/Recanto-logo.jpg}" src="/Pck_img/Recanto-logo.jpg" alt="Logo Recanto dos Pássaros" class="sidebar-logo">
+            <img th:src="@{/Pck_img/Recanto-logo.jpg}" src="/Pck_img/Recanto-logo.jpg"
+                alt="Logo Recanto dos Pássaros" class="sidebar-logo">
         </div>
 
         <nav class="sidebar-nav">
@@ -43,9 +47,12 @@
 
         <header class="topbar">
             <a th:href="@{/recanto/pdv}" class="btn-inicio">
-                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path><polyline points="9 22 9 12 15 12 15 22"></polyline></svg>
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none"
+                    stroke="currentColor" stroke-width="2">
+                    <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path>
+                    <polyline points="9 22 9 12 15 12 15 22"></polyline>
+                </svg>
                 Ponto de Venda
-
             </a>
         </header>
 
@@ -56,18 +63,32 @@
                 <div class="title-with-icon">
                     <h1>Fechamento de caixa</h1>
                 </div>
+
                 <!-- Formulário que envia o POST para o FechamentoCaixaController -->
                 <form th:action="@{/recanto/caixa/fechar-dia}" method="post">
                     <button type="submit" class="btn-primary-action">Fechar Caixa</button>
                 </form>
             </div>
 
-            <p class="section-description">Gestão diária do fechamento de caixa, contabilizando todas as venda registradas</p>
+            <p class="section-description">
+                Gestão diária do fechamento de caixa, contabilizando todas as venda registradas
+            </p>
 
             <!-- Cards de Indicadores (KPIs) -->
             <div class="kpi-cards-container">
+
                 <div class="kpi-card">
-                    <span class="kpi-icon">💲</span>
+                    <span class="kpi-icon">
+                        <!-- Ícone de valor em dinheiro -->
+                        <svg xmlns="http://www.w3.org/2000/svg"
+                            width="20"
+                            height="20"
+                            viewBox="0 -960 960 960"
+                            fill="#757575">
+                            <path d="M440-200v-40q-75-9-115.5-53T284-400h72q4 45 33.5 68t78.5 23q45 0 71-20t26-52q0-30-24-48t-87-37q-73-22-110.5-58T306-615q0-57 38-93t96-44v-48h80v48q62 9 96 48t38 89h-72q-4-37-29-57t-67-20q-40 0-63 18t-23 48q0 27 23 44t84 37q78 25 112.5 61t34.5 91q0 59-39 97t-102 46v48h-80Z"/>
+                        </svg>
+                    </span>
+
                     <div class="kpi-content">
                         <span>Total de entrada:</span>
                         <strong th:text="${totalEntrada != null ? 'R$ ' + #numbers.formatDecimal(totalEntrada, 1, 'COMMA', 2, 'POINT') : ''}"></strong>
@@ -75,60 +96,93 @@
                 </div>
 
                 <div class="kpi-card pending">
-                    <span class="kpi-icon">⚠️</span>
+                    <span class="kpi-icon">
+                        <!-- Ícone de alerta -->
+                        <svg xmlns="http://www.w3.org/2000/svg"
+                            width="20"
+                            height="20"
+                            viewBox="0 -960 960 960"
+                            fill="#757575">
+                            <path d="M480-280q17 0 28.5-11.5T520-320q0-17-11.5-28.5T480-360q-17 0-28.5 11.5T440-320q0 17 11.5 28.5T480-280Zm-40-160h80v-240h-80v240Zm40 360q-83 0-156-31.5T197-197q-54-54-85.5-127T80-480q0-83 31.5-156T197-763q54-54 127-85.5T480-880q83 0 156 31.5T763-763q54 54 85.5 127T880-480q0 83-31.5 156T763-197q-54 54-127 85.5T480-80Zm0-80q134 0 227-93t93-227q0-134-93-227t-227-93q-134 0-227 93t-93 227q0 134 93 227t227 93Zm0-320Z"/>
+                        </svg>
+                    </span>
+
                     <div class="kpi-content">
                         <span>Pendentes:</span>
                         <strong th:text="${totalPendentes != null ? 'R$ ' + #numbers.formatDecimal(totalPendentes, 1, 'COMMA', 2, 'POINT') : ''}"></strong>
                     </div>
                 </div>
+
             </div>
 
-            <!-- Tabela e Filtros (Sem inserções fixas/hardcoded) -->
+            <!-- Tabela e Filtros -->
             <div class="table-container-card">
+
                 <div class="filter-bar">
+
                     <div class="search-box">
-                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
-                        <input type="text" id="searchCaixa" placeholder="Buscar: Insira a data do fechamento..." />
+                        <svg width="16" height="16" viewBox="0 0 24 24"
+                            fill="none" stroke="currentColor" stroke-width="2">
+                            <circle cx="11" cy="11" r="8"></circle>
+                            <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+                        </svg>
+
+                        <input type="text" id="searchCaixa"
+                            placeholder="Buscar: Insira a data do fechamento..." />
                     </div>
 
                     <div class="filter-dropdown">
-                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="22 3 2 3 10 12.46 10 19 14 21 14 12.46 22 3"></polygon></svg>
+                        <svg width="16" height="16" viewBox="0 0 24 24"
+                            fill="none" stroke="currentColor" stroke-width="2">
+                            <polygon points="22 3 2 3 10 12.46 10 19 14 21 14 12.46 22 3"></polygon>
+                        </svg>
+
                         <span>Filtro</span>
+
                         <select id="filtroStatus">
                             <option value="">Todas</option>
                             <option value="FECHADO">Fechado</option>
                             <option value="PENDENTE">Pendente</option>
                         </select>
                     </div>
+
                 </div>
 
                 <table class="custom-table">
                     <thead>
-                    <tr>
-                        <th>DATA</th>
-                        <th>ENTRADA</th>
-                        <th>STATUS</th>
-                    </tr>
+                        <tr>
+                            <th>DATA</th>
+                            <th>ENTRADA</th>
+                            <th>STATUS</th>
+                        </tr>
                     </thead>
-                    <tbody>
-                    <!-- Loop dinâmico do Thymeleaf (vazio por padrão até receber dados do banco) -->
-                    <tr th:if="${fechamentos != null}" th:each="f : ${fechamentos}">
-                        <td th:text="${f.data}"></td>
-                        <td th:text="${'R$ ' + #numbers.formatDecimal(f.entrada, 1, 'COMMA', 2, 'POINT')}"></td>
-                        <td>
-                            <span th:class="${f.status == 'FECHADO' ? 'status-fechado' : 'status-pendente'}" th:text="${f.status}"></span>
-                        </td>
-                    </tr>
 
-                    <!-- Linhas em branco limpas para manter a estrutura visual idêntica à imagem sem dados fixos -->
-                    <tr><td>&nbsp;</td><td></td><td></td></tr>
-                    <tr><td>&nbsp;</td><td></td><td></td></tr>
-                    <tr><td>&nbsp;</td><td></td><td></td></tr>
-                    <tr><td>&nbsp;</td><td></td><td></td></tr>
-                    <tr><td>&nbsp;</td><td></td><td></td></tr>
-                    <tr><td>&nbsp;</td><td></td><td></td></tr>
+                    <tbody>
+
+                        <!-- Loop dinâmico do Thymeleaf -->
+                        <tr th:if="${fechamentos != null}" th:each="f : ${fechamentos}">
+                            <td th:text="${f.data}"></td>
+
+                            <td th:text="${'R$ ' + #numbers.formatDecimal(f.entrada, 1, 'COMMA', 2, 'POINT')}"></td>
+
+                            <td>
+                                <span th:class="${f.status == 'FECHADO' ? 'status-fechado' : 'status-pendente'}"
+                                    th:text="${f.status}">
+                                </span>
+                            </td>
+                        </tr>
+
+                        <!-- Linhas em branco para manter a estrutura visual -->
+                        <tr><td>&nbsp;</td><td></td><td></td></tr>
+                        <tr><td>&nbsp;</td><td></td><td></td></tr>
+                        <tr><td>&nbsp;</td><td></td><td></td></tr>
+                        <tr><td>&nbsp;</td><td></td><td></td></tr>
+                        <tr><td>&nbsp;</td><td></td><td></td></tr>
+                        <tr><td>&nbsp;</td><td></td><td></td></tr>
+
                     </tbody>
                 </table>
+
             </div>
 
         </div>

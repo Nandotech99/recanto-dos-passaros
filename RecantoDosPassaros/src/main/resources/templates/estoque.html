@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="pt-BR" xmlns:th="http://www.thymeleaf.org">
 
@@ -6,11 +7,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Estoque | Recanto dos Pássaros</title>
 
-    <link rel="stylesheet"
-        href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0&icon_names=close" />
+    <link rel="stylesheet" th:href="@{/style.css}" href="style.css">
 
-        <link rel="stylesheet" th:href="@{/style.css}" href="style.css">
-        
 </head>
 
 <body class="app-body">
@@ -59,17 +57,28 @@
                     </div>
                 </div>
 
-                <p class="section-description">Gerencie o estoque disponível e monitore o valor total correspondente na
-                    base de dados.</p>
+                <p class="section-description">
+                    Gerencie o estoque disponível e monitore o valor total correspondente na
+                    base de dados.
+                </p>
 
                 <div class="top-kpi-container">
                     <div class="kpi-box">
                         <span class="kpi-box-label">
-                            <span style="color: #2e7d32; font-size: 1.1rem;">💲</span> Valor total em estoque:
+                            <svg xmlns="http://www.w3.org/2000/svg"
+                                 width="20"
+                                 height="20"
+                                 viewBox="0 -960 960 960"
+                                 fill="#757575">
+                                <path d="M440-200v-40q-75-9-115.5-53T284-400h72q4 45 33.5 68t78.5 23q45 0 71-20t26-52q0-30-24-48t-87-37q-73-22-110.5-58T306-615q0-57 38-93t96-44v-48h80v48q62 9 96 48t38 89h-72q-4-37-29-57t-67-20q-40 0-63 18t-23 48q0 27 23 44t84 37q78 25 112.5 61t34.5 91q0 59-39 97t-102 46v48h-80Z"/>
+                            </svg>
+                            Valor total em estoque:
                         </span>
+
                         <span class="kpi-box-value"
-                            th:text="${'R$ ' + #numbers.formatDecimal(valorTotalEstoque, 1, 'COMMA', 2, 'POINT')}">R$
-                            0,00</span>
+                              th:text="${'R$ ' + #numbers.formatDecimal(valorTotalEstoque, 1, 'COMMA', 2, 'POINT')}">
+                            R$ 0,00
+                        </span>
                     </div>
                 </div>
 
@@ -81,6 +90,7 @@
                                 <circle cx="11" cy="11" r="8"></circle>
                                 <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
                             </svg>
+
                             <input type="text" id="inputBusca" onkeyup="filtrarTabela()"
                                 placeholder="Buscar: Insira código ou nome do produto...">
                         </div>
@@ -98,7 +108,9 @@
                                 <line x1="9" y1="8" x2="15" y2="8"></line>
                                 <line x1="17" y1="16" x2="23" y2="16"></line>
                             </svg>
+
                             <span style="font-size: 0.85rem; font-weight: 600;">Filtrar</span>
+
                             <select id="filtroSelecao" onchange="filtrarTabela()"
                                 style="border: none; outline: none; background: transparent; font-size: 0.85rem;">
                                 <option value="">Todos</option>
@@ -118,18 +130,19 @@
                                     <th>AÇÕES</th>
                                 </tr>
                             </thead>
+
                             <tbody id="stockTableBody">
                                 <tr th:if="${#lists.isEmpty(produtos)}">
                                     <td colspan="5" style="padding: 30px; text-align: center;">
-                                        <p style="font-weight: 600; color: var(--primary-color);">Nenhum produto
-                                            cadastrado no estoque.</p>
+                                        <p style="font-weight: 600; color: var(--primary-color);">
+                                            Nenhum produto cadastrado no estoque.
+                                        </p>
                                     </td>
                                 </tr>
 
                                 <tr th:each="p : ${produtos}" th:data-qtd="${p.quantidade}"
                                     th:data-min="${p.quantidade_min != null ? p.quantidade_min : p.quantidadeMinima}">
-                                        </div>
-                                    </td>
+                                    <!-- manter aqui o conteúdo original das colunas de cada produto -->
                                 </tr>
                             </tbody>
                         </table>
@@ -166,6 +179,7 @@
                 if (linha.getElementsByTagName('td').length <= 1) continue;
 
                 var colunaNome = linha.getElementsByTagName('td')[0];
+
                 if (colunaNome) {
                     var textoNome = colunaNome.textContent || colunaNome.innerText;
                     var atendeBusca = textoNome.toLowerCase().indexOf(filtroTexto) > -1;
@@ -187,6 +201,6 @@
             }
         }
     </script>
-</body>
 
+</body>
 </html>
