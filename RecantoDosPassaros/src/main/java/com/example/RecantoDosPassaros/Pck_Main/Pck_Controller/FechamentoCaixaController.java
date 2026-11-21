@@ -32,7 +32,7 @@ public class FechamentoCaixaController {
         model.addAttribute("novoFechamento", new FechamentoCaixa());
 
         // Retorna o nome do arquivo HTML (ex: fechaCaixa.html ou fechamentoCaixa.html)
-        return "fechaCaixa";
+        return "fechamento-caixa";
     }
 
     // Rota para salvar um novo fechamento de caixa via formulário (POST)
@@ -42,15 +42,15 @@ public class FechamentoCaixaController {
         // Define o status padrão como pendente caso venha vazio ou nulo
         if (fechamentoCaixa.getStatus() == null || fechamentoCaixa.getStatus().isEmpty()) {
             fechamentoCaixa.setStatus("PENDENTE");
-        }
-
+        } // lembrar de alterar isso caso dê algum erro na visualização da página web
+ 
         fechamentoCaixaService.salvarFechamento(fechamentoCaixa);
 
         // Redireciona de volta para a página de caixa após salvar
         return "redirect:/recanto/fechamento-caixa";
     }
     // Rota para executar o fechamento de caixa ao clicar no botão
-    @PostMapping("/caixa/fechar-dia")
+    @PostMapping("/fechamento-caixa/fechar-dia")
     public String fecharCaixaDiario() {
         try {
             fechamentoCaixaService.fecharCaixaDiario();
