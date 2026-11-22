@@ -6,7 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Fechamento de Caixa | Recanto dos Pássaros</title>
 
-    <link rel="icon" type="image/jpeg" th:href="@{/pck_img/recanto-logotipo.png}" href="pck_img/recanto-logotipo.png">
+    <link rel="icon" type="image/jpeg" th:href="@{/pck_img/recanto-simbolo.jpg}" href="pck_img/recanto-simbolo.jpg">
     <link rel="stylesheet" th:href="@{/style.css}" href="style.css">
 
 </head>
@@ -18,7 +18,7 @@
     <!-- Sidebar / Menu Lateral -->
     <aside class="sidebar">
         <div class="sidebar-brand">
-            <img th:src="@{/pck_img/recanto-simbolo.jpg}" src="/pck_img/recanto-simbolo.jpg"
+            <img th:src="@{/pck_img/recanto-logotipo.png}" src="/pck_img/recanto-logotipo.png"
                 alt="Logo Recanto dos Pássaros" class="sidebar-logo">
         </div>
 
@@ -34,9 +34,9 @@
             <div class="nav-section">
                 <span class="nav-section-title">Venda</span>
                 <ul class="nav-list">
-                    <li><a th:href="@{/recanto/pdv}" class="nav-item">Ponto de Venda</a></li>
-                    <li><a th:href="@{/recanto/caixa}" class="nav-item active">Fechamento de Caixa</a></li>
-                    <li><a th:href="@{/recanto/pdv/verificar}" class="nav-item">Verificar Vendas</a></li>
+                    <li><a th:href="@{/recanto/index}" class="nav-item">Ponto de Venda</a></li>
+                    <li><a th:href="@{/recanto/fechamento-caixa}" class="nav-item active">Fechamento de Caixa</a></li>
+                    <li><a th:href="@{/recanto/index/verificar}" class="nav-item">Verificar Vendas</a></li>
                 </ul>
             </div>
         </nav>
@@ -46,7 +46,7 @@
     <main class="main-content">
 
         <header class="topbar">
-            <a th:href="@{/recanto/pdv}" class="btn-inicio">
+            <a th:href="@{/recanto/index}" class="btn-inicio">
                 <svg width="16" height="16" viewBox="0 0 24 24" fill="none"
                     stroke="currentColor" stroke-width="2">
                     <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path>
@@ -65,7 +65,7 @@
                 </div>
 
                 <!-- Formulário que envia o POST para o FechamentoCaixaController -->
-                <form th:action="@{/recanto/caixa/fechar-dia}" method="post">
+                <form th:action="@{/recanto/fechamento-caixa/fechar-dia}" method="post">
                     <button type="submit" class="btn-primary-action">Fechar caixa</button>
                 </form>
             </div>

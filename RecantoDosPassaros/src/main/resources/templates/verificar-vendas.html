@@ -7,7 +7,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Verificar Vendas | Recanto dos Pássaros</title>
 
-    <link rel="icon" type="image/jpeg" th:href="@{/pck_img/recanto-logotipo.png}" href="pck_img/recanto-logotipo.png">
+    <link rel="icon" type="image/jpeg" th:href="@{/pck_img/recanto-simbolo.jpg}" href="pck_img/recanto-simbolo.jpg">
     <link rel="stylesheet" th:href="@{/style.css}" href="style.css">
     
 </head>
@@ -16,7 +16,7 @@
 <div class="app-layout">
     <aside class="sidebar">
         <div class="sidebar-brand">
-            <img th:src="@{/pck_img/recanto-simbolo.jpg}" src="/pck_img/recanto-simbolo.jpg" alt="Logo Recanto dos Pássaros" class="sidebar-logo">
+            <img th:src="@{/pck_img/recanto-logotipo.png}" src="/pck_img/recanto-logotipo.png" alt="Logo Recanto dos Pássaros" class="sidebar-logo">
         </div>
 
         <nav class="sidebar-nav">
@@ -31,9 +31,9 @@
             <div class="nav-section">
                 <span class="nav-section-title">Venda</span>
                 <ul class="nav-list">
-                    <li><a th:href="@{/recanto/pdv}" class="nav-item">Ponto de Venda</a></li>
-                    <li><a th:href="@{/recanto/caixa}" class="nav-item">Fechamento de Caixa</a></li>
-                    <li><a th:href="@{/recanto/pdv/verificar}" class="nav-item active">Verificar Vendas</a></li>
+                    <li><a th:href="@{/recanto/index}" class="nav-item">Ponto de Venda</a></li>
+                    <li><a th:href="@{/recanto/fechamento-caixa}" class="nav-item">Fechamento de Caixa</a></li>
+                    <li><a th:href="@{/recanto/index/verificar}" class="nav-item active">Verificar Vendas</a></li>
                 </ul>
             </div>
         </nav>
@@ -41,7 +41,7 @@
 
     <main class="main-content">
         <header class="topbar">
-            <a th:href="@{/recanto/pdv}" class="btn-inicio">
+            <a th:href="@{/recanto/index}" class="btn-inicio">
                 <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path><polyline points="9 22 9 12 15 12 15 22"></polyline></svg>
                 Início
             </a>
@@ -135,7 +135,7 @@
                             </button>
                         </td>
                         <td>
-                            <form th:action="@{/recanto/pdv/{id}/status(id=${v.cod_venda})}" method="post" style="display: inline;">
+                            <form th:action="@{/recanto/index/{id}/status(id=${v.cod_venda})}" method="post" style="display: inline;">
                                 <input type="hidden" name="status" th:value="${v.status == 'PAGO' ? 'PENDENTE' : 'PAGO'}" />
                                 <button type="submit"
                                         th:class="${v.status == 'PAGO' ? 'status-pago btn-status-toggle' : 'status-pendente btn-status-toggle'}"
@@ -185,7 +185,7 @@
 
         document.getElementById('modalItensVenda').style.display = 'flex';
 
-        fetch('/recanto/pdv/' + codVenda + '/itens')
+        fetch('/recanto/index/' + codVenda + '/itens')
             .then(response => response.json())
             .then(itens => {
                 corpoTabela.innerHTML = '';
