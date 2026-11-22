@@ -90,7 +90,7 @@ public class VendaController {
     }
 
     // Exibe a tela de listagem e verificação de vendas
-    @GetMapping("/verificar")
+    @GetMapping("/verificar-vendas")
     public String verificarVendas(Model model) {
         try {
             List<Venda> vendas = vendaService.getVenda();
@@ -116,7 +116,7 @@ public class VendaController {
 
             return "verificar-vendas";
         } catch (Exception e) {
-            System.err.println("ERRO DETALHADO EM /verificar: " + e.getMessage());
+            System.err.println("ERRO DETALHADO EM /verificar-vendas: " + e.getMessage());
             e.printStackTrace();
             throw e;
         }
@@ -145,6 +145,6 @@ public class VendaController {
         } catch (Exception e) {
             e.printStackTrace();
         }
-        return "redirect:/recanto/index/verificar";
+        return "redirect:/recanto/index/verificar-vendas";
     }
 }
