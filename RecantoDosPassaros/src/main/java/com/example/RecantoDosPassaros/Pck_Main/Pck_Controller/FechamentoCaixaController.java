@@ -20,7 +20,7 @@ public class FechamentoCaixaController {
     private FechamentoCaixaService fechamentoCaixaService;
 
     // Rota para exibir a página de Fechamento de Caixa com os dados e KPIs
-    @GetMapping("/fechamento-caixa")
+    @GetMapping("/fechaCaixa")
     public String exibirFechamentoCaixa(Model model) {
         List<FechamentoCaixa> fechamentos = fechamentoCaixaService.listarFechamentos();
         double totalEntrada = fechamentoCaixaService.calcularTotalEntrada();
@@ -32,12 +32,12 @@ public class FechamentoCaixaController {
         model.addAttribute("novoFechamento", new FechamentoCaixa());
 
         // Retorna o nome do arquivo HTML (ex: fechaCaixa.html ou fechamentoCaixa.html)
-        return "fechamento-caixa";
+        return "fechaCaixa"; // 
     }
 
     // Rota para salvar um novo fechamento de caixa via formulário (POST)
     // Rota para salvar um novo fechamento de caixa via formulário (POST)
-    @PostMapping("/fechamento-caixa/salvar")
+    @PostMapping("/fechaCaixa/salvar")
     public String salvarFechamento(@ModelAttribute FechamentoCaixa fechamentoCaixa) {
         // Define o status padrão como pendente caso venha vazio ou nulo
         if (fechamentoCaixa.getStatus() == null || fechamentoCaixa.getStatus().isEmpty()) {
@@ -47,16 +47,16 @@ public class FechamentoCaixaController {
         fechamentoCaixaService.salvarFechamento(fechamentoCaixa);
 
         // Redireciona de volta para a página de caixa após salvar
-        return "redirect:/recanto/fechamento-caixa";
+        return "redirect:/recanto/fecha-Caixa";
     }
     // Rota para executar o fechamento de caixa ao clicar no botão
-    @PostMapping("/fechamento-caixa/fechar-dia")
+    @PostMapping("/fechaCaixa/fechar-dia")
     public String fecharCaixaDiario() {
         try {
             fechamentoCaixaService.fecharCaixaDiario();
         } catch (Exception e) {
             e.printStackTrace();
         }
-        return "redirect:/recanto/fechamento-caixa";
+        return "redirect:/recanto/fechaCaixa";
     }
 }
