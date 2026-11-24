@@ -38,18 +38,18 @@ public class VendaController {
     }
 
     // Recebe a finalização da venda diretamente do carrinho no PDV via POST (/recanto/pdv)
+
     @PostMapping
     public String finalizarVendaPdv(@RequestBody List<ItemDto> itensCarrinho) {
         try {
             if (itensCarrinho == null || itensCarrinho.isEmpty()) {
                 return "redirect:/recanto/pdv";
             }
-            }
 
-            // 1. Abre a venda no banco e obtém o ID gerado (via procedure abrir_venda)
+            // 1. Abre a venda no banco e obtém o ID gerado
             int idVendaGerado = vendaService.postVenda();
 
-            // 2. Adiciona cada item do carrinho na venda (dispara add_item_venda e baixa o estoque)
+            // 2. Adiciona cada item do carrinho na venda
             for (ItemDto dto : itensCarrinho) {
                 Item item = new Item();
                 item.setCod_vendaFK(idVendaGerado);
@@ -60,12 +60,13 @@ public class VendaController {
             }
 
             return "redirect:/recanto/pdv";
+
         } catch (Exception e) {
             e.printStackTrace();
             throw e;
         }
     }
-
+    
     // Abre uma nova venda (caso queira chamar via botão isolado)
     @PostMapping("/abrir")
     @ResponseBody
