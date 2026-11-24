@@ -1,5 +1,5 @@
 ﻿---
--- 1. ESTRUTURA DE TABELAS
+-- 0. LIMPEZA DE TABELAS E PROCEDURES
 ---
 
 DROP TABLE IF EXISTS item;
@@ -7,6 +7,11 @@ DROP TABLE IF EXISTS estoque;
 DROP TABLE IF EXISTS produto;
 DROP TABLE IF EXISTS venda;
 DROP TABLE IF EXISTS fechamentocaixa;
+DROP PROCEDURE IF EXISTS realizar_fechamento_caixa;
+
+---
+-- 1. ESTRUTURA DE TABELAS/
+---
 
 CREATE TABLE venda (
                        cod_venda INT PRIMARY KEY AUTO_INCREMENT,
@@ -137,34 +142,34 @@ CREATE PROCEDURE realizar_fechamento_caixa()
 BEGIN
     DECLARE v_total DECIMAL(10,2);
     DECLARE v_data DATE;
-
+ 
     SET v_data = CURDATE();
-
+ 
     SELECT COALESCE(SUM(valortotal), 0) INTO v_total
     FROM venda
     WHERE DATE(data_venda) = v_data
       AND status = 'PAGO';
-
+ 
     IF NOT EXISTS (
         SELECT 1
         FROM fechamentocaixa
         WHERE data = v_data
     ) THEN
-
+ 
         INSERT INTO fechamentocaixa (data, entrada, status)
-        VALUES (v_data, v_total, 'CONCLUÍDO');
-
+        VALUES (v_data, v_total, 'FECHADO');
+ 
     ELSE
-
+ 
         UPDATE fechamentocaixa
         SET entrada = v_total,
-            status = 'CONCLUÍDO'
+            status = 'FECHADO'
         WHERE data = v_data;
-
+ 
     END IF;
-
+ 
 END //
-
+ 
 DELIMITER ;
 
 ---
@@ -198,7 +203,7 @@ WHERE cod_venda = p_cod_venda OR p_cod_venda IS NULL;
 END //
 DELIMITER ;
 
--- utilizada em VendaProcedure.java (getItensPorVenda)
+-- Procedure utilizada em VendaProcedure.java (getItensPorVenda)
 DELIMITER //
 CREATE PROCEDURE exibir_itens_venda(IN p_cod_venda INT)
 BEGIN
@@ -212,7 +217,7 @@ WHERE i.cod_venda = p_cod_venda;
 END //
 DELIMITER ;
 
--- utilizada em VendaProcedure.java (atualizarStatus)
+-- Procedure utilizada em VendaProcedure.java (atualizarStatus)
 DELIMITER //
 CREATE PROCEDURE alterar_status_venda(IN p_cod_venda INT, IN p_novo_status VARCHAR(20))
 BEGIN
@@ -340,3 +345,5 @@ FROM venda
 WHERE DATE(data_venda) = p_data AND status = 'PAGO';
 END //
 DELIMITER ;
+
+ALTER USER 'root'@'localhost' IDENTIFIED BY 'admin';
