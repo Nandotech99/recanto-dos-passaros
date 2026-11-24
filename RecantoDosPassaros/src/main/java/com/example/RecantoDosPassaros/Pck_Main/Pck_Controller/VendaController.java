@@ -66,7 +66,7 @@ public class VendaController {
             throw e;
         }
     }
-    
+
     // Abre uma nova venda (caso queira chamar via botão isolado)
     @PostMapping("/abrir")
     @ResponseBody
