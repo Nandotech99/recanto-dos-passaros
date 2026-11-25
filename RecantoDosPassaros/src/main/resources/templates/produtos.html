@@ -2,14 +2,12 @@
 <html lang="pt-BR" xmlns:th="http://www.thymeleaf.org">
 
 <head>
-    
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Produtos | Recanto dos Pássaros</title>
 
     <link rel="icon" type="image/jpeg" th:href="@{/pck_img/recanto-simbolo.jpg}" href="pck_img/recanto-simbolo.jpg">
     <link rel="stylesheet" th:href="@{/style.css}" href="style.css">
-
 </head>
 <body class="app-body page-produtos">
 
@@ -19,8 +17,8 @@
     <aside class="sidebar">
         <div class="sidebar-brand">
             <img th:src="@{/pck_img/recanto-logotipo.png}"
-            alt="Logo Recanto dos Pássaros"
-            class="sidebar-logo"> 
+                 alt="Logo Recanto dos Pássaros"
+                 class="sidebar-logo">
         </div>
 
         <nav class="sidebar-nav">
@@ -35,9 +33,9 @@
             <div class="nav-section">
                 <span class="nav-section-title">Venda</span>
                 <ul class="nav-list">
-                    <li><a th:href="@{/recanto/index}" class="nav-item">Ponto de Venda</a></li>
+                    <li><a th:href="@{/recanto/pdv}" class="nav-item">Ponto de Venda</a></li>
                     <li><a th:href="@{/recanto/fechamento-caixa}" class="nav-item">Fechamento de Caixa</a></li>
-                    <li><a th:href="@{/recanto/index/verificar}" class="nav-item">Verificar Vendas</a></li>
+                    <li><a th:href="@{/recanto/pdv/verificar}" class="nav-item">Verificar Vendas</a></li>
                 </ul>
             </div>
         </nav>
@@ -46,9 +44,11 @@
     <main class="main-content">
         <header class="topbar">
             <a th:href="@{/recanto/index}" class="btn-inicio">
-                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path><polyline points="9 22 9 12 15 12 15 22"></polyline></svg>
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path>
+                    <polyline points="9 22 9 12 15 12 15 22"></polyline>
+                </svg>
                 Início
-
             </a>
         </header>
 
@@ -69,22 +69,39 @@
             <div class="top-kpi-container">
                 <div class="kpi-box">
                    <span class="kpi-box-label">
-                       <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M16.5 9.4l-9-5.19M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"></path><polyline points="3.27 6.96 12 12.01 20.73 6.96"></polyline><line x1="12" y1="22.08" x2="12" y2="12"></line></svg>
+                       <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                           <path d="M16.5 9.4l-9-5.19M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"></path>
+                           <polyline points="3.27 6.96 12 12.01 20.73 6.96"></polyline>
+                           <line x1="12" y1="22.08" x2="12" y2="12"></line>
+                       </svg>
                        TOTAL DE PRODUTOS:
                    </span>
-                    <span class="kpi-box-value" th:text="${totalProdutos}">5</span>
+                    <span class="kpi-box-value" th:text="${totalProdutos}">0</span>
                 </div>
             </div>
 
             <div class="table-wrapper-card">
                 <div class="filter-bar">
                     <div class="search-box">
-                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <circle cx="11" cy="11" r="8"></circle>
+                            <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+                        </svg>
                         <input type="text" id="inputBusca" onkeyup="filtrarTabela()" placeholder="Buscar: Insira código ou nome do produto...">
                     </div>
 
                     <div class="filter-dropdown">
-                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="4" y1="21" x2="4" y2="14"></line><line x1="4" y1="10" x2="4" y2="3"></line><line x1="12" y1="21" x2="12" y2="12"></line><line x1="12" y1="8" x2="12" y2="3"></line><line x1="20" y1="21" x2="20" y2="16"></line><line x1="20" y1="12" x2="20" y2="3"></line><line x1="1" y1="14" x2="7" y2="14"></line><line x1="9" y1="8" x2="15" y2="8"></line><line x1="17" y1="16" x2="23" y2="16"></line></svg>
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <line x1="4" y1="21" x2="4" y2="14"></line>
+                            <line x1="4" y1="10" x2="4" y2="3"></line>
+                            <line x1="12" y1="21" x2="12" y2="12"></line>
+                            <line x1="12" y1="8" x2="12" y2="3"></line>
+                            <line x1="20" y1="21" x2="20" y2="16"></line>
+                            <line x1="20" y1="12" x2="20" y2="3"></line>
+                            <line x1="1" y1="14" x2="7" y2="14"></line>
+                            <line x1="9" y1="8" x2="15" y2="8"></line>
+                            <line x1="17" y1="16" x2="23" y2="16"></line>
+                        </svg>
                         <span style="font-size: 0.85rem; font-weight: 600;">Filtro</span>
                         <select id="filtroCategoria" onchange="filtrarTabela()" style="border: none; outline: none; background: transparent; font-size: 0.85rem;">
                             <option value="">Todas as Categorias</option>
@@ -112,6 +129,44 @@
                         <tr th:if="${#lists.isEmpty(produtos)}">
                             <td colspan="5" style="padding: 30px; text-align: center;">
                                 <p style="font-weight: 600; color: var(--primary-color);">Nenhum produto cadastrado.</p>
+                            </td>
+                        </tr>
+
+                        <tr th:each="p : ${produtos}">
+                            <td th:text="${'#' + p.codigo}">#1</td>
+                            <td th:text="${p.nome}">Nome do Produto</td>
+                            <td>
+                                <span th:id="'preco-texto-' + ${p.codigo}"
+                                      th:text="${'R$ ' + #numbers.formatDecimal(p.preco, 1, 'COMMA', 2, 'POINT')}">
+                                    R$ 0,00
+                                </span>
+
+                                <form th:id="'preco-form-' + ${p.codigo}"
+                                      th:action="@{/recanto/produtos/atualizar-preco/{id}(id=${p.codigo})}"
+                                      method="post"
+                                      style="display: none; align-items: center; gap: 6px;">
+                                    <input type="number" step="0.01" min="0" name="preco"
+                                           th:value="${p.preco}" required
+                                           style="width: 90px; padding: 4px 6px;">
+                                    <button type="submit" class="btn-save" style="padding: 4px 8px;">Salvar</button>
+                                    <button type="button" class="btn-cancel" style="padding: 4px 8px;"
+                                            th:onclick="'habilitarEdicao(' + ${p.codigo} + ')'">Cancelar</button>
+                                </form>
+                            </td>
+                            <td th:text="${p.categoria != null ? p.categoria : 'GERAL'}">GERAL</td>
+                            <td style="display: flex; gap: 8px; align-items: center;">
+                                <button type="button"
+                                        th:onclick="'habilitarEdicao(' + ${p.codigo} + ')'"
+                                        title="Editar preço">
+                                    Editar preço
+                                </button>
+
+                                <form th:action="@{/recanto/produtos/deletar}" method="post"
+                                      onsubmit="return confirm('Deseja realmente excluir este produto?');"
+                                      style="margin: 0;">
+                                    <input type="hidden" name="id" th:value="${p.codigo}">
+                                    <button type="submit" title="Excluir produto">Excluir</button>
+                                </form>
                             </td>
                         </tr>
                         </tbody>

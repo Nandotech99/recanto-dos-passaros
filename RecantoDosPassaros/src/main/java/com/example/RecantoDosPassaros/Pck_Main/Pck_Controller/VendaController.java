@@ -7,11 +7,15 @@ import com.example.RecantoDosPassaros.Pck_Main.Pck_Model.Venda;
 import com.example.RecantoDosPassaros.Pck_Main.Pck_Service.ProdutoService;
 import com.example.RecantoDosPassaros.Pck_Main.Pck_Service.VendaService;
 import lombok.AllArgsConstructor;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 @AllArgsConstructor
 @Controller
@@ -24,33 +28,33 @@ public class VendaController {
     // Exibe a tela de PDV
     @GetMapping
     public String getVendas(Model model) {
-        try {
-            List<Venda> vendas = vendaService.getVenda();
-            List<Produto> produtos = produtoService.getProdList();
+        List<Venda> vendas = vendaService.getVenda();
+        List<Produto> produtos = produtoService.getProdList();
 
-            model.addAttribute("vendas", vendas);
-            model.addAttribute("produtos", produtos);
-            return "pdv";
-        } catch (Exception e) {
-            e.printStackTrace();
-            throw e;
-        }
+        model.addAttribute("vendas", vendas != null ? vendas : new ArrayList<>());
+        model.addAttribute("produtos", produtos != null ? produtos : new ArrayList<>());
+        return "pdv";
     }
 
     // Recebe a finalização da venda diretamente do carrinho no PDV via POST (/recanto/pdv)
-
     @PostMapping
-    public String finalizarVendaPdv(@RequestBody List<ItemDto> itensCarrinho) {
-        try {
-            if (itensCarrinho == null || itensCarrinho.isEmpty()) {
-                return "redirect:/recanto/pdv";
-            }
+    @ResponseBody
+    public ResponseEntity<?> finalizarVendaPdv(@RequestBody List<ItemDto> itensCarrinho) {
+        if (itensCarrinho == null || itensCarrinho.isEmpty()) {
+            return ResponseEntity.badRequest().body(Map.of("erro", "O carrinho está vazio."));
+        }
 
+        try {
             // 1. Abre a venda no banco e obtém o ID gerado
             int idVendaGerado = vendaService.postVenda();
 
             // 2. Adiciona cada item do carrinho na venda
             for (ItemDto dto : itensCarrinho) {
+                if (dto.getQuantidade() <= 0) {
+                    return ResponseEntity.badRequest()
+                            .body(Map.of("erro", "Quantidade inválida para o produto " + dto.getCodProduto()));
+                }
+
                 Item item = new Item();
                 item.setCod_vendaFK(idVendaGerado);
                 item.setCod_produtoFK(dto.getCodProduto());
@@ -59,19 +63,22 @@ public class VendaController {
                 vendaService.postItemVenda(item);
             }
 
-            return "redirect:/recanto/pdv";
+            return ResponseEntity.status(HttpStatus.CREATED)
+                    .body(Map.of("mensagem", "Venda finalizada com sucesso!", "idVenda", idVendaGerado));
 
         } catch (Exception e) {
             e.printStackTrace();
-            throw e;
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                    .body(Map.of("erro", "Erro ao finalizar a venda: " + e.getMessage()));
         }
     }
 
     // Abre uma nova venda (caso queira chamar via botão isolado)
     @PostMapping("/abrir")
     @ResponseBody
-    public int abrirVenda() {
-        return vendaService.postVenda();
+    public ResponseEntity<Integer> abrirVenda() {
+        int idVenda = vendaService.postVenda();
+        return ResponseEntity.status(HttpStatus.CREATED).body(idVenda);
     }
 
     // Adiciona um item de forma isolada se necessário
@@ -92,47 +99,40 @@ public class VendaController {
     }
 
     // Exibe a tela de listagem e verificação de vendas
-    @GetMapping("/verificar-vendas")
+    @GetMapping("/verificar")
     public String verificarVendas(Model model) {
-        try {
-            List<Venda> vendas = vendaService.getVenda();
-
-            // Proteção caso venha nulo do banco
-            if (vendas == null) {
-                vendas = new java.util.ArrayList<>();
-            }
-
-            double totalPagas = vendas.stream()
-                    .filter(v -> "PAGO".equalsIgnoreCase(v.getStatus()))
-                    .mapToDouble(Venda::getValor_total)
-                    .sum();
-
-            double totalPendentes = vendas.stream()
-                    .filter(v -> "PENDENTE".equalsIgnoreCase(v.getStatus()))
-                    .mapToDouble(Venda::getValor_total)
-                    .sum();
-
-            model.addAttribute("vendas", vendas);
-            model.addAttribute("totalVendasPagas", totalPagas);
-            model.addAttribute("totalVendasPendentes", totalPendentes);
-
-            return "verificar-vendas";
-        } catch (Exception e) {
-            System.err.println("ERRO DETALHADO EM /verificar-vendas: " + e.getMessage());
-            e.printStackTrace();
-            throw e;
+        List<Venda> vendas = vendaService.getVenda();
+        if (vendas == null) {
+            vendas = new ArrayList<>();
         }
+
+        double totalPagas = vendas.stream()
+                .filter(v -> "PAGO".equalsIgnoreCase(v.getStatus()))
+                .mapToDouble(Venda::getValor_total)
+                .sum();
+
+        double totalPendentes = vendas.stream()
+                .filter(v -> "PENDENTE".equalsIgnoreCase(v.getStatus()))
+                .mapToDouble(Venda::getValor_total)
+                .sum();
+
+        model.addAttribute("vendas", vendas);
+        model.addAttribute("totalVendasPagas", totalPagas);
+        model.addAttribute("totalVendasPendentes", totalPendentes);
+
+        return "verificar-vendas";
     }
 
     // Endpoint para retornar os itens de uma venda em formato JSON para o modal
     @GetMapping("/{id}/itens")
     @ResponseBody
-    public List<ItemDto> listarItensDaVenda(@PathVariable("id") int idVenda) {
+    public ResponseEntity<List<ItemDto>> listarItensDaVenda(@PathVariable("id") int idVenda) {
         try {
-            return vendaService.getItensPorVenda(idVenda);
+            List<ItemDto> itens = vendaService.getItensPorVenda(idVenda);
+            return ResponseEntity.ok(itens != null ? itens : new ArrayList<>());
         } catch (Exception e) {
             e.printStackTrace();
-            return new java.util.ArrayList<>();
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(new ArrayList<>());
         }
     }
 
@@ -147,6 +147,6 @@ public class VendaController {
         } catch (Exception e) {
             e.printStackTrace();
         }
-        return "redirect:/recanto/pdv/verificar-vendas";
+        return "redirect:/recanto/pdv/verificar";
     }
 }
