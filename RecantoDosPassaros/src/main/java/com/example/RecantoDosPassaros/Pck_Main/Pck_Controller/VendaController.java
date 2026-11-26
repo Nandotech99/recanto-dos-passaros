@@ -99,7 +99,7 @@ public class VendaController {
     }
 
     // Exibe a tela de listagem e verificação de vendas
-    @GetMapping("/verificar")
+    @GetMapping("/verificar-vendas")
     public String verificarVendas(Model model) {
         List<Venda> vendas = vendaService.getVenda();
         if (vendas == null) {
